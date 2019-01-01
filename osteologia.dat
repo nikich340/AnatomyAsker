@@ -1,0 +1,71 @@
+cranium/череп; [
+	splanchnocranium/лицевой отдел; [
+		 !maxilla/верхняя челюсть: 1-19, 2-20; {
+			corpus maxillae/тело верхней челюсти: 1-19, 2-20;
+			facies nasalis/носовая поверхность;
+			facies orbitalis/глазничная поверхность: 3-16;
+			facies infratemporalis/подвисочная поверхность;
+			facies anterior/передняя поверхность;
+			tuber maxillae/бугор верхней челюсти: 3-25;
+			margo infraorbitalis/подглазничный край;
+			sulcus infraorbitalis/подглазничная борозда: 3-15;
+			sulcus lacrimalis/слёзная борозда: 3-24, 4-26;
+			canalis incisivus/резцовый канал: 4-30;
+			foramen infraorbitalis/подглазничное отверстие: 2-18, 3-17;
+			sinus (hiatus) maxillaris/гайморова пазуха (щель): 4-24;
+			processus frontalis/лобный отросток: 1-21, 2-17, 3-13, 4-14;
+			processus palatinus/нёбный отросток: 4-17;
+			processus alveolaris/альвеолярный отросток: 1-20, 2-21, 3-21, 4-16;
+			processus zygomaticus/скуловой отросток: 2-19, 3-18;
+			fossa canina/клыковая ямка: 3-20;
+			juga alveolaria/альвеолярные возвышения: 3-23;
+			spina nasalis anterior/передняя носовая ость: 1-22, 3-22, 4-18;
+			crista lacrimalis superior/передний слёзный гребень: 3-19;
+		}
+		!concha nasalis inferior/нижняя носовая раковина; {
+		}
+		!os palatinum/нёбная кость; {
+		}
+		!os zygomaticum/скуловая кость; {
+		}
+		!os nasale/носовая кость: 1-15, 2-8; {
+			sulcus ethmoidalis/решётчатая борозда;
+		}
+		!os lacrimale/слёзная кость: 1-17, 2-9; {
+			sulcus lacrimalis/слёзная борозда: 5-12;
+			crista lacrimalis posterior/задний слёзный гребень: 2-10, 5-13;
+			hamulus lacrimalis/слёзный крючок: 5-15;
+			fossa sacci lacrimalis/ямка слёзного мешка: 5-14;
+		}
+		!vomer/сошник; {
+		}
+		!mandibula/нижняя челюсть; {
+			corpus mandibulae/тело нижней челюсти;
+			ramus mandibulae/ветвь нижней челюсти;
+			processus coronoideus/венечный отросток;
+			processus articularis/суставной отросток;
+			processus alveolaris/альвеолярный отросток;
+		}
+		!os hyoideum/подъязычная кость; {
+			
+		}
+	]
+	neurocranium/мозговой отдел; [
+	]
+]
+columna vertebralis/позвоночный столб; [
+]
+manubrium et costae/грудина и рёбра; [
+]
+membrum superius/верхняя конечность; [
+	cingulum/пояс; [
+	]
+	liber/свободная часть; [
+	]
+]
+membrum inferius/нижняя конечность; [
+	cingulum/пояс; [
+	]
+	liber/свободная часть; [
+	]
+]
