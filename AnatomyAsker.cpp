@@ -102,6 +102,7 @@ QPushButton* AnatomyAsker::setUpBtn(QLabel* pLbl) {
 }
 QDialog* AnatomyAsker::createDialog(QString info, QString accept, QString reject, bool mod) {
     QDialog* pdlg = new QDialog(this);
+    pdlg->setWindowOpacity(0.8);
     QHBoxLayout* phbox = new QHBoxLayout;
     QVBoxLayout* pvbox = new QVBoxLayout;
     QLabel* plbl = new QLabel(info);
