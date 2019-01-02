@@ -1,8 +1,8 @@
 #include "AnatomyAsker.h"
 
 AnatomyAsker::AnatomyAsker(QWidget *pwgt) : QWidget(pwgt), m_settings("nikich340", "AnatomyAsker") {
-    this->setStyleSheet("QPushButton { text-align:center; min-height: 80px; font-size: 20px }"
-                        "QLabel { text-align:top; font-size: 20px }");
+    this->setStyleSheet("QPushButton { text-align:center; min-height: 75px; font-size: 20px }"
+                        "QLabel { text-align:center; font-size: 20px }");
     m_file.setFileName(":/osteologia.dat");
     if (!m_file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         crash("File " + m_file.fileName() + " could not be opened");
@@ -10,6 +10,7 @@ AnatomyAsker::AnatomyAsker(QWidget *pwgt) : QWidget(pwgt), m_settings("nikich340
     readOsteo();
     m_file.close();
 
+    m_pLayoutMain = new QVBoxLayout;
     m_gScene.addItem(&m_gPix);
     m_gView.setBackgroundRole(QPalette::Dark);
     m_gView.setDragMode(QGraphicsView::ScrollHandDrag);
@@ -23,13 +24,19 @@ AnatomyAsker::AnatomyAsker(QWidget *pwgt) : QWidget(pwgt), m_settings("nikich340
     m_pBtnSet[2]->setText(m_langRu ? "Миология" : "Myologia");
     m_pLblNext = new QLabel;
     m_pBtnNext = setUpBtn(m_pLblNext);
+    m_pBtnNext->setStyleSheet("color:white;"
+                               "background-color:#000099");
     m_pLblNext->setText(m_langRu ? "Следующий вопрос" : "Next question");
+    m_pBtnFinish = new QPushButton(m_langRu ? " Завершить" : " Finish");
+    m_pBtnFinish->setStyleSheet("color:white;"
+                               "background-color:#000000");
+    connect(m_pBtnFinish, SIGNAL(clicked(bool)), this, SLOT(onFinishOsteoAsk()));
     connect(m_pBtnNext, SIGNAL(clicked(bool)), this, SLOT(onNextOsteoAsk()));
     connect(m_pBtnSet[0], SIGNAL(clicked(bool)), this, SLOT(onStartOsteoAsk()));
     upn(i, 0, 2) {
-        m_pvbMain.addWidget(m_pBtnSet[i]);
+        m_pLayoutMain->addWidget(m_pBtnSet[i]);
     }
-    setLayout(&m_pvbMain);
+    setLayout(m_pLayoutMain);
 }
 QTreeWidget* AnatomyAsker::viewOsteoTree() {
    QTreeWidget* pTW = new QTreeWidget;
@@ -85,7 +92,7 @@ QPushButton* AnatomyAsker::setUpBtn(QLabel* pLbl) {
    // pLbl->setMouseTracking(false);
     //pLbl->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     pLayout->addWidget(pLbl);
-    pBtn->setText("");
+    //pBtn->setText("");
     pBtn->setLayout(pLayout);
     return pBtn;
 }
@@ -232,14 +239,14 @@ void AnatomyAsker::genOsteoQuest() {
         int from = cIdx;
         cIdx = boneData[cIdx].parentCell;
         if (rand(0, 1)) {
-            rightAns = QString::number(markIdx);
+            rightAns = to_str(markIdx);
             ans.push_back(rightAns);
             for (auto cur : boneData[cIdx].nextCell) {
                 if (cur == from)
                    continue;
                 for (auto pairpix: boneData[cur].pixMark) {
                     if (pairpix.first == pixIdx && pairpix.second != markIdx) {
-                        ans.push_back(QString::number(pairpix.second));
+                        ans.push_back(to_str(pairpix.second));
                         break;
                     }
                 }
@@ -265,10 +272,10 @@ void AnatomyAsker::genOsteoQuest() {
             }
             if (m_langRu) {
                 question = "Какая кость отмечена на картинке номером " +
-                    QString::number(markIdx) + "?";
+                    to_str(markIdx) + "?";
             } else {
                 question = "What bone is marked on picture with number " +
-                    QString::number(markIdx) + "?";
+                    to_str(markIdx) + "?";
             }
         }
         nusedBones.erase(nusedBones.begin() + idx);
@@ -286,14 +293,14 @@ void AnatomyAsker::genOsteoQuest() {
 
         int from = cIdx;
         if (rand(0, 1)) {
-            rightAns = QString::number(markIdx);
+            rightAns = to_str(markIdx);
             ans.push_back(rightAns);
             for (auto i : boneData[from].boneFormations) {
                 if (i.name == boneData[from].boneFormations[fIdx].name)
                     continue;
                 for (auto j : i.pixMark) {
                     if (j.first == pixIdx && j.second != markIdx) {
-                        ans.push_back(QString::number(j.second));
+                        ans.push_back(to_str(j.second));
                         break;
                     }
                 }
@@ -319,22 +326,22 @@ void AnatomyAsker::genOsteoQuest() {
             }
             if (m_langRu) {
                 question = "Какое образование (объект: " + lang(boneData[from].name) +
-                        ") помечено на картинке номером " + QString::number(markIdx) + "?";
+                        ") помечено на картинке номером " + to_str(markIdx) + "?";
             } else {
                 question = "What " + boneData[from].name + " formation is marked on picture with number " +
-                        QString::number(markIdx) + "?";
+                        to_str(markIdx) + "?";
             }
         }
         nusedFormations.erase(nusedFormations.begin() + idx);
     } else {
-        crash("All bones and formations were used...");
+        onFinishOsteoAsk();
     }
 
     /* set question label */
     m_lblText.setText(question);
 
     /* set picture */
-    m_gPix.setPixmap(":/osteoPix/osteoPix" + QString::number(pixIdx) + ".png");
+    m_gPix.setPixmap(":/osteoPix/osteoPix" + to_str(pixIdx) + ".png");
 
     /* set answer buttons */
     std::shuffle(ans.begin(), ans.end(), dre);
@@ -356,7 +363,7 @@ void AnatomyAsker::genOsteoQuest() {
 void AnatomyAsker::incr(int& i, int max, int rep) {
     i += rep;
     if (i > max) {
-        crash("Incrementing goes out of range (" + QString::number(i) + ")");
+        crash("Incrementing goes out of range (" + to_str(i) + ")");
     }
 }
 void AnatomyAsker::crash(QString reason) {
@@ -375,44 +382,64 @@ void AnatomyAsker::onStartOsteoAsk() {
         connect(pdlg, SIGNAL(accepted()), qApp, SLOT(quit()));
         pdlg->exec();
     }
-    QHBoxLayout* phb = new QHBoxLayout;
-    QVBoxLayout* pvb = new QVBoxLayout;
+    QGridLayout* pGridLayout = new QGridLayout;
     upn(i, 0, maxAns - 1) {
         m_pLblAns[i] = new QLabel;
         m_pBtnAns[i] = setUpBtn(m_pLblAns[i]);
-        pvb->addWidget(m_pBtnAns[i]);
+        pGridLayout->addWidget(m_pBtnAns[i], i/2, i % 2);
     }
     genOsteoQuest();
-    m_gView.setMaximumWidth(qMin((int) (this->width() * 0.65), m_gPix.pixmap().width()));
-    m_gView.setMaximumHeight(qMin((int) (this->height() * 0.85), m_gPix.pixmap().height()));
+    m_gView.setMaximumWidth(this->width());
+    m_gView.setMaximumHeight(qMin((int) (this->height() * 0.6), m_gPix.pixmap().height()));
+    m_gView.setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    m_gView.setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     m_lblText.setMaximumWidth(QApplication::desktop()->width());
     m_lblText.setWordWrap(true);
-    pvb->addWidget(m_pBtnNext);
+    pGridLayout->addWidget(m_pBtnFinish, 3, 0);
+    pGridLayout->addWidget(m_pBtnNext, 3, 1);
     upn(i, 0, 2) {
         m_pBtnSet[i]->hide();
     }
 
-    phb->addWidget(&m_gView);
-    phb->addLayout(pvb);
-    //m_pvbMain.addWidget(viewOsteoTree());
-    m_pvbMain.addWidget(&m_lblText);
-    m_pvbMain.addLayout(phb);
+    m_pLayoutMain->addWidget(&m_lblText);
+    m_pLayoutMain->addWidget(&m_gView);
+    m_pLayoutMain->addLayout(pGridLayout);
+    //m_pHLayoutMain->addWidget(viewOsteoTree());
+}
+void AnatomyAsker::onFinishOsteoAsk() {
+    QDialog* pdlg = createDialog((m_langRu ? "Тестирование закончено!\nВаш результат: " :
+                                            "Testing finished!\nYour result is: ")
+                                 + to_str(q_rightAnsCnt) + "/" + to_str(q_cnt),
+                                 m_langRu ? "Выход" : "Quit", "-", true);
+    connect(pdlg, SIGNAL(accepted()), qApp, SLOT(quit()));
+    pdlg->exec();
 }
 void AnatomyAsker::onNextOsteoAsk() {
+    q_ansType = 0;
     upn(i, 0, maxAns - 1) {
         m_pBtnAns[i]->setStyleSheet("");
     }
     genOsteoQuest();
-    m_gView.setMaximumWidth(qMin((int) (this->width() * 0.65), m_gPix.pixmap().width()));
-    m_gView.setMaximumHeight(qMin((int) (this->height() * 0.85), m_gPix.pixmap().height()));
+    m_gView.setMaximumWidth(this->width());
+    m_gView.setMaximumHeight(qMin((int) (this->height() * 0.6), m_gPix.pixmap().height()));
+    m_gView.setSceneRect(QRect(0, 0, m_gPix.pixmap().width(), m_gPix.pixmap().height()));
 }
 void AnatomyAsker::onRightAns() {
+    if (!q_ansType) {
+        q_ansType = 1;
+        ++q_cnt;
+        ++q_rightAnsCnt;
+    }
     QPushButton* pBtn = dynamic_cast<QPushButton*>(sender());
     pBtn->setStyleSheet("color:white;"
                         "background-color:#33cc33;"
                         "font-weight:bold");
 }
 void AnatomyAsker::onWrongAns() {
+    if (!q_ansType) {
+        q_ansType = -1;
+        ++q_cnt;
+    }
     QPushButton* pBtn = dynamic_cast<QPushButton*>(sender());
     pBtn->setStyleSheet("color:white;"
                         "background-color:#ff0000");
