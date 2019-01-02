@@ -1,56 +1,164 @@
 cranium/череп; [
 	splanchnocranium/лицевой отдел; [
-		 !maxilla/верхняя челюсть: 1-19, 2-20; {
+		!maxilla/верхняя челюсть: 1-19, 2-20; {
 			corpus maxillae/тело верхней челюсти: 1-19, 2-20;
 			facies nasalis/носовая поверхность;
-			facies orbitalis/глазничная поверхность: 3-16;
+			facies orbitalis/глазничная поверхность: 6-16;
 			facies infratemporalis/подвисочная поверхность;
 			facies anterior/передняя поверхность;
-			tuber maxillae/бугор верхней челюсти: 3-25;
+			tuber maxillae/бугор верхней челюсти: 6-25;
 			margo infraorbitalis/подглазничный край;
-			sulcus infraorbitalis/подглазничная борозда: 3-15;
-			sulcus lacrimalis/слёзная борозда: 3-24, 4-26;
-			canalis incisivus/резцовый канал: 4-30;
-			foramen infraorbitalis/подглазничное отверстие: 2-18, 3-17;
-			sinus (hiatus) maxillaris/гайморова пазуха (щель): 4-24;
-			processus frontalis/лобный отросток: 1-21, 2-17, 3-13, 4-14;
-			processus palatinus/нёбный отросток: 4-17;
-			processus alveolaris/альвеолярный отросток: 1-20, 2-21, 3-21, 4-16;
-			processus zygomaticus/скуловой отросток: 2-19, 3-18;
-			fossa canina/клыковая ямка: 3-20;
-			juga alveolaria/альвеолярные возвышения: 3-23;
-			spina nasalis anterior/передняя носовая ость: 1-22, 3-22, 4-18;
-			crista lacrimalis superior/передний слёзный гребень: 3-19;
+			sulcus infraorbitalis/подглазничная борозда: 6-15;
+			sulcus lacrimalis/слёзная борозда: 6-24, 7-26;
+			canalis incisivus/резцовый канал: 7-30;
+			foramen infraorbitalis/подглазничное отверстие: 2-18, 6-17;
+			sinus (hiatus) maxillaris/гайморова пазуха (щель): 7-24;
+			processus frontalis/лобный отросток: 1-21, 2-17, 6-13, 7-14;
+			processus palatinus/нёбный отросток: 7-17;
+			processus alveolaris/альвеолярный отросток: 1-20, 2-21, 6-21, 7-16;
+			processus zygomaticus/скуловой отросток: 2-19, 6-18;
+			fossa canina/клыковая ямка: 6-20;
+			juga alveolaria/альвеолярные возвышения: 6-23;
+			spina nasalis anterior/передняя носовая ость: 1-22, 3-11, 6-22, 7-18;
+			crista lacrimalis anterior/передний слёзный гребень: 6-19;
 		}
-		!concha nasalis inferior/нижняя носовая раковина; {
+		!concha nasalis inferior/нижняя носовая раковина: 2-24, 3-9; {
 		}
 		!os palatinum/нёбная кость; {
 		}
-		!os zygomaticum/скуловая кость; {
+		!os zygomaticum/скуловая кость: 1-18, 2-16; {
 		}
 		!os nasale/носовая кость: 1-15, 2-8; {
 			sulcus ethmoidalis/решётчатая борозда;
 		}
 		!os lacrimale/слёзная кость: 1-17, 2-9; {
-			sulcus lacrimalis/слёзная борозда: 5-12;
-			crista lacrimalis posterior/задний слёзный гребень: 2-10, 5-13;
-			hamulus lacrimalis/слёзный крючок: 5-15;
-			fossa sacci lacrimalis/ямка слёзного мешка: 5-14;
+			sulcus lacrimalis/слёзная борозда: 8-12;
+			crista lacrimalis posterior/задний слёзный гребень: 2-10, 8-13;
+			hamulus lacrimalis/слёзный крючок: 8-15;
+			fossa sacci lacrimalis/ямка слёзного мешка: 8-14;
 		}
-		!vomer/сошник; {
+		!vomer/сошник: 2-25; {
 		}
-		!mandibula/нижняя челюсть; {
-			corpus mandibulae/тело нижней челюсти;
-			ramus mandibulae/ветвь нижней челюсти;
+		!mandibula/нижняя челюсть: 1-23, 2-30; {
+			corpus mandibulae/тело нижней челюсти: 2-26;
+			ramus mandibulae/ветвь нижней челюсти: 2-27;
 			processus coronoideus/венечный отросток;
-			processus articularis/суставной отросток;
-			processus alveolaris/альвеолярный отросток;
+			processus articularis (condylaris)/суставной (мыщелковый) отросток: 1-25, 3-19;
+			processus alveolaris/альвеолярный отросток: 2-29;
+			foramen mentale/подбородочное отверстие: 1-26, 2-28;
+			protuberantia mentalis/подбородочное возвышение: 1-27, 2-31;
+			angulus mandibulae/угол нижней челюсти: 1-28;
+			spinae mentalis/подбородочные ости: 3-12;
+			lingula mandibulae/язычок нижней челюсти: 3-22;
+			foramen mandibulae/отверстие нижней челюсти: 3-23;
+			sulcus mylohyoideus/челюстно-подъязычная борозда: 3-24;
+			linea mylohyoidea/челюстно-подъязычная линия: 3-25;
+			fossa submandibularis/подчелюстная ямка: 3-26;
 		}
 		!os hyoideum/подъязычная кость; {
 			
 		}
 	]
 	neurocranium/мозговой отдел; [
+		!os temporale/височная кость: 1-5, 2-7; {
+			processus zygomaticus/скуловой отросток: 1-6;
+			processus mastoideus/сосцевидный отросток: 1-7;
+			tuberculum articulare/суставной бугорок: 1-6;
+			meatus acusticus externus/наружный слуховой проход: 1-8;
+			meatus acusticus internus/внутренний слуховой проход: 3-15, 4-29;
+			pars tympanica/барабанная часть: 1-8;
+			sulcus sinus sigmoidei/борозда сигмовидного синуса: 3-16, 4-15;
+			sulcus sinus petrosi superioris/борозда верхнего каменистого синуса: 4-13;
+			sulcus n. petrosi majoris/борозда большого каменистого нерва: 4-28;
+			
+		}
+		!os parietale/теменная кость: 1-4, 2-6; {
+			sulci artetia meningea mediae/борозды средней менингеальной артерии: 3-13;
+		}
+		!os occipitale/затылочная кость: 1-9; {
+			protuberantia occipitalis externa/наружный затылочный выступ: 1-10;
+			protuberantia occipitalis interna/внутренний затылочный выступ: 4-18;
+			condylus occipitalis/затылочный мыщелок: 1-11;
+			canalis n. hypoglossi/канал подъязычного нерва: 3-17, 4-30;
+			sulcus sinus sigmoidei/борозда сигмовидного синуса: 3-16;
+			condylus occipitalis/затылочный мыщелок: 3-18;
+			foramen jugulare/отверстие яремной вены: 4-14;
+			crista occipitalis interna/внутренний затылочный гребень: 4-16;
+			sulcus sinus transversi/борозда поперечного синуса: 4-17;
+			foramen occipitale magnum/большое затылочное отверстие: 4-31;
+		}
+		!os frontale/лобная кость: 1-1, 2-1, 3-3; {
+			glabella/надпереносье (глабелла): 1-2, 2-2;
+			margo supraorbitalis/надглазничный край: 1-3, 2-3;
+			incisura supraorbitalis/надглазничная вырезка: 2-4;
+			spina trochlearis/блоковый (хрящевой) шип: 2-5;
+			crista frontalis/лобный гребень: 4-1;
+			foramen caecum/слепое отверстие: 4-2;
+			impressio digitatae/пальцевые вдавления: 4-19;
+		}
+		!os sphenoidale/клиновидная кость: 1-12, 2-12; {
+			ala major/большое крыло: 1-12, 2-12;
+			ala minor/малое крыло: 2-13, 4-5;
+			fissura orbitalis superior/верхняя глазничная щель: 2-14, 4-6;
+			fissura orbitalis inferior/нижняя глазничная щель: 2-15;
+			crista temporalis/височный гребень: 1-13;
+			lamina lateralis processus pterygoidei/латеральная пластинка крыловидного отростка: 1-14, 3-20;
+			lamina medialis processus pterygoidei/латеральная пластинка крыловидного отростка: 3-21;
+			processus sphenoidalis anterior/передний клиновидный отросток: 3-2, 4-22;
+			processus sphenoidalis posterior/задний клиновидный отросток: 4-25;
+			sella turcica (fossa hypophysialis) /турецкое седло (гипофизарная ямка): 3-1, 4-24;
+			dorsum sellae/спинка турецкого седла: 3-14, 4-26;
+			sinus sphenoidalis/клиновидная пазуха: 3-5;
+			foramen rotundum/круглое отверстие: 4-7;
+			foramen ovale/овальное отверстие: 4-10;
+			foramen spinosum/остистое отверстие: 4-11;
+			sulcus caroticus/борозда сонной артерии: 4-8;
+			clivus/скат: 4-12;
+			sulcus chiasmatis/борозда перекрёста: 4-21;
+			canalis opticus/зрительный канал: 4-23;
+		}
+		!os ethmoidale/решётчатая кость: 1-16, 2-11; {
+			lamina orbitalis/глазничная пластинка: 1-16;
+			concha nasalis superior/верхняя носовая раковина: 3-6;
+			concha nasalis media/средняя носовая раковина: 2-23, 3-7;
+			cellulae ethmoidalis/решётчатые ячейки: 3-4;
+			crista galli/петушиный гребень: 4-3;
+			lamina cribrosa/решётчатая пластинка: 4-4;
+		}
+		!other/прочее; {
+			meatus nasi inferior/нижний носовой ход: 3-10;
+			foramen lacerum/рваное отверстие: 4-27;
+			fossa cranii anterior/передняя черепная ямка: 4-20;
+			fossa cranii media/средняя черепная ямка: 4-9;
+			fossa cranii posterior/задняя черепная ямка: 4-32;
+			diploe/диплоэ (губч. вещество): 4-33;
+		}
+	]
+	suturae/швы; [
+		!sutura coronalis/венечный шов: 1-29, 2-33; {
+		}
+		!sutura lambdoidea/лямбдовидный шов: 1-30; {
+		}
+		!sutura squamosa/чешуйчатый шов: 1-31; {
+		}
+		!sutura intermaxillaris/межверхнечелюстной шов: 2-38; {
+		}
+		!sutura internasalis/межносовой шов: 2-35; {
+		}
+		!sutura frontalis/лобный шов: 2-32; {
+		}
+		!sutura nasomaxillaris/носо-верхнечелюстной шов: 1-32, 2-36; {
+		}
+		!sutura zygomaticomaxillaris/скуло-верхнечелюстной шов: 2-37; {
+		}
+		!sutura frontomaxillaris/лобно-верхнечелюстной шов: 1-33; {
+		}
+		!sutura frontonasalis/лобно-носовой шов: 2-34; {
+		}
+		!sutura sphenoidosquamosa/клиновидно-чешуйчатый шов: 1-34; {
+		}
+		!sutura occipitomastoidea/затылочно-сосцевидный шов: 1-35; {
+		}
 	]
 ]
 columna vertebralis/позвоночный столб; [

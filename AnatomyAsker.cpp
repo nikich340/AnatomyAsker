@@ -1,35 +1,41 @@
 #include "AnatomyAsker.h"
 
 AnatomyAsker::AnatomyAsker(QWidget *pwgt) : QWidget(pwgt), m_settings("nikich340", "AnatomyAsker") {
-    this->setStyleSheet("QPushButton { text-align:center; min-height: 75px; font-size: 20px }"
-                        "QLabel { text-align:center; font-size: 20px }");
-    m_file.setFileName(":/osteologia.dat");
-    if (!m_file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        crash("File " + m_file.fileName() + " could not be opened");
-    }
-    readOsteo();
-    m_file.close();
+    this->setStyleSheet("QPushButton { alignment: center; text-align: center; min-height: 75px; font-size: 20px }"
+                        "QLabel { alignment: center; text-align: center; font-size: 20px; background-color: rgba(255,255,255,100) }");
 
     m_pLayoutMain = new QVBoxLayout;
     m_gScene.addItem(&m_gPix);
-    m_gView.setBackgroundRole(QPalette::Dark);
+    m_gView.setStyleSheet("background-color: rgba(255, 255, 255, 64)");
     m_gView.setDragMode(QGraphicsView::ScrollHandDrag);
     m_gView.setScene(&m_gScene);
 
+    m_pLblQuestion = new QLabel;
+    m_pLblQuestion->setWordWrap(true);
+    m_pLblQuestion->setMaximumWidth(this->width() * 0.85);
+    m_pLblQuestion->setAlignment(Qt::AlignCenter);
+    m_pLblQuestion->setStyleSheet("font-size: 23px; font-weight:bold;"
+                                  "color: #001a00");
+    m_pLblInfo = new QLabel((m_langRu ? "Сейчас: " : "Now: ") + to_str(q_rightAnsCnt) + "/" + to_str(q_cnt));
+    m_pLblInfo->setWordWrap(true);
+    m_pLblInfo->setAlignment(Qt::AlignCenter);
+    m_pLblInfo->setStyleSheet("font-size: 20px; color: #990099");
+    m_pLblInfo->setMaximumWidth(this->width() * 0.15);
+
     upn(i, 0, 2) {
         m_pBtnSet[i] = new QPushButton;
+        m_pBtnSet[i]->setStyleSheet("text-align: center; font-size: 23px; "
+                                    "color: #000000; background-color: rgba(255,255,255,100)");
     }
     m_pBtnSet[0]->setText(m_langRu ? "Остеология" : "Osteologia");
     m_pBtnSet[1]->setText(m_langRu ? "Артрология" : "Artrologia");
     m_pBtnSet[2]->setText(m_langRu ? "Миология" : "Myologia");
-    m_pLblNext = new QLabel;
-    m_pBtnNext = setUpBtn(m_pLblNext);
-    m_pBtnNext->setStyleSheet("color:white;"
-                               "background-color:#000099");
-    m_pLblNext->setText(m_langRu ? "Следующий вопрос" : "Next question");
+
+    m_pBtnNext = new QPushButton(m_langRu ? "Следующий вопрос" : "Next question");
+    m_pBtnNext->setStyleSheet("color:white; background-color: rgba(0,0,255,175); min-height: 40px");
+
     m_pBtnFinish = new QPushButton(m_langRu ? " Завершить" : " Finish");
-    m_pBtnFinish->setStyleSheet("color:white;"
-                               "background-color:#000000");
+    m_pBtnFinish->setStyleSheet("color:white; background-color: rgba(0,0,0,175); min-height: 40px");
     connect(m_pBtnFinish, SIGNAL(clicked(bool)), this, SLOT(onFinishOsteoAsk()));
     connect(m_pBtnNext, SIGNAL(clicked(bool)), this, SLOT(onNextOsteoAsk()));
     connect(m_pBtnSet[0], SIGNAL(clicked(bool)), this, SLOT(onStartOsteoAsk()));
@@ -88,12 +94,10 @@ QPushButton* AnatomyAsker::setUpBtn(QLabel* pLbl) {
     QPushButton* pBtn = new QPushButton;
     QHBoxLayout *pLayout = new QHBoxLayout;
     pLbl->setWordWrap(true);
-    //pLbl->setTextInteractionFlags(Qt::NoTextInteraction);
-   // pLbl->setMouseTracking(false);
-    //pLbl->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    pLbl->setAlignment(Qt::AlignCenter);
     pLayout->addWidget(pLbl);
-    //pBtn->setText("");
     pBtn->setLayout(pLayout);
+    pBtn->setStyleSheet("background-color: rgba(255, 255, 255, 64)");
     return pBtn;
 }
 QDialog* AnatomyAsker::createDialog(QString info, QString accept, QString reject, bool mod) {
@@ -255,7 +259,7 @@ void AnatomyAsker::genOsteoQuest() {
                 }
             }
             if (m_langRu) {
-                question = lang(boneData[from].name) + " каким номером отмечен(а/о)?";
+                question = "Каким номером отмечен(а/о) " + lang(boneData[from].name) + " ?";
             } else {
                 question = "What number is " + boneData[from].name + " marked with?";
             }
@@ -271,11 +275,9 @@ void AnatomyAsker::genOsteoQuest() {
                 }
             }
             if (m_langRu) {
-                question = "Какая кость отмечена на картинке номером " +
-                    to_str(markIdx) + "?";
+                question = "Что отмечено на картинке номером " + to_str(markIdx) + "?";
             } else {
-                question = "What bone is marked on picture with number " +
-                    to_str(markIdx) + "?";
+                question = "What is marked on picture with number " + to_str(markIdx) + "?";
             }
         }
         nusedBones.erase(nusedBones.begin() + idx);
@@ -337,8 +339,12 @@ void AnatomyAsker::genOsteoQuest() {
         onFinishOsteoAsk();
     }
 
+    if (ans.size() < 2) {
+        genOsteoQuest();
+        return;
+    }
     /* set question label */
-    m_lblText.setText(question);
+    m_pLblQuestion->setText(question);
 
     /* set picture */
     m_gPix.setPixmap(":/osteoPix/osteoPix" + to_str(pixIdx) + ".png");
@@ -348,12 +354,8 @@ void AnatomyAsker::genOsteoQuest() {
     upn(j, 0, ans.size() - 1) {
         m_pLblAns[j]->setText(lang(ans[j]));
         if (ans[j] == rightAns) {
-            connect(m_pBtnAns[j], SIGNAL(clicked(bool)), this, SLOT(onRightAns()));
-        } else {
-            connect(m_pBtnAns[j], SIGNAL(clicked(bool)), this, SLOT(onWrongAns()));
+            m_pBtnRight = m_pBtnAns[j];
         }
-    }
-    upn(j, 0, ans.size() - 1) {
         m_pBtnAns[j]->show();
     }
     upn(j, ans.size(), maxAns - 1) {
@@ -377,39 +379,49 @@ AnatomyAsker::~AnatomyAsker() {
     m_settings.setValue("/settings/launchedBefore", true);
 }
 void AnatomyAsker::onStartOsteoAsk() {
+    m_file.setFileName(":/osteologia.dat");
+    if (!m_file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        crash("File " + m_file.fileName() + " could not be opened");
+    }
+    readOsteo();
+    m_file.close();
+
     if (!m_settings.value("/settings/launchedBefore", false).toBool()) {
         QDialog* pdlg = createDialog("Необходимо перезайти в приложение (первый запуск)", "OK", "-", true);
         connect(pdlg, SIGNAL(accepted()), qApp, SLOT(quit()));
         pdlg->exec();
     }
     QGridLayout* pGridLayout = new QGridLayout;
+    QHBoxLayout* pHLayout = new QHBoxLayout;
     upn(i, 0, maxAns - 1) {
         m_pLblAns[i] = new QLabel;
         m_pBtnAns[i] = setUpBtn(m_pLblAns[i]);
+        connect(m_pBtnAns[i], SIGNAL(clicked(bool)), this, SLOT(onAns()));
         pGridLayout->addWidget(m_pBtnAns[i], i/2, i % 2);
     }
     genOsteoQuest();
-    m_gView.setMaximumWidth(this->width());
-    m_gView.setMaximumHeight(qMin((int) (this->height() * 0.6), m_gPix.pixmap().height()));
+
     m_gView.setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     m_gView.setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    m_lblText.setMaximumWidth(QApplication::desktop()->width());
-    m_lblText.setWordWrap(true);
+    updateGView(false);
+
+    pHLayout->addWidget(m_pLblQuestion);
+    pHLayout->addWidget(m_pLblInfo);
     pGridLayout->addWidget(m_pBtnFinish, 3, 0);
     pGridLayout->addWidget(m_pBtnNext, 3, 1);
     upn(i, 0, 2) {
         m_pBtnSet[i]->hide();
     }
 
-    m_pLayoutMain->addWidget(&m_lblText);
+    m_pLayoutMain->addLayout(pHLayout);
     m_pLayoutMain->addWidget(&m_gView);
     m_pLayoutMain->addLayout(pGridLayout);
     //m_pHLayoutMain->addWidget(viewOsteoTree());
 }
 void AnatomyAsker::onFinishOsteoAsk() {
-    QDialog* pdlg = createDialog((m_langRu ? "Тестирование закончено!\nВаш результат: " :
-                                            "Testing finished!\nYour result is: ")
-                                 + to_str(q_rightAnsCnt) + "/" + to_str(q_cnt),
+    QDialog* pdlg = createDialog((m_langRu ? "Ваш результат: " : "Your result is: ")
+                                 + to_str(q_rightAnsCnt) + "/" + to_str(q_cnt)
+                                 + (m_langRu ? "\nЖдём Вас снова! :)" : "Waiting for you again! :)"),
                                  m_langRu ? "Выход" : "Quit", "-", true);
     connect(pdlg, SIGNAL(accepted()), qApp, SLOT(quit()));
     pdlg->exec();
@@ -417,30 +429,38 @@ void AnatomyAsker::onFinishOsteoAsk() {
 void AnatomyAsker::onNextOsteoAsk() {
     q_ansType = 0;
     upn(i, 0, maxAns - 1) {
-        m_pBtnAns[i]->setStyleSheet("");
+        m_pBtnAns[i]->setStyleSheet("background-color: rgba(255, 255, 255, 64)");
     }
     genOsteoQuest();
+    updateGView(true);
+}
+void AnatomyAsker::updateGView(bool crutch) {
+    int pixW = m_gPix.pixmap().width();
+    int pixH = m_gPix.pixmap().height();
+
     m_gView.setMaximumWidth(this->width());
-    m_gView.setMaximumHeight(qMin((int) (this->height() * 0.6), m_gPix.pixmap().height()));
-    m_gView.setSceneRect(QRect(0, 0, m_gPix.pixmap().width(), m_gPix.pixmap().height()));
-}
-void AnatomyAsker::onRightAns() {
-    if (!q_ansType) {
-        q_ansType = 1;
-        ++q_cnt;
-        ++q_rightAnsCnt;
+    //m_gView.setMaximumHeight(qMin((int) (this->height() * 0.65), pixH));
+    m_gView.setSceneRect(QRect(0, 0, pixW, pixH));
+    if (crutch && qMax(pixW, pixH) >= 1000) {
+        m_gView.fitInView(QRect(0, 0, qMin(this->width(), (int)(pixW * 1.75)), qMin(this->height(), (int)(pixH* 1.75))), Qt::KeepAspectRatioByExpanding);
     }
-    QPushButton* pBtn = dynamic_cast<QPushButton*>(sender());
-    pBtn->setStyleSheet("color:white;"
-                        "background-color:#33cc33;"
-                        "font-weight:bold");
 }
-void AnatomyAsker::onWrongAns() {
-    if (!q_ansType) {
-        q_ansType = -1;
-        ++q_cnt;
-    }
+void AnatomyAsker::onAns() {
     QPushButton* pBtn = dynamic_cast<QPushButton*>(sender());
-    pBtn->setStyleSheet("color:white;"
-                        "background-color:#ff0000");
+    if (m_pBtnRight == pBtn) {
+        if (!q_ansType) {
+            q_ansType = 1;
+            ++q_cnt;
+            ++q_rightAnsCnt;
+        }
+        pBtn->setStyleSheet("color:blue; background-color: rgba(50, 255, 50, 100); font-weight:bold");
+    } else {
+        if (!q_ansType) {
+            q_ansType = -1;
+            ++q_cnt;
+            m_pLblInfo->setText("Current: " + to_str(q_rightAnsCnt) + "/" + to_str(q_cnt));
+        }
+        pBtn->setStyleSheet("color:white; background-color: rgba(255,0,0,100)");
+    }
+    m_pLblInfo->setText((m_langRu ? "Сейчас: " : "Now: ") + to_str(q_rightAnsCnt) + "/" + to_str(q_cnt));
 }

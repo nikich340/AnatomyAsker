@@ -5,9 +5,13 @@ int main(int argc, char** argv)
 {
     QApplication app(argc, argv);
     AnatomyAsker asker;
+    QBrush brush;
+    QPalette pallete = asker.palette();
 
-    //asker.setMaximumWidth(QApplication::desktop()->width());
-    //asker.setMaximumHeight(QApplication::desktop()->height());
+    brush.setTexture(QPixmap(":/background.jpg"));
+    pallete.setBrush(QPalette::Background, brush);
+    asker.setPalette(pallete);
+
     asker.showMaximized();
     return app.exec();
 }

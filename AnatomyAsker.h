@@ -10,17 +10,12 @@ Q_OBJECT
 private:
     static const int maxAns = 6;
     QVBoxLayout* m_pLayoutMain;
-    QPushButton* m_pBtnAns[maxAns];
-    QLabel* m_pLblAns[maxAns];
-    QPushButton* m_pBtnNext;
-    QPushButton* m_pBtnFinish;
-    QLabel* m_pLblNext;
-    QPushButton* m_pBtnSet[3];
+    QPushButton *m_pBtnRight, *m_pBtnNext, *m_pBtnFinish, *m_pBtnSet[3], *m_pBtnAns[maxAns];
+    QLabel *m_pLblQuestion, *m_pLblInfo, *m_pLblAns[maxAns];
     QFile m_file;
     QGraphicsPixmapItem m_gPix;
     QGraphicsScene m_gScene;
     QGraphicsView m_gView;
-    QLabel m_lblText;
     QMap<QString, QString> m_ru;
     bool m_langRu = true;
     int q_cnt = 0;
@@ -53,6 +48,7 @@ private:
     QDialog* createDialog(QString info, QString accept, QString reject, bool mod);
     void readOsteo();
     void genOsteoQuest();
+    void updateGView(bool crutch);
     void incr(int& i, int max, int rep = 1);
     void crash(QString reason);
 public:
@@ -63,6 +59,5 @@ public slots:
     void onStartOsteoAsk();
     void onFinishOsteoAsk();
     void onNextOsteoAsk();
-    void onRightAns();
-    void onWrongAns();
+    void onAns();
 };
