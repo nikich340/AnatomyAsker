@@ -2,7 +2,7 @@
 <osteologia nameRu="остеология" name="osteologia">
   <group nameRu="череп" name="cranium">
    <group nameRu="лицевой отдел" name="splanchnocranium">
-    <cell nameRu="верхняя челюсть" name="maxilla" pixMarks="1-19, 2-20">
+    <cell nameRu="верхняя челюсть" name="maxilla" pixMarks="1-19, 2-20, 9-32">
      <cell nameRu="тело верхней челюсти" name="corpus maxillae" pixMarks="1-19, 2-20"/>
      <cell nameRu="носовая поверхность" name="facies nasalis"/>
      <cell nameRu="глазничная поверхность" name="facies orbitalis" pixMarks="6-16"/>
@@ -12,11 +12,12 @@
      <cell nameRu="подглазничный край" name="margo infraorbitalis"/>
      <cell nameRu="подглазничная борозда" name="sulcus infraorbitalis" pixMarks="6-15"/>
      <cell nameRu="слёзная борозда" name="sulcus lacrimalis" pixMarks="6-24, 7-26"/>
-     <cell nameRu="резцовый канал" name="canalis incisivus" pixMarks="7-30"/>
+     <cell nameRu="резцовый канал" name="canalis incisivus" pixMarks="5-1, 7-30"/>
+	 <cell nameRu="срединный нёбный шов" name="sutura palatina mediana" pixMarks="5-2"/>
      <cell nameRu="подглазничное отверстие" name="foramen infraorbitalis" pixMarks="2-18, 6-17"/>
      <cell nameRu="гайморова пазуха (щель)" name="sinus (hiatus) maxillaris" pixMarks="7-24"/>
      <cell nameRu="лобный отросток" name="processus frontalis" pixMarks="1-21, 2-17, 6-13, 7-14"/>
-     <cell nameRu="нёбный отросток" name="processus palatinus" pixMarks="7-17"/>
+     <cell nameRu="нёбный отросток" name="processus palatinus" pixMarks="5-3, 7-17"/>
      <cell nameRu="альвеолярный отросток" name="processus alveolaris" pixMarks="1-20, 2-21, 6-21, 7-16"/>
      <cell nameRu="скуловой отросток" name="processus zygomaticus" pixMarks="2-19, 6-18"/>
      <cell nameRu="клыковая ямка" name="fossa canina" pixMarks="6-20"/>
@@ -25,8 +26,10 @@
      <cell nameRu="передний слёзный гребень" name="crista lacrimalis anterior" pixMarks="6-19"/>
     </cell>
     <cell nameRu="нижняя носовая раковина" name="concha nasalis inferior" pixMarks="2-24, 3-9"/>
-    <cell nameRu="нёбная кость" name="os palatinum"/>
-    <cell nameRu="скуловая кость" name="os zygomaticum" pixMarks="1-18, 2-16"/>
+    <cell nameRu="нёбная кость" name="os palatinum" pixMarks="9-33">
+     <cell nameRu="большое и малое нёбные отверстия" name="foramina palatina major et minor" pixMarks="5-5"/>
+	</cell>
+    <cell nameRu="скуловая кость" name="os zygomaticum" pixMarks="1-18, 2-16, 5-21, 9-36"/>
     <cell nameRu="носовая кость" name="os nasale" pixMarks="1-15, 2-8">
      <cell nameRu="решётчатая борозда" name="sulcus ethmoidalis"/>
     </cell>
@@ -36,7 +39,7 @@
      <cell nameRu="слёзный крючок" name="hamulus lacrimalis" pixMarks="8-15"/>
      <cell nameRu="ямка слёзного мешка" name="fossa sacci lacrimalis" pixMarks="8-14"/>
     </cell>
-    <cell nameRu="сошник" name="vomer" pixMarks="2-25"/>
+    <cell nameRu="сошник" name="vomer" pixMarks="2-25, 5-8, 9-34"/>
     <cell nameRu="нижняя челюсть" name="mandibula" pixMarks="1-23, 2-30">
      <cell nameRu="тело нижней челюсти" name="corpus mandibulae" pixMarks="2-26"/>
      <cell nameRu="ветвь нижней челюсти" name="ramus mandibulae" pixMarks="2-27"/>
@@ -56,9 +59,11 @@
     <cell nameRu="подъязычная кость" name="os hyoideum"/>
    </group>
    <group nameRu="мозговой отдел" name="neurocranium">
-    <cell nameRu="височная кость" name="os temporale" pixMarks="1-5, 2-7">
+    <cell nameRu="височная кость" name="os temporale" pixMarks="1-5, 2-7, 9-37">
      <cell nameRu="скуловой отросток" name="processus zygomaticus" pixMarks="1-6"/>
-     <cell nameRu="сосцевидный отросток" name="processus mastoideus" pixMarks="1-7"/>
+     <cell nameRu="сосцевидный отросток" name="processus mastoideus" pixMarks="1-7, 5-27"/>
+	 <cell nameRu="сосцевидная вырезка" name="incisura mastoidea" pixMarks="5-29"/>
+	 <cell nameRu="нижнечелюстная ямка" name="fossa mandibularis" pixMarks="5-24"/>
      <cell nameRu="суставной бугорок" name="tuberculum articulare" pixMarks="1-6"/>
      <cell nameRu="наружный слуховой проход" name="meatus acusticus externus" pixMarks="1-8"/>
      <cell nameRu="внутренний слуховой проход" name="meatus acusticus internus" pixMarks="3-15, 4-29"/>
@@ -66,20 +71,28 @@
      <cell nameRu="борозда сигмовидного синуса" name="sulcus sinus sigmoidei" pixMarks="3-16, 4-15"/>
      <cell nameRu="борозда верхнего каменистого синуса" name="sulcus sinus petrosi superioris" pixMarks="4-13"/>
      <cell nameRu="борозда большого каменистого нерва" name="sulcus n. petrosi majoris" pixMarks="4-28"/>
-    </cell>
+     <cell nameRu="шиловидный отросток" name="processus styloideus" pixMarks="5-12"/>
+	 <cell nameRu="сонный канал" name="canalis caroticus" pixMarks="5-13, 9-C"/>
+	 <cell nameRu="шилососцевидное отверстие" name="foramen stylomastoideus" pixMarks="5-14, 9-D"/>
+	</cell>
     <cell nameRu="теменная кость" name="os parietale" pixMarks="1-4, 2-6">
      <cell nameRu="борозды средней менингеальной артерии" name="sulci artetia meningea mediae" pixMarks="3-13"/>
     </cell>
-    <cell nameRu="затылочная кость" name="os occipitale" pixMarks="1-9">
-     <cell nameRu="наружный затылочный выступ" name="protuberantia occipitalis externa" pixMarks="1-10"/>
+    <cell nameRu="затылочная кость" name="os occipitale" pixMarks="1-9, 9-38">
+     <cell nameRu="наружный затылочный выступ" name="protuberantia occipitalis externa" pixMarks="1-10, 5-20"/>
      <cell nameRu="внутренний затылочный выступ" name="protuberantia occipitalis interna" pixMarks="4-18"/>
-     <cell nameRu="затылочный мыщелок" name="condylus occipitalis" pixMarks="1-11, 3-18"/>
-     <cell nameRu="канал подъязычного нерва" name="canalis n. hypoglossi" pixMarks="3-17, 4-30"/>
+     <cell nameRu="затылочный мыщелок" name="condylus occipitalis" pixMarks="1-11, 3-18, 5-17"/>
+     <cell nameRu="подъязычный канал" name="canalis hypoglossalis" pixMarks="3-17, 4-30, 9-F"/>
      <cell nameRu="борозда сигмовидного синуса" name="sulcus sinus sigmoidei" pixMarks="3-16"/>
-     <cell nameRu="отверстие яремной вены" name="foramen jugulare" pixMarks="4-14"/>
+     <cell nameRu="яремное отверстие" name="foramen jugulare" pixMarks="4-14, 5-15, 9-E"/>
+	 <cell nameRu="отверстие затылочной артерии" name="foramen arteriae occipitalis" pixMarks="5-16"/>
      <cell nameRu="внутренний затылочный гребень" name="crista occipitalis interna" pixMarks="4-16"/>
      <cell nameRu="борозда поперечного синуса" name="sulcus sinus transversi" pixMarks="4-17"/>
-     <cell nameRu="большое затылочное отверстие" name="foramen occipitale magnum" pixMarks="4-31"/>
+     <cell nameRu="большое затылочное отверстие" name="foramen occipitale magnum" pixMarks="4-31, 5-30"/>
+	 <cell nameRu="мыщелковый канал" name="canalis condylaris" pixMarks="5-18"/>
+	 <cell nameRu="нижняя выйная линия" name="linea nuchae inferior" pixMarks="5-28"/>
+	 <cell nameRu="верхняя выйная линия" name="linea nuchae superior" pixMarks="5-26"/>
+	 <cell nameRu="глоточный бугорок" name="tuberculum pharyngeum" pixMarks="5-25"/>
     </cell>
     <cell nameRu="лобная кость" name="os frontale" pixMarks="1-1, 2-1, 3-3">
      <cell nameRu="надпереносье (глабелла)" name="glabella" pixMarks="1-2, 2-2"/>
@@ -90,42 +103,49 @@
      <cell nameRu="слепое отверстие" name="foramen caecum" pixMarks="4-2"/>
      <cell nameRu="пальцевые вдавления" name="impressio digitatae" pixMarks="4-19"/>
     </cell>
-    <cell nameRu="клиновидная кость" name="os sphenoidale" pixMarks="1-12, 2-12">
+    <cell nameRu="клиновидная кость" name="os sphenoidale" pixMarks="1-12, 2-12, 9-35">
      <cell nameRu="большое крыло" name="ala major" pixMarks="1-12, 2-12"/>
      <cell nameRu="малое крыло" name="ala minor" pixMarks="2-13, 4-5"/>
      <cell nameRu="верхняя глазничная щель" name="fissura orbitalis superior" pixMarks="2-14, 4-6"/>
-     <cell nameRu="нижняя глазничная щель" name="fissura orbitalis inferior" pixMarks="2-15"/>
+     <cell nameRu="нижняя глазничная щель" name="fissura orbitalis inferior" pixMarks="2-15, 5-6"/>
      <cell nameRu="височный гребень" name="crista temporalis" pixMarks="1-13"/>
-     <cell nameRu="латеральная пластинка крыловидного отростка" name="lamina lateralis processus pterygoidei" pixMarks="1-14, 3-20"/>
-     <cell nameRu="латеральная пластинка крыловидного отростка" name="lamina medialis processus pterygoidei" pixMarks="3-21"/>
+     <cell nameRu="латеральная пластинка крыловидного отростка" name="lamina lateralis processus pterygoidei" pixMarks="1-14, 3-20, 5-22"/>
+     <cell nameRu="медиальная пластинка крыловидного отростка" name="lamina medialis processus pterygoidei" pixMarks="3-21, 5-23"/>
      <cell nameRu="передний клиновидный отросток" name="processus sphenoidalis anterior" pixMarks="3-2, 4-22"/>
      <cell nameRu="задний клиновидный отросток" name="processus sphenoidalis posterior" pixMarks="4-25"/>
      <cell nameRu="турецкое седло (гипофизарная ямка)" name="sella turcica (fossa hypophysialis) " pixMarks="3-1, 4-24"/>
      <cell nameRu="спинка турецкого седла" name="dorsum sellae" pixMarks="3-14, 4-26"/>
      <cell nameRu="клиновидная пазуха" name="sinus sphenoidalis" pixMarks="3-5"/>
      <cell nameRu="круглое отверстие" name="foramen rotundum" pixMarks="4-7"/>
-     <cell nameRu="овальное отверстие" name="foramen ovale" pixMarks="4-10"/>
+     <cell nameRu="овальное отверстие" name="foramen ovale" pixMarks="4-10, 5-9, 9-B"/>
      <cell nameRu="остистое отверстие" name="foramen spinosum" pixMarks="4-11"/>
      <cell nameRu="борозда сонной артерии" name="sulcus caroticus" pixMarks="4-8"/>
-     <cell nameRu="скат" name="clivus" pixMarks="4-12"/>
      <cell nameRu="борозда перекрёста" name="sulcus chiasmatis" pixMarks="4-21"/>
      <cell nameRu="зрительный канал" name="canalis opticus" pixMarks="4-23"/>
+	 <cell nameRu="борозда слуховой трубы" name="sulcus tubae auditivae" pixMarks="5-10"/>
+	 <cell nameRu="крыловидный канал" name="canalis pterygoideus" pixMarks="5-11, 9-A"/>
     </cell>
     <cell nameRu="решётчатая кость" name="os ethmoidale" pixMarks="1-16, 2-11">
      <cell nameRu="глазничная пластинка" name="lamina orbitalis" pixMarks="1-16"/>
      <cell nameRu="верхняя носовая раковина" name="concha nasalis superior" pixMarks="3-6"/>
-     <cell nameRu="средняя носовая раковина" name="concha nasalis media" pixMarks="2-23, 3-7"/>
+     <cell nameRu="средняя носовая раковина" name="concha nasalis media" pixMarks="2-23, 3-7, 5-7"/>
      <cell nameRu="решётчатые ячейки" name="cellulae ethmoidalis" pixMarks="3-4"/>
      <cell nameRu="петушиный гребень" name="crista galli" pixMarks="4-3"/>
      <cell nameRu="решётчатая пластинка" name="lamina cribrosa" pixMarks="4-4"/>
     </cell>
-    <cell nameRu="прочее" name="other">
+    <cell nameRu="общие образования" name="communis">
      <cell nameRu="нижний носовой ход" name="meatus nasi inferior" pixMarks="3-10"/>
      <cell nameRu="рваное отверстие" name="foramen lacerum" pixMarks="4-27"/>
      <cell nameRu="передняя черепная ямка" name="fossa cranii anterior" pixMarks="4-20"/>
      <cell nameRu="средняя черепная ямка" name="fossa cranii media" pixMarks="4-9"/>
      <cell nameRu="задняя черепная ямка" name="fossa cranii posterior" pixMarks="4-32"/>
      <cell nameRu="диплоэ (губч. вещество)" name="diploe" pixMarks="4-33"/>
+	 <cell nameRu="скат" name="clivus" pixMarks="4-12"/>
+    </cell>
+	<cell nameRu="каналы" name="canalis">
+     <cell nameRu="крыловидный канал" name="canalis pterygoideus" pixMarks="5-11, 9-A"/>
+	 <cell nameRu="сонный канал" name="canalis caroticus" pixMarks="5-13, 9-C"/>
+	 <cell nameRu="мыщелковый канал" name="canalis condylaris" pixMarks="5-18"/>
     </cell>
    </group>
    <group nameRu="швы" name="suturae">
@@ -135,6 +155,7 @@
     <cell nameRu="межверхнечелюстной шов" name="sutura intermaxillaris" pixMarks="2-38"/>
     <cell nameRu="межносовой шов" name="sutura internasalis" pixMarks="2-35"/>
     <cell nameRu="лобный шов" name="sutura frontalis" pixMarks="2-32"/>
+	<cell nameRu="нёбно-верхнечелюстной шов" name="sutura palatinomaxillaris" pixMarks="5-4"/>
     <cell nameRu="носо-верхнечелюстной шов" name="sutura nasomaxillaris" pixMarks="1-32, 2-36"/>
     <cell nameRu="скуло-верхнечелюстной шов" name="sutura zygomaticomaxillaris" pixMarks="2-37"/>
     <cell nameRu="лобно-верхнечелюстной шов" name="sutura frontomaxillaris"/>

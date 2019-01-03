@@ -2,6 +2,7 @@
     <qresource prefix="/">
 		<file>background.jpg</file>
 		<file>osteologia.xml</file>
+		<file>osteoPix/osteoPix0.png</file>
         <file>osteoPix/osteoPix1.png</file>
 		<file>osteoPix/osteoPix2.png</file>
 		<file>osteoPix/osteoPix3.png</file>
@@ -10,5 +11,6 @@
 		<file>osteoPix/osteoPix6.png</file>
 		<file>osteoPix/osteoPix7.png</file>
 		<file>osteoPix/osteoPix8.png</file>
+		<file>osteoPix/osteoPix9.png</file>
     </qresource>
 </RCC>

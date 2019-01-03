@@ -13,13 +13,14 @@ private:
     static const int maxAns = 6;
     QSettings m_settings;
     QVBoxLayout* m_pLayoutMain;
-    QPushButton *m_pBtnRight, *m_pBtnNext, *m_pBtnFinish, *m_pBtnSet[3], *m_pBtnAns[maxAns];
+    QPushButton *m_pBtnRight, *m_pBtnNext, *m_pBtnFinish, *m_pBtnPre, *m_pBtnSet[3], *m_pBtnAns[maxAns];
     QLabel *m_pLblQuestion, *m_pLblInfo, *m_pLblAns[maxAns];
     QGraphicsPixmapItem m_gPix;
     QGraphicsScene m_gScene;
     QGraphicsView m_gView;
+    QTreeWidget* m_pTW;
     bool m_langRu = true;
-    int q_sum = 5;
+    int q_sum = 0;
     int q_cnt = 1;
     int q_rightAnsCnt = 0;
     int q_ansType = 0; // 0 - undefined, 1 - right, -1 - wrong
@@ -29,14 +30,16 @@ private:
 
     QString elName(QDomElement& curEl);
     bool isDigit(QChar c);
+    bool isUpper(QChar c);
     int rand(int L, int R);
     QPushButton* setUpBtn(QLabel* pLbl);
     QDialog* createDialog(QString info, QString accept, QString reject, bool mod);
     QTreeWidget* viewOsteoTree();
-    int findMark(QVector<QPair<int, int>>& pixVect, int pixNum);
-    void parsePixMarks(QVector<QPair<int, int>>& pixVect, QString pixStr);
+    QString findMark(QVector<QPair<int, QString>>& pixVect, int pixNum);
+    void parsePixMarks(QVector<QPair<int, QString>>& pixVect, QString pixStr);
     void readOsteoXml();
     void readOsteoXmlDfs(QDomElement& curEl);
+    void chooseOsteoQuests(QString root);
     void genOsteoQuest();
     void updateGView(bool crutch);
     void crash(QString reason);
@@ -46,6 +49,7 @@ public:
     AnatomyAsker(QWidget *pwgt = nullptr);
     virtual ~AnatomyAsker();
 public slots:
+    void onPreStartOsteoAsk();
     void onStartOsteoAsk();
     void onFinishOsteoAsk();
     void onNextOsteoAsk();

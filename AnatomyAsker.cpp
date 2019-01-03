@@ -1,8 +1,9 @@
 #include "AnatomyAsker.h"
 
 AnatomyAsker::AnatomyAsker(QWidget *pwgt) : QWidget(pwgt), m_settings("nikich340", "AnatomyAsker") {
-    this->setStyleSheet("QPushButton { alignment: center; text-align: center; min-height: 75px; font-size: 20px }"
-                        "QLabel { alignment: center; text-align: center; font-size: 20px; background-color: rgba(255,255,255,100) }");
+    this->setStyleSheet("QPushButton { alignment: center; text-align: center; min-height: 75px; font-size: 20px; background-color: rgba(255,255,255,200) }"
+                        "QLabel { alignment: center; text-align: center; font-size: 20px; background-color: rgba(255,255,255,100) }"
+                        "QTreeWidget { alignment: center; text-align: center; font-size: 23px; background-color: rgba(255,255,255,200) }");
 
     m_pLayoutMain = new QVBoxLayout;
     m_gScene.addItem(&m_gPix);
@@ -39,7 +40,7 @@ AnatomyAsker::AnatomyAsker(QWidget *pwgt) : QWidget(pwgt), m_settings("nikich340
     m_pBtnFinish->setStyleSheet("color:white; background-color: rgba(0,0,0,175); min-height: 40px");
     connect(m_pBtnFinish, SIGNAL(clicked(bool)), this, SLOT(onFinishOsteoAsk()));
     connect(m_pBtnNext, SIGNAL(clicked(bool)), this, SLOT(onNextOsteoAsk()));
-    connect(m_pBtnSet[0], SIGNAL(clicked(bool)), this, SLOT(onStartOsteoAsk()));
+    connect(m_pBtnSet[0], SIGNAL(clicked(bool)), this, SLOT(onPreStartOsteoAsk()));
     upn(i, 0, 2) {
         m_pLayoutMain->addWidget(m_pBtnSet[i]);
     }
@@ -47,7 +48,7 @@ AnatomyAsker::AnatomyAsker(QWidget *pwgt) : QWidget(pwgt), m_settings("nikich340
 }
 QTreeWidget* AnatomyAsker::viewOsteoTree() {
    QTreeWidget* pTW = new QTreeWidget;
-   pTW->setHeaderLabel(m_langRu ? "Структура" : "Structure");
+   pTW->setHeaderLabel(m_langRu ? "Выберите структуру для вопросов" : "Choose structure for questions");
    pTW->setColumnCount(1);
 
    QDomElement rootEl = osteoDoc.documentElement();
@@ -80,6 +81,9 @@ int AnatomyAsker::rand(int L, int R) {
 }
 bool AnatomyAsker::isDigit(QChar c) {
     return (c >= '0' && c <= '9');
+}
+bool AnatomyAsker::isUpper(QChar c) {
+    return (c >= 'A' && c <= 'Z');
 }
 QPushButton* AnatomyAsker::setUpBtn(QLabel* pLbl) {
     QPushButton* pBtn = new QPushButton;
@@ -126,7 +130,6 @@ void AnatomyAsker::readOsteoXml() {
             readOsteoXmlDfs(rootEl);
         }
     }
-    q_sum = unusedOsteos.size();
     fileOsteo.close();
 }
 void AnatomyAsker::readOsteoXmlDfs(QDomElement& parEl) {
@@ -142,7 +145,7 @@ void AnatomyAsker::readOsteoXmlDfs(QDomElement& parEl) {
         curN = curN.nextSibling();
     }
 }
-void AnatomyAsker::parsePixMarks(QVector<QPair<int, int>>& pixVect, QString pixStr) {
+void AnatomyAsker::parsePixMarks(QVector<QPair<int, QString>>& pixVect, QString pixStr) {
     pixVect.clear();
     int i = 0;
     while (i < pixStr.length()) {
@@ -154,26 +157,38 @@ void AnatomyAsker::parsePixMarks(QVector<QPair<int, int>>& pixVect, QString pixS
             num1.push_back(pixStr[i]);
             ++i;
         }
-        while (i < pixStr.length() && !isDigit(pixStr[i])) {
+        while (i < pixStr.length() && !isDigit(pixStr[i]) && !isUpper(pixStr[i])) {
             ++i;
         }
-        while (i < pixStr.length() && isDigit(pixStr[i])) {
+        while (i < pixStr.length() && (isDigit(pixStr[i]) || isUpper(pixStr[i]))) {
             num2.push_back(pixStr[i]);
             ++i;
         }
         if (num1 == "" || num2 == "") {
-            crash("parsePixMarks: null pix or mark");
+            crash("parsePixMarks: null pix (" + num1 + ") or mark (" + num2 + ")");
         }
-        pixVect.push_back({num1.toInt(), num2.toInt()});
+        pixVect.push_back({num1.toInt(), num2});
     }
 }
-int AnatomyAsker::findMark(QVector<QPair<int, int>>& pixVect, int pixNum) {
+QString AnatomyAsker::findMark(QVector<QPair<int, QString>>& pixVect, int pixNum) {
     for (auto &it: pixVect) {
         if (it.first == pixNum) {
             return it.second;
         }
     }
-    return -1;
+    return "-1";
+}
+void AnatomyAsker::chooseOsteoQuests(QString rootPattern) {
+    QVector<QDomElement> tmpV;
+    for (auto curEl : unusedOsteos) {
+        QDomElement from = curEl;
+        while (!curEl.isNull() && elName(curEl) != rootPattern) {
+            curEl = curEl.parentNode().toElement();
+        }
+        if (!curEl.isNull())
+            tmpV.push_back(from);
+    }
+    unusedOsteos = tmpV;
 }
 void AnatomyAsker::genOsteoQuest() {
     std::default_random_engine dre(QDateTime::currentMSecsSinceEpoch());
@@ -186,32 +201,33 @@ void AnatomyAsker::genOsteoQuest() {
     int idx = rand(0, unusedOsteos.size() - 1);
     QDomElement pEl = unusedOsteos[idx];
     unusedOsteos.erase(unusedOsteos.begin() + idx);
-    QVector<QPair<int, int>> pixMarks;
+    QVector<QPair<int, QString>> pixMarks;
+    qDebug() << "Main structure: " << elName(pEl);
     parsePixMarks(pixMarks, pEl.attribute("pixMarks"));
     int pixIdx = rand(0, pixMarks.size() - 1);
     int pix = pixMarks[pixIdx].first;
-    int mark = findMark(pixMarks, pix);
+    QString mark = findMark(pixMarks, pix);
     QDomElement rEl, lEl, parEl = pEl.parentNode().toElement();
     int type = rand(1, (parEl.tagName() == "cell") ? 3 : 2);
 
     if (type == 1) { /* ask about mark by struct */
-        rightAns = to_str(mark);
+        rightAns = mark;
         ans.push_back(rightAns);
         rEl = pEl.previousSiblingElement();
         lEl = pEl.nextSiblingElement();
         while (ans.size() < maxAns && (!rEl.isNull() || !lEl.isNull())) {
             if (!rEl.isNull()) {
                 parsePixMarks(pixMarks, rEl.attribute("pixMarks"));
-                int checkMark = findMark(pixMarks, pix);
-                if (checkMark != -1 && checkMark != mark)
-                    ans.push_back(to_str(checkMark));
+                QString checkMark = findMark(pixMarks, pix);
+                if (checkMark != "-1" && checkMark != mark)
+                    ans.push_back(checkMark);
                 rEl = rEl.previousSiblingElement();
             }
             if (!lEl.isNull() && ans.size() < maxAns) {
                 parsePixMarks(pixMarks, lEl.attribute("pixMarks"));
-                int checkMark = findMark(pixMarks, pix);
-                if (checkMark != -1 && checkMark != mark)
-                    ans.push_back(to_str(checkMark));
+                QString checkMark = findMark(pixMarks, pix);
+                if (checkMark != "-1" && checkMark != mark)
+                    ans.push_back(checkMark);
                 lEl = lEl.nextSiblingElement();
             }
         }
@@ -228,23 +244,23 @@ void AnatomyAsker::genOsteoQuest() {
         while (ans.size() < maxAns && (!rEl.isNull() || !lEl.isNull())) {
             if (!rEl.isNull()) {
                 parsePixMarks(pixMarks, rEl.attribute("pixMarks"));
-                int checkMark = findMark(pixMarks, pix);
+                QString checkMark = findMark(pixMarks, pix);
                 if (checkMark != mark)
                     ans.push_back(elName(rEl));
                 rEl = rEl.previousSiblingElement();
             }
             if (!lEl.isNull() && ans.size() < maxAns) {
                 parsePixMarks(pixMarks, lEl.attribute("pixMarks"));
-                int checkMark = findMark(pixMarks, pix);
+                QString checkMark = findMark(pixMarks, pix);
                 if (checkMark != mark)
                     ans.push_back(elName(lEl));
                 lEl = lEl.nextSiblingElement();
             }
         }
         if (m_langRu) {
-            question = "Какое образование (структура: " + elName(parEl) + ") помечено на картинке номером " + to_str(mark) + "?";
+            question = "Какое образование (структура: " + elName(parEl) + ") помечено на картинке номером " + mark + "?";
         } else {
-            question = "What formation (structure: " + elName(parEl) + ") is marked on picture with number " + to_str(mark) + "?";
+            question = "What formation (structure: " + elName(parEl) + ") is marked on picture with number " + mark + "?";
         }
     } else if (type == 3) { /* ask about parent struct */
         rightAns = elName(parEl);
@@ -262,9 +278,9 @@ void AnatomyAsker::genOsteoQuest() {
             }
         }
         if (m_langRu) {
-            question = "К какой структуре принадлежит " + elName(pEl) + " (номер " + to_str(mark) + " на картинке)?";
+            question = "К какой структуре принадлежит " + elName(pEl) + " (номер " + mark + " на картинке)?";
         } else {
-            question = "What structure contains " + elName(pEl) + " (number " + to_str(mark) + " on picture)?";
+            question = "What structure contains " + elName(pEl) + " (number " + mark + " on picture)?";
         }
     }
 
@@ -300,16 +316,29 @@ void AnatomyAsker::crash(QString reason) {
 }
 AnatomyAsker::~AnatomyAsker() {
 }
-void AnatomyAsker::onStartOsteoAsk() {
+void AnatomyAsker::onPreStartOsteoAsk() {
     if (!m_settings.value("/settings/launched" + to_str(VERSION), false).toBool()) {
         QDialog* pdlg = createDialog("Необходимо перезайти в приложение (первый запуск)", "OK", "-", true);
         connect(pdlg, SIGNAL(accepted()), qApp, SLOT(quit()));
-        pdlg->exec();
         m_settings.setValue("/settings/launched" + to_str(VERSION), true);
+        pdlg->exec();
         pdlg->deleteLater();
     }
 
     readOsteoXml();
+
+    upn(i, 0, 2) {
+        m_pBtnSet[i]->hide();
+    }
+    m_pBtnPre = new QPushButton(m_langRu ? "Начать" : "Start");
+    m_pTW = viewOsteoTree();
+    m_pTW->setCurrentItem(m_pTW->topLevelItem(0));
+    m_pTW->expandItem(m_pTW->currentItem());
+    m_pLayoutMain->addWidget(m_pTW);
+    m_pLayoutMain->addWidget(m_pBtnPre);
+    connect(m_pBtnPre, SIGNAL(clicked(bool)), this, SLOT(onStartOsteoAsk()));
+}
+void AnatomyAsker::onStartOsteoAsk() {
     QGridLayout* pGridLayout = new QGridLayout;
     QHBoxLayout* pHLayout = new QHBoxLayout;
     upn(i, 0, maxAns - 1) {
@@ -318,6 +347,9 @@ void AnatomyAsker::onStartOsteoAsk() {
         connect(m_pBtnAns[i], SIGNAL(clicked(bool)), this, SLOT(onAns()));
         pGridLayout->addWidget(m_pBtnAns[i], i/2, i % 2);
     }
+    chooseOsteoQuests(m_pTW->currentItem()->text(0));
+    q_sum = unusedOsteos.size();
+    updateInfoLabel();
     genOsteoQuest();
 
     m_gView.setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -328,14 +360,13 @@ void AnatomyAsker::onStartOsteoAsk() {
     pHLayout->addWidget(m_pLblInfo);
     pGridLayout->addWidget(m_pBtnFinish, 3, 0);
     pGridLayout->addWidget(m_pBtnNext, 3, 1);
-    upn(i, 0, 2) {
-        m_pBtnSet[i]->hide();
-    }
+
+    m_pTW->hide();
+    m_pBtnPre->hide();
 
     m_pLayoutMain->addLayout(pHLayout);
     m_pLayoutMain->addWidget(&m_gView);
     m_pLayoutMain->addLayout(pGridLayout);
-    //m_pLayoutMain->addWidget(viewOsteoTree());
 }
 void AnatomyAsker::onFinishOsteoAsk() {
     QDialog* pdlg = createDialog((m_langRu ? "Ваш результат: " : "Your result is: ")
