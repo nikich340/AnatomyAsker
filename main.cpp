@@ -1,4 +1,3 @@
-#include <QtWidgets>
 #include "AnatomyAsker.h"
 
 int main(int argc, char** argv)

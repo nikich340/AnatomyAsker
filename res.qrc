@@ -1,7 +1,7 @@
 <RCC>
     <qresource prefix="/">
 		<file>background.jpg</file>
-        <file>osteologia.dat</file>
+		<file>osteologia.xml</file>
         <file>osteoPix/osteoPix1.png</file>
 		<file>osteoPix/osteoPix2.png</file>
 		<file>osteoPix/osteoPix3.png</file>
