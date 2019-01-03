@@ -16,7 +16,8 @@ AnatomyAsker::AnatomyAsker(QWidget *pwgt) : QWidget(pwgt), m_settings("nikich340
     m_pLblQuestion->setAlignment(Qt::AlignCenter);
     m_pLblQuestion->setStyleSheet("font-size: 23px; font-weight:bold;"
                                   "color: #001a00");
-    m_pLblInfo = new QLabel((m_langRu ? "Сейчас: " : "Now: ") + to_str(q_rightAnsCnt) + "/" + to_str(q_cnt));
+    m_pLblInfo = new QLabel;
+    updateInfoLabel();
     m_pLblInfo->setWordWrap(true);
     m_pLblInfo->setAlignment(Qt::AlignCenter);
     m_pLblInfo->setStyleSheet("font-size: 20px; color: #990099");
@@ -125,12 +126,13 @@ void AnatomyAsker::readOsteoXml() {
             readOsteoXmlDfs(rootEl);
         }
     }
+    q_sum = unusedOsteos.size();
     fileOsteo.close();
 }
 void AnatomyAsker::readOsteoXmlDfs(QDomElement& parEl) {
     if (parEl.tagName() == "cell") {
         if (parEl.hasAttribute("name") && parEl.hasAttribute("pixMarks")) {
-            unusedOsteos.push_back(&parEl);
+            unusedOsteos.push_back(parEl);
         }
     }
     QDomNode curN = parEl.firstChild();
@@ -140,64 +142,153 @@ void AnatomyAsker::readOsteoXmlDfs(QDomElement& parEl) {
         curN = curN.nextSibling();
     }
 }
-/*void AnatomyAsker::writeOsteoXml() {
-    QVector<bool> used(osteoDoc.size() + 5);
-    QDomDocument doc;
-    QDomElement rootE = doc.createElement("osteologia");
-    doc.appendChild(rootE);
-    for (int i = 0; i < osteoDoc.size(); ++i) {
-        if (used[i])
-            continue;
-        rootE.appendChild(writeOsteoXmlDfs(i, doc, used));
-    }
-    QFile file("osteo.xml");
-    if (file.open(QIODevice::WriteOnly)) {
-        QTextStream(&file) << doc.toString();
-        file.close();
+void AnatomyAsker::parsePixMarks(QVector<QPair<int, int>>& pixVect, QString pixStr) {
+    pixVect.clear();
+    int i = 0;
+    while (i < pixStr.length()) {
+        QString num1, num2;
+        while (i < pixStr.length() && !isDigit(pixStr[i])) {
+            ++i;
+        }
+        while (i < pixStr.length() && isDigit(pixStr[i])) {
+            num1.push_back(pixStr[i]);
+            ++i;
+        }
+        while (i < pixStr.length() && !isDigit(pixStr[i])) {
+            ++i;
+        }
+        while (i < pixStr.length() && isDigit(pixStr[i])) {
+            num2.push_back(pixStr[i]);
+            ++i;
+        }
+        if (num1 == "" || num2 == "") {
+            crash("parsePixMarks: null pix or mark");
+        }
+        pixVect.push_back({num1.toInt(), num2.toInt()});
     }
 }
-QDomElement AnatomyAsker::writeOsteoXmlDfs(int v, QDomDocument& doc, QVector<bool>& used) {
-    QDomElement curE;
-    if (osteoDoc[v].isBone) {
-        curE = doc.createElement("cell");
-    } else {
-        curE = doc.createElement("group");
-    }
-    curE.setAttribute("nameRu", m_ru[ osteoDoc[v].name ]);
-    curE.setAttribute("name", osteoDoc[v].name);
-    if (!osteoDoc[v].pixMark.empty()) {
-        QString pixStr = to_str(osteoDoc[v].pixMark[0].first) + "-" + to_str(osteoDoc[v].pixMark[0].second);
-        upn(k, 1, osteoDoc[v].pixMark.size() - 1) {
-            pixStr +=  ", " + to_str(osteoDoc[v].pixMark[k].first) + "-" + to_str(osteoDoc[v].pixMark[k].second);
+int AnatomyAsker::findMark(QVector<QPair<int, int>>& pixVect, int pixNum) {
+    for (auto &it: pixVect) {
+        if (it.first == pixNum) {
+            return it.second;
         }
-        curE.setAttribute("pixMarks", pixStr);
     }
-    for (int j = 0; j < osteoDoc[v].nextCell.size(); ++j) {
-        used[ osteoDoc[v].nextCell[j] ] = true;
-        curE.appendChild(writeOsteoXmlDfs(osteoDoc[v].nextCell[j], doc, used));
-    }
-    for (int j = 0; j < osteoDoc[v].boneFormations.size(); ++j) {
-        QDomElement curF = doc.createElement("cell");
-        curF.setAttribute("nameRu", m_ru[ osteoDoc[v].boneFormations[j].name ]);
-        curF.setAttribute("name", osteoDoc[v].boneFormations[j].name);
-        if (!osteoDoc[v].boneFormations[j].pixMark.empty()) {
-            QString pixStr = to_str(osteoDoc[v].boneFormations[j].pixMark[0].first) + "-" + to_str(osteoDoc[v].boneFormations[j].pixMark[0].second);
-            upn(k, 1, osteoDoc[v].boneFormations[j].pixMark.size() - 1) {
-                pixStr +=  ", " + to_str(osteoDoc[v].boneFormations[j].pixMark[k].second) + "-" + to_str(osteoDoc[v].boneFormations[j].pixMark[k].second);
-            }
-            curF.setAttribute("pixMarks", pixStr);
-        }
-        curE.appendChild(curF);
-    }
-    return curE;
-}*/
+    return -1;
+}
 void AnatomyAsker::genOsteoQuest() {
+    std::default_random_engine dre(QDateTime::currentMSecsSinceEpoch());
+    QVector<QString> ans;
+    QString rightAns;
+    QString question;
+    if (unusedOsteos.empty()) {
+        onFinishOsteoAsk();
+    }
+    int idx = rand(0, unusedOsteos.size() - 1);
+    QDomElement pEl = unusedOsteos[idx];
+    unusedOsteos.erase(unusedOsteos.begin() + idx);
+    QVector<QPair<int, int>> pixMarks;
+    parsePixMarks(pixMarks, pEl.attribute("pixMarks"));
+    int pixIdx = rand(0, pixMarks.size() - 1);
+    int pix = pixMarks[pixIdx].first;
+    int mark = findMark(pixMarks, pix);
+    QDomElement rEl, lEl, parEl = pEl.parentNode().toElement();
+    int type = rand(1, (parEl.tagName() == "cell") ? 3 : 2);
 
-}
-void AnatomyAsker::incr(int& i, int max, int rep) {
-    i += rep;
-    if (i > max) {
-        crash("Incrementing goes out of range (" + to_str(i) + ")");
+    if (type == 1) { /* ask about mark by struct */
+        rightAns = to_str(mark);
+        ans.push_back(rightAns);
+        rEl = pEl.previousSiblingElement();
+        lEl = pEl.nextSiblingElement();
+        while (ans.size() < maxAns && (!rEl.isNull() || !lEl.isNull())) {
+            if (!rEl.isNull()) {
+                parsePixMarks(pixMarks, rEl.attribute("pixMarks"));
+                int checkMark = findMark(pixMarks, pix);
+                if (checkMark != -1 && checkMark != mark)
+                    ans.push_back(to_str(checkMark));
+                rEl = rEl.previousSiblingElement();
+            }
+            if (!lEl.isNull() && ans.size() < maxAns) {
+                parsePixMarks(pixMarks, lEl.attribute("pixMarks"));
+                int checkMark = findMark(pixMarks, pix);
+                if (checkMark != -1 && checkMark != mark)
+                    ans.push_back(to_str(checkMark));
+                lEl = lEl.nextSiblingElement();
+            }
+        }
+        if (m_langRu) {
+            question = "Каким номером на картинке отмечен(а/о) " + elName(pEl) + " (структура: " + elName(parEl) + ") ?";
+        } else {
+            question = "What number is " + elName(pEl) + " (structure: " + elName(parEl) + ") marked with ?";
+        }
+    } else if (type == 2) { /* ask about struct by mark */
+        rightAns = elName(pEl);
+        ans.push_back(rightAns);
+        rEl = pEl.previousSiblingElement();
+        lEl = pEl.nextSiblingElement();
+        while (ans.size() < maxAns && (!rEl.isNull() || !lEl.isNull())) {
+            if (!rEl.isNull()) {
+                parsePixMarks(pixMarks, rEl.attribute("pixMarks"));
+                int checkMark = findMark(pixMarks, pix);
+                if (checkMark != mark)
+                    ans.push_back(elName(rEl));
+                rEl = rEl.previousSiblingElement();
+            }
+            if (!lEl.isNull() && ans.size() < maxAns) {
+                parsePixMarks(pixMarks, lEl.attribute("pixMarks"));
+                int checkMark = findMark(pixMarks, pix);
+                if (checkMark != mark)
+                    ans.push_back(elName(lEl));
+                lEl = lEl.nextSiblingElement();
+            }
+        }
+        if (m_langRu) {
+            question = "Какое образование (структура: " + elName(parEl) + ") помечено на картинке номером " + to_str(mark) + "?";
+        } else {
+            question = "What formation (structure: " + elName(parEl) + ") is marked on picture with number " + to_str(mark) + "?";
+        }
+    } else if (type == 3) { /* ask about parent struct */
+        rightAns = elName(parEl);
+        ans.push_back(rightAns);
+        rEl = parEl.previousSiblingElement();
+        lEl = parEl.nextSiblingElement();
+        while (ans.size() < maxAns && (!rEl.isNull() || !lEl.isNull())) {
+            if (!rEl.isNull()) {
+                ans.push_back(elName(rEl));
+                rEl = rEl.previousSiblingElement();
+            }
+            if (!lEl.isNull() && ans.size() < maxAns) {
+                ans.push_back(elName(lEl));
+                lEl = lEl.nextSiblingElement();
+            }
+        }
+        if (m_langRu) {
+            question = "К какой структуре принадлежит " + elName(pEl) + " (номер " + to_str(mark) + " на картинке)?";
+        } else {
+            question = "What structure contains " + elName(pEl) + " (number " + to_str(mark) + " on picture)?";
+        }
+    }
+
+    if (ans.size() < 2) {
+        genOsteoQuest();
+        return;
+    }
+    /* set question label */
+    m_pLblQuestion->setText(question);
+
+    /* set picture */
+    m_gPix.setPixmap(":/osteoPix/osteoPix" + to_str(pix) + ".png");
+
+    /* set answer buttons */
+    std::shuffle(ans.begin(), ans.end(), dre);
+    upn(j, 0, ans.size() - 1) {
+        m_pLblAns[j]->setText(ans[j]);
+        if (ans[j] == rightAns) {
+            m_pBtnRight = m_pBtnAns[j];
+        }
+        m_pBtnAns[j]->show();
+    }
+    upn(j, ans.size(), maxAns - 1) {
+        m_pBtnAns[j]->hide();
     }
 }
 void AnatomyAsker::crash(QString reason) {
@@ -208,17 +299,17 @@ void AnatomyAsker::crash(QString reason) {
     pdlg->deleteLater();
 }
 AnatomyAsker::~AnatomyAsker() {
-    m_settings.setValue("/settings/launchedBefore", true);
 }
 void AnatomyAsker::onStartOsteoAsk() {
-    readOsteoXml();
-
-    if (!m_settings.value("/settings/launchedBefore", false).toBool()) {
+    if (!m_settings.value("/settings/launched" + to_str(VERSION), false).toBool()) {
         QDialog* pdlg = createDialog("Необходимо перезайти в приложение (первый запуск)", "OK", "-", true);
         connect(pdlg, SIGNAL(accepted()), qApp, SLOT(quit()));
         pdlg->exec();
+        m_settings.setValue("/settings/launched" + to_str(VERSION), true);
         pdlg->deleteLater();
     }
+
+    readOsteoXml();
     QGridLayout* pGridLayout = new QGridLayout;
     QHBoxLayout* pHLayout = new QHBoxLayout;
     upn(i, 0, maxAns - 1) {
@@ -244,7 +335,7 @@ void AnatomyAsker::onStartOsteoAsk() {
     m_pLayoutMain->addLayout(pHLayout);
     m_pLayoutMain->addWidget(&m_gView);
     m_pLayoutMain->addLayout(pGridLayout);
-    m_pLayoutMain->addWidget(viewOsteoTree());
+    //m_pLayoutMain->addWidget(viewOsteoTree());
 }
 void AnatomyAsker::onFinishOsteoAsk() {
     QDialog* pdlg = createDialog((m_langRu ? "Ваш результат: " : "Your result is: ")
@@ -256,7 +347,9 @@ void AnatomyAsker::onFinishOsteoAsk() {
     pdlg->deleteLater();
 }
 void AnatomyAsker::onNextOsteoAsk() {
+    ++q_cnt;
     q_ansType = 0;
+    updateInfoLabel();
     upn(i, 0, maxAns - 1) {
         m_pBtnAns[i]->setStyleSheet("background-color: rgba(255, 255, 255, 64)");
     }
@@ -274,22 +367,24 @@ void AnatomyAsker::updateGView(bool crutch) {
         m_gView.fitInView(QRect(0, 0, qMin(this->width(), (int)(pixW * 1.75)), qMin(this->height(), (int)(pixH* 1.75))), Qt::KeepAspectRatioByExpanding);
     }
 }
+void AnatomyAsker::updateInfoLabel() {
+    m_pLblInfo->setText((m_langRu ? "Всего: " : "Summary: ") + to_str(q_cnt) + "/" +
+                        to_str(q_sum) + (m_langRu ? "\nВерно: " : "\nCorrect: ") +
+                        to_str(q_rightAnsCnt) + "/" + to_str(q_cnt));
+}
 void AnatomyAsker::onAns() {
     QPushButton* pBtn = dynamic_cast<QPushButton*>(sender());
     if (m_pBtnRight == pBtn) {
         if (!q_ansType) {
             q_ansType = 1;
-            ++q_cnt;
             ++q_rightAnsCnt;
         }
         pBtn->setStyleSheet("color:blue; background-color: rgba(50, 255, 50, 100); font-weight:bold");
     } else {
         if (!q_ansType) {
             q_ansType = -1;
-            ++q_cnt;
-            m_pLblInfo->setText("Current: " + to_str(q_rightAnsCnt) + "/" + to_str(q_cnt));
         }
         pBtn->setStyleSheet("color:white; background-color: rgba(255,0,0,100)");
     }
-    m_pLblInfo->setText((m_langRu ? "Сейчас: " : "Now: ") + to_str(q_rightAnsCnt) + "/" + to_str(q_cnt));
+    updateInfoLabel();
 }
