@@ -1,6 +1,7 @@
 #include "AnatomyAsker.h"
 
 AnatomyAsker::AnatomyAsker(QWidget *pwgt) : QWidget(pwgt), m_settings("nikich340", "AnatomyAsker") {
+    qDebug() << "Begin: " << __func__;
     this->setStyleSheet("QPushButton { alignment: center; text-align: center; min-height: 75px; font-size: 20px; background-color: rgba(255,255,255,200) }"
                         "QLabel { alignment: center; text-align: center; font-size: 20px; background-color: rgba(255,255,255,100) }"
                         "QTreeWidget { alignment: center; text-align: center; font-size: 23px; background-color: rgba(255,255,255,200) }");
@@ -45,8 +46,10 @@ AnatomyAsker::AnatomyAsker(QWidget *pwgt) : QWidget(pwgt), m_settings("nikich340
         m_pLayoutMain->addWidget(m_pBtnSet[i]);
     }
     setLayout(m_pLayoutMain);
+    qDebug() << "End: " << __func__;
 }
 QTreeWidget* AnatomyAsker::viewOsteoTree() {
+   qDebug() << "Begin: " << __func__;
    QTreeWidget* pTW = new QTreeWidget;
    pTW->setHeaderLabel(m_langRu ? "Выберите структуру для вопросов" : "Choose structure for questions");
    pTW->setColumnCount(1);
@@ -57,6 +60,7 @@ QTreeWidget* AnatomyAsker::viewOsteoTree() {
    pTW->addTopLevelItem(pRoot);
    viewOsteoTreeDfs(rootEl, pRoot);
 
+   qDebug() << "End: " << __func__;
    return pTW;
 }
 void AnatomyAsker::viewOsteoTreeDfs(QDomElement& parEl, QTreeWidgetItem* pTWIPar) {
@@ -123,6 +127,7 @@ QDialog* AnatomyAsker::createDialog(QString info, QString accept, QString reject
     return pdlg;
 }
 void AnatomyAsker::readOsteoXml() {
+    qDebug() << "Begin: " << __func__;
     QFile fileOsteo(":/osteologia.xml");
     if (fileOsteo.open(QIODevice::ReadOnly)) {
         if (osteoDoc.setContent(&fileOsteo)) {
@@ -131,6 +136,7 @@ void AnatomyAsker::readOsteoXml() {
         }
     }
     fileOsteo.close();
+    qDebug() << "End: " << __func__;
 }
 void AnatomyAsker::readOsteoXmlDfs(QDomElement& parEl) {
     if (parEl.tagName() == "cell") {
@@ -179,6 +185,7 @@ QString AnatomyAsker::findMark(QVector<QPair<int, QString>>& pixVect, int pixNum
     return "-1";
 }
 void AnatomyAsker::chooseOsteoQuests(QString rootPattern) {
+    qDebug() << "Begin: " << __func__;
     QVector<QDomElement> tmpV;
     for (auto curEl : unusedOsteos) {
         QDomElement from = curEl;
@@ -189,13 +196,16 @@ void AnatomyAsker::chooseOsteoQuests(QString rootPattern) {
             tmpV.push_back(from);
     }
     unusedOsteos = tmpV;
+    qDebug() << "End: " << __func__;
 }
 void AnatomyAsker::genOsteoQuest() {
+    qDebug() << "Begin: " << __func__;
     std::default_random_engine dre(QDateTime::currentMSecsSinceEpoch());
     QVector<QString> ans;
     QString rightAns;
     QString question;
     if (unusedOsteos.empty()) {
+        qDebug() << "Empty quest array";
         onFinishOsteoAsk();
     }
     int idx = rand(0, unusedOsteos.size() - 1);
@@ -208,7 +218,7 @@ void AnatomyAsker::genOsteoQuest() {
     int pix = pixMarks[pixIdx].first;
     QString mark = findMark(pixMarks, pix);
     QDomElement rEl, lEl, parEl = pEl.parentNode().toElement();
-    int type = rand(1, (parEl.tagName() == "cell") ? 3 : 2);
+    int type = rand(1, 2);
 
     if (type == 1) { /* ask about mark by struct */
         rightAns = mark;
@@ -262,7 +272,7 @@ void AnatomyAsker::genOsteoQuest() {
         } else {
             question = "What formation (structure: " + elName(parEl) + ") is marked on picture with number " + mark + "?";
         }
-    } else if (type == 3) { /* ask about parent struct */
+    }/* else if (type == 3) { ask about parent struct
         rightAns = elName(parEl);
         ans.push_back(rightAns);
         rEl = parEl.previousSiblingElement();
@@ -282,7 +292,7 @@ void AnatomyAsker::genOsteoQuest() {
         } else {
             question = "What structure contains " + elName(pEl) + " (number " + mark + " on picture)?";
         }
-    }
+    }*/
 
     if (ans.size() < 2) {
         genOsteoQuest();
@@ -306,6 +316,7 @@ void AnatomyAsker::genOsteoQuest() {
     upn(j, ans.size(), maxAns - 1) {
         m_pBtnAns[j]->hide();
     }
+    qDebug() << "End: " << __func__;
 }
 void AnatomyAsker::crash(QString reason) {
     qDebug() << "Crash! Reason: " << reason << "\n";
@@ -317,6 +328,7 @@ void AnatomyAsker::crash(QString reason) {
 AnatomyAsker::~AnatomyAsker() {
 }
 void AnatomyAsker::onPreStartOsteoAsk() {
+    qDebug() << "Begin: " << __func__;
     if (!m_settings.value("/settings/launched" + to_str(VERSION), false).toBool()) {
         QDialog* pdlg = createDialog("Необходимо перезайти в приложение (первый запуск)", "OK", "-", true);
         connect(pdlg, SIGNAL(accepted()), qApp, SLOT(quit()));
@@ -337,8 +349,10 @@ void AnatomyAsker::onPreStartOsteoAsk() {
     m_pLayoutMain->addWidget(m_pTW);
     m_pLayoutMain->addWidget(m_pBtnPre);
     connect(m_pBtnPre, SIGNAL(clicked(bool)), this, SLOT(onStartOsteoAsk()));
+    qDebug() << "End: " << __func__;
 }
 void AnatomyAsker::onStartOsteoAsk() {
+    qDebug() << "Begin: " << __func__;
     QGridLayout* pGridLayout = new QGridLayout;
     QHBoxLayout* pHLayout = new QHBoxLayout;
     upn(i, 0, maxAns - 1) {
@@ -367,8 +381,10 @@ void AnatomyAsker::onStartOsteoAsk() {
     m_pLayoutMain->addLayout(pHLayout);
     m_pLayoutMain->addWidget(&m_gView);
     m_pLayoutMain->addLayout(pGridLayout);
+    qDebug() << "End: " << __func__;
 }
 void AnatomyAsker::onFinishOsteoAsk() {
+    qDebug() << "Begin: " << __func__;
     QDialog* pdlg = createDialog((m_langRu ? "Ваш результат: " : "Your result is: ")
                                  + to_str(q_rightAnsCnt) + "/" + to_str(q_cnt)
                                  + (m_langRu ? "\nЖдём Вас снова! :)" : "Waiting for you again! :)"),
@@ -376,15 +392,17 @@ void AnatomyAsker::onFinishOsteoAsk() {
     connect(pdlg, SIGNAL(accepted()), qApp, SLOT(quit()));
     pdlg->exec();
     pdlg->deleteLater();
+    qDebug() << "End: " << __func__;
 }
 void AnatomyAsker::onNextOsteoAsk() {
-    ++q_cnt;
     q_ansType = 0;
     updateInfoLabel();
     upn(i, 0, maxAns - 1) {
         m_pBtnAns[i]->setStyleSheet("background-color: rgba(255, 255, 255, 64)");
     }
     genOsteoQuest();
+    ++q_cnt;
+    updateInfoLabel();
     updateGView(true);
 }
 void AnatomyAsker::updateGView(bool crutch) {
@@ -394,8 +412,8 @@ void AnatomyAsker::updateGView(bool crutch) {
     m_gView.setMaximumWidth(this->width());
     //m_gView.setMaximumHeight(qMin((int) (this->height() * 0.65), pixH));
     m_gView.setSceneRect(QRect(0, 0, pixW, pixH));
-    if (crutch && qMax(pixW, pixH) >= 1000) {
-        m_gView.fitInView(QRect(0, 0, qMin(this->width(), (int)(pixW * 1.75)), qMin(this->height(), (int)(pixH* 1.75))), Qt::KeepAspectRatioByExpanding);
+    if (crutch && pixH >= 1000) {
+        m_gView.fitInView(QRect(0, 0, qMin(this->width(), (int)(pixW * 1.7)), qMin(this->height(), (int)(pixH* 1.7))), Qt::KeepAspectRatioByExpanding);
     }
 }
 void AnatomyAsker::updateInfoLabel() {
