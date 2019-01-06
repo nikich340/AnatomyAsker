@@ -7,7 +7,8 @@ AnatomyAsker::AnatomyAsker(QWidget *pwgt) : QWidget(pwgt), m_settings("nikich340
                         "QTreeWidget { alignment: center; text-align: center; font-size: 23px; background-color: rgba(255,255,255,200) }");
 
     m_pLayoutMain = new QVBoxLayout;
-    m_gScene.addItem(&m_gPix);
+    m_pGPix = new QGraphicsPixmapItem;
+    m_gScene.addItem(m_pGPix);
     m_gView.setStyleSheet("background-color: rgba(255, 255, 255, 64)");
     m_gView.setDragMode(QGraphicsView::ScrollHandDrag);
     m_gView.setScene(&m_gScene);
@@ -126,19 +127,38 @@ QDialog* AnatomyAsker::createDialog(QString info, QString accept, QString reject
     pdlg->show();
     return pdlg;
 }
-void AnatomyAsker::readOsteoXml() {
+void AnatomyAsker::readXml(QDomDocument& doc, QString path) {
     qDebug() << "Begin: " << __func__;
-    QFile fileOsteo(":/osteologia.xml");
-    if (fileOsteo.open(QIODevice::ReadOnly)) {
-        if (osteoDoc.setContent(&fileOsteo)) {
-            QDomElement rootEl = osteoDoc.documentElement();
-            readOsteoXmlDfs(rootEl);
+    QFile file(path);
+    if (file.open(QIODevice::ReadOnly)) {
+        QString error_msg;
+        if (!doc.setContent(&file, true, &error_msg)) {
+            crash("Error opening xml: " + error_msg);
         }
+    } else {
+        crash("File " + file.fileName() + " could not be opened in read-only mode");
     }
-    fileOsteo.close();
+    file.close();
     qDebug() << "End: " << __func__;
 }
-void AnatomyAsker::readOsteoXmlDfs(QDomElement& parEl) {
+void AnatomyAsker::writeXml(QDomDocument& doc, QString path) {
+    qDebug() << "Begin: " << __func__;
+    QFile file(path);
+    if (file.open(QIODevice::WriteOnly)) {
+        file.write(doc.toByteArray());
+    } else {
+        crash("File " + file.fileName() + " could not be opened in write-only mode");
+    }
+    file.close();
+    qDebug() << "End: " << __func__;
+}
+void AnatomyAsker::processOsteoXml() {
+    qDebug() << "Begin: " << __func__;
+    QDomElement rootEl = osteoDoc.documentElement();
+    processOsteoXmlDfs(rootEl);
+    qDebug() << "End: " << __func__;
+}
+void AnatomyAsker::processOsteoXmlDfs(QDomElement& parEl) {
     if (parEl.tagName() == "cell") {
         if (parEl.hasAttribute("name") && parEl.hasAttribute("pixMarks")) {
             unusedOsteos.push_back(parEl);
@@ -147,7 +167,7 @@ void AnatomyAsker::readOsteoXmlDfs(QDomElement& parEl) {
     QDomNode curN = parEl.firstChild();
     while (!curN.isNull()) {
         QDomElement curEl = curN.toElement();
-        readOsteoXmlDfs(curEl);
+        processOsteoXmlDfs(curEl);
         curN = curN.nextSibling();
     }
 }
@@ -302,7 +322,7 @@ void AnatomyAsker::genOsteoQuest() {
     m_pLblQuestion->setText(question);
 
     /* set picture */
-    m_gPix.setPixmap(":/osteoPix/osteoPix" + to_str(pix) + ".png");
+    m_pGPix->setPixmap(":/osteoPix/osteoPix" + to_str(pix) + ".png");
 
     /* set answer buttons */
     std::shuffle(ans.begin(), ans.end(), dre);
@@ -337,7 +357,8 @@ void AnatomyAsker::onPreStartOsteoAsk() {
         pdlg->deleteLater();
     }
 
-    readOsteoXml();
+    readXml(osteoDoc, ":/osteologia.xml");
+    processOsteoXml();
 
     upn(i, 0, 2) {
         m_pBtnSet[i]->hide();
@@ -406,8 +427,8 @@ void AnatomyAsker::onNextOsteoAsk() {
     updateGView(true);
 }
 void AnatomyAsker::updateGView(bool crutch) {
-    int pixW = m_gPix.pixmap().width();
-    int pixH = m_gPix.pixmap().height();
+    int pixW = m_pGPix->pixmap().width();
+    int pixH = m_pGPix->pixmap().height();
 
     m_gView.setMaximumWidth(this->width());
     //m_gView.setMaximumHeight(qMin((int) (this->height() * 0.65), pixH));

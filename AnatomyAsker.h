@@ -5,7 +5,7 @@
 
 #define upn(x, init, n) for(int x = init; x <= n; ++x)
 #define to_str(a) QString::number(a)
-#define VERSION 2.0
+#define VERSION 2.1
 
 class AnatomyAsker : public QWidget {
 Q_OBJECT
@@ -15,7 +15,7 @@ private:
     QVBoxLayout* m_pLayoutMain;
     QPushButton *m_pBtnRight, *m_pBtnNext, *m_pBtnFinish, *m_pBtnPre, *m_pBtnSet[3], *m_pBtnAns[maxAns];
     QLabel *m_pLblQuestion, *m_pLblInfo, *m_pLblAns[maxAns];
-    QGraphicsPixmapItem m_gPix;
+    QGraphicsPixmapItem* m_pGPix;
     QGraphicsScene m_gScene;
     QGraphicsView m_gView;
     QTreeWidget* m_pTW;
@@ -37,8 +37,10 @@ private:
     QTreeWidget* viewOsteoTree();
     QString findMark(QVector<QPair<int, QString>>& pixVect, int pixNum);
     void parsePixMarks(QVector<QPair<int, QString>>& pixVect, QString pixStr);
-    void readOsteoXml();
-    void readOsteoXmlDfs(QDomElement& curEl);
+    void processOsteoXml();
+    void processOsteoXmlDfs(QDomElement& curEl);
+    void readXml(QDomDocument& doc, QString path);
+    void writeXml(QDomDocument& doc, QString path);
     void chooseOsteoQuests(QString root);
     void genOsteoQuest();
     void updateGView(bool crutch);
