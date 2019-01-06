@@ -49,6 +49,8 @@ private:
     void parsePixMarks(QVector<QPair<int, QString>>& pixVect, QString pixStr);
     void processOsteoXml();
     void processOsteoXmlDfs(QDomElement& curEl);
+    void sortOsteoXml();
+    void sortOsteoXmlDfs(QDomElement& curEl, int& cnt, int delta);
     void readXml(QDomDocument& doc, QString path);
     void updateGView(bool crutch);
     void updateInfoLabel();

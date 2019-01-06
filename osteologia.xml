@@ -1,264 +1,256 @@
-<?xml version="1.0" encoding="windows-1251"?>
-<osteologia nameRu="остеология" name="osteologia">
-  <group nameRu="череп" name="cranium">
-   <group nameRu="лицевой отдел" name="splanchnocranium">
-    <cell nameRu="верхняя челюсть" name="maxilla" pixMarks="1-19, 2-20, 9-32">
-     <cell nameRu="тело верхней челюсти" name="corpus maxillae" pixMarks="1-19, 2-20"/>
-     <cell nameRu="носовая поверхность" name="facies nasalis"/>
-     <cell nameRu="глазничная поверхность" name="facies orbitalis" pixMarks="6-16"/>
-     <cell nameRu="подвисочная поверхность" name="facies infratemporalis"/>
-     <cell nameRu="передняя поверхность" name="facies anterior"/>
-     <cell nameRu="бугор верхней челюсти" name="tuber maxillae" pixMarks="6-25, 11-23"/>
-     <cell nameRu="подглазничный край" name="margo infraorbitalis"/>
-     <cell nameRu="подглазничная борозда" name="sulcus infraorbitalis" pixMarks="6-15"/>
-     <cell nameRu="слёзная борозда" name="sulcus lacrimalis" pixMarks="6-24, 7-26"/>
-     <cell nameRu="резцовый канал" name="canalis incisivus" pixMarks="5-1, 7-30, 15-32"/>
-     <cell nameRu="подглазничное отверстие" name="foramen infraorbitalis" pixMarks="2-18, 6-17"/>
-     <cell nameRu="верхнечелюстная щель" name="hiatus maxillaris" pixMarks="7-24, 10-11, 11-25"/>
-     <cell nameRu="верхнечелюстная пазуха" name="sinus maxillaris" pixMarks="10-20, 11-18"/>
-	 <cell nameRu="лобный отросток" name="processus frontalis" pixMarks="1-21, 2-17, 6-13, 7-14, 10-8"/>
-     <cell nameRu="нёбный отросток" name="processus palatinus" pixMarks="5-3, 7-17, 15-23"/>
-     <cell nameRu="альвеолярный отросток" name="processus alveolaris" pixMarks="1-20, 2-21, 6-21, 7-16, 10-14, 11-20"/>
-     <cell nameRu="скуловой отросток" name="processus zygomaticus" pixMarks="2-19, 6-18"/>
-     <cell nameRu="клыковая ямка" name="fossa canina" pixMarks="6-20"/>
-     <cell nameRu="альвеолярные возвышения" name="juga alveolaria" pixMarks="6-23"/>
-     <cell nameRu="передняя носовая ость" name="spina nasalis anterior" pixMarks="1-22, 3-11, 6-22, 7-18, 11-19"/>
-     <cell nameRu="передний слёзный гребень" name="crista lacrimalis anterior" pixMarks="6-19"/>
-    </cell>
-    <cell nameRu="нижняя носовая раковина" name="concha nasalis inferior" pixMarks="2-24, 3-9, 11-17">
-	 <cell nameRu="верхнечелюстной отросток" name="processus maxillaris" pixMarks="11-17, 12-8"/>
-	 <cell nameRu="решётчатый отросток" name="processus ethmoidalis" pixMarks="12-1"/>
-	 <cell nameRu="слёзный отросток" name="processus lacrimalis" pixMarks="12-6"/>
-	 <cell nameRu="передняя часть" name="pars anterior" pixMarks="12-2"/>
-	 <cell nameRu="задняя часть" name="pars posterior" pixMarks="12-7"/>
-	</cell>
-    <cell nameRu="нёбная кость" name="os palatinum" pixMarks="9-33, 10-12">
-     <cell nameRu="малое нёбное отверстие" name="foramen palatina minor" pixMarks="15-17"/>
-	 <cell nameRu="большое нёбное отверстие" name="foramen palatina major" pixMarks="10-13, 15-18"/>
-	 <cell nameRu="горизонтальная пластинка" name="lamina horizontalis" pixMarks="14-4, 15-15"/>
-	 <cell nameRu="перпендикулярная пластинка" name="lamina perpendicularis" pixMarks="14-10"/>
-	 <cell nameRu="пирамидальный отросток" name="processus pyramidalis" pixMarks="14-6, 15-16"/>
-	 <cell nameRu="верхнечелюстной отросток" name="processus maxillaris" pixMarks="14-7"/>
-	 <cell nameRu="глазничный отросток" name="processus orbitalis" pixMarks="14-8"/>
-	 <cell nameRu="клиновидный отросток" name="processus sphenoidalis" pixMarks="14-13"/>
-	 <cell nameRu="раковинный гребень" name="crista conchalis" pixMarks="14-11"/>
-	 <cell nameRu="носовой гребень" name="crista nasalis" pixMarks="14-12"/>
-	 <cell nameRu="клиновидно-нёбная вырезка" name="incisura sphenopalatina" pixMarks="14-9"/>
-	</cell>
-    <cell nameRu="скуловая кость" name="os zygomaticum" pixMarks="1-18, 2-16, 5-21, 9-36, 10-16">
-	 <cell nameRu="глазничная поверхность" name="facies orbitalis" pixMarks="16-1"/>
-	 <cell nameRu="скулоглазничные отверстия" name="foramina zygomaticoorbitalia" pixMarks="16-2"/>
-	 <cell nameRu="височная поверхность" name="facies temporalis" pixMarks="16-3"/>
-	 <cell nameRu="скуловисочное отверстие" name="foramen zygomaticotemporale" pixMarks="16-4"/>
-	 <cell nameRu="латеральная поверхность" name="facies lateralis" pixMarks="16-5"/>
-	 <cell nameRu="скулолицевое отверстие" name="foramen zygomaticofaciale" pixMarks="16-6"/>
-	 <cell nameRu="лобный отросток" name="processus frontalis" pixMarks="16-7"/>
-	 <cell nameRu="височный отросток" name="processus temporalis" pixMarks="16-8"/>
-	</cell>
-    <cell nameRu="носовая кость" name="os nasale" pixMarks="1-15, 2-8, 10-4, 11-4">
-     <cell nameRu="носовые отверстия" name="foramina nasales" pixMarks="17-18"/>
-    </cell>
-    <cell nameRu="слёзная кость" name="os lacrimale" pixMarks="1-17, 2-9, 10-18">
-     <cell nameRu="слёзная борозда" name="sulcus lacrimalis" pixMarks="8-12"/>
-     <cell nameRu="задний слёзный гребень" name="crista lacrimalis posterior" pixMarks="2-10, 8-13"/>
-     <cell nameRu="слёзный крючок" name="hamulus lacrimalis" pixMarks="8-15"/>
-     <cell nameRu="ямка слёзного мешка" name="fossa sacci lacrimalis" pixMarks="8-14"/>
-    </cell>
-    <cell nameRu="сошник" name="vomer" pixMarks="2-25, 5-8, 9-34, 15-33">
-	 <cell nameRu="крыло сошника" name="ala vomeris" pixMarks="13-4, 15-33"/>
-	</cell>
-    <cell nameRu="нижняя челюсть" name="mandibula" pixMarks="1-23, 2-30">
-     <cell nameRu="тело нижней челюсти" name="corpus mandibulae" pixMarks="2-26, 18-18"/>
-     <cell nameRu="ветвь нижней челюсти" name="ramus mandibulae" pixMarks="2-27, 18-15"/>
-     <cell nameRu="венечный отросток" name="processus coronoideus" pixMarks="18-19"/>
-     <cell nameRu="суставной (мыщелковый) отросток" name="processus articularis (condylaris)" pixMarks="1-25, 3-19, 18-24"/>
-     <cell nameRu="альвеолярный отросток" name="processus alveolaris" pixMarks="2-29, 18-20"/>
-     <cell nameRu="подбородочное отверстие" name="foramen mentale" pixMarks="1-26, 2-28"/>
-     <cell nameRu="подбородочное возвышение" name="protuberantia mentalis" pixMarks="1-27, 2-31, 18-23"/>
-     <cell nameRu="угол нижней челюсти" name="angulus mandibulae" pixMarks="1-28, 18-17"/>
-     <cell nameRu="подбородочные ости" name="spinae mentalis" pixMarks="3-12"/>
-     <cell nameRu="язычок нижней челюсти" name="lingula mandibulae" pixMarks="3-22, 18-27"/>
-     <cell nameRu="отверстие нижней челюсти" name="foramen mandibulae" pixMarks="3-23, 18-26"/>
-     <cell nameRu="челюстно-подъязычная борозда" name="sulcus mylohyoideus" pixMarks="3-24, 18-28"/>
-     <cell nameRu="челюстно-подъязычная линия" name="linea mylohyoidea" pixMarks="3-25, 18-29"/>
-     <cell nameRu="поднижнечелюстная ямка" name="fossa submandibularis" pixMarks="3-26, 18-30"/>
-	 <cell nameRu="нижнечелюстная ямка" name="fossa mandibularis" pixMarks="18-14"/>
-    </cell>
-    <cell nameRu="подъязычная кость" name="os hyoideum">
-	 <cell nameRu="тело подъязычной кости" name="corpus ossis hyoidei" pixMarks="19-3"/>
-	 <cell nameRu="большой рог" name="cornu major" pixMarks="19-1"/>
-	 <cell nameRu="малый рог" name="cornu minor" pixMarks="19-2"/>
-	</cell>
-   </group>
-   <group nameRu="мозговой отдел" name="neurocranium">
-    <cell nameRu="височная кость" name="os temporale" pixMarks="1-5, 2-7, 9-37">
-     <cell nameRu="скуловой отросток" name="processus zygomaticus" pixMarks="1-6, 21-25, 22-25, 23-25"/>
-     <cell nameRu="сосцевидный отросток" name="processus mastoideus" pixMarks="1-7, 5-27, 22-34, 23-34"/>
-	 <cell nameRu="сосцевидная вырезка" name="incisura mastoidea" pixMarks="5-29, 22-35"/>
-	 <cell nameRu="сосцевидное отверстие" name="foramen mastoideus" pixMarks="23-23"/>
-	 <cell nameRu="нижнечелюстная ямка" name="fossa mandibularis" pixMarks="5-24, 22-26, 23-26"/>
-     <cell nameRu="суставной бугорок" name="tuberculum articulare" pixMarks="1-6, 22-45, 23-45"/>
-     <cell nameRu="наружный слуховой проход" name="meatus acusticus externus" pixMarks="1-8, 22-29, 23-29"/>
-     <cell nameRu="внутренний слуховой проход" name="meatus acusticus internus" pixMarks="3-15, 4-29, 11-3, 23-24"/>
-     <cell nameRu="барабанная часть" name="pars tympanica" pixMarks="1-8, 23-43"/>
-	 <cell nameRu="каменистая часть" name="pars petrosa" pixMarks="11-2"/>
-	 <cell nameRu="чешуйчатая часть" name="pars squamosa" pixMarks="2-7, 21-18, 23-18"/>
-	 <cell nameRu="вдавление тройничного нерва" name="impressio n. trigemini" pixMarks="23-44"/>
-     <cell nameRu="борозда сигмовидного синуса" name="sulcus sinus sigmoidei" pixMarks="3-16, 4-15, 21-22, 23-22"/>
-     <cell nameRu="борозда верхнего каменистого синуса" name="sulcus sinus petrosi superioris" pixMarks="4-13, 23-47"/>
-	 <cell nameRu="борозды средней менингеальной артерии" name="sulci artetia meningea mediae" pixMarks="23-36"/>
-     <cell nameRu="шиловидный отросток" name="processus styloideus" pixMarks="5-12, 22-30"/>
-	 <cell nameRu="щель канала большого каменистого нерва" name="hiatus canalis n. petrosi majoris" pixMarks="4-28, 21-20"/>
-	 <cell nameRu="сонный канал" name="canalis caroticus" pixMarks="5-13, 9-C, 11-4, 21-19, 22-19"/>
-	 <cell nameRu="мышечно-трубный канал" name="canalis musculotubarius" pixMarks="22-28"/>
-	 <cell nameRu="сосцевидный каналец" name="canaliculus mastoideus" pixMarks="22-32"/>
-	 <cell nameRu="каналец улитки" name="canaliculus cochlea" pixMarks="23-40"/>
-	 <cell nameRu="водопровод преддверия" name="aqueductus vestibuli" pixMarks="23-41"/>
-	 <cell nameRu="яремная ямка" name="fossa jugularis" pixMarks="22-33"/>
-	 <cell nameRu="шилососцевидное отверстие" name="foramen stylomastoideus" pixMarks="5-14, 9-D, 22-31"/>
-	 <cell nameRu="дугообразное возвышение" name="eminentia arcuata" pixMarks="21-21, 23-21"/>
-	 <cell nameRu="каменисто-барабанная щель" name="fissura petrotympanica" pixMarks="22-27, 23-27"/>
-	 <cell nameRu="теменной край" name="margo parietalis" pixMarks="23-37"/>
-	 <cell nameRu="клиновидный край" name="margo sphenoidalis" pixMarks="23-38"/>
-	 <cell nameRu="затылочный край" name="margo occipitalis" pixMarks="23-39"/>
-	</cell>
-    <cell nameRu="теменная кость" name="os parietale" pixMarks="1-4, 2-6">
-     <cell nameRu="борозды средней менингеальной артерии" name="sulci artetia meningea mediae" pixMarks="3-13, 27-13"/>
-	 <cell nameRu="верхняя височная линия" name="linea temporalis superior" pixMarks="27-5"/>
-	 <cell nameRu="теменное отверстие" name="foramen parietalis" pixMarks="27-6"/>
-	 <cell nameRu="теменной бугор" name="tuber parietale" pixMarks="27-7"/>
-	 <cell nameRu="лобный край" name="margo frontale" pixMarks="27-10"/>
-	 <cell nameRu="затылочный край" name="margo occipitalis" pixMarks="27-9"/>
-	 <cell nameRu="чешуйчатый край" name="margo squamosus" pixMarks="27-11"/>
-	 <cell nameRu="сагиттальный край" name="margo sagittalis" pixMarks="27-8"/>
-	 <cell nameRu="угол клиновидной кости" name="angulus ossis sphenoidalis" pixMarks="27-12"/>
-    </cell>
-    <cell nameRu="затылочная кость" name="os occipitale" pixMarks="1-9, 9-38, 11-1">
-     <cell nameRu="наружный затылочный выступ" name="protuberantia occipitalis externa" pixMarks="1-10, 5-20, 22-61, 25-39"/>
-     <cell nameRu="внутренний затылочный выступ" name="protuberantia occipitalis interna" pixMarks="4-18, 21-53"/>
-     <cell nameRu="затылочный мыщелок" name="condylus occipitalis" pixMarks="1-11, 3-18, 5-17, 11-6, 22-58, 25-43"/>
-     <cell nameRu="подъязычный канал" name="canalis hypoglossalis" pixMarks="3-17, 4-30, 9-F, 11-5, 25-28"/>
-     <cell nameRu="борозда сигмовидного синуса" name="sulcus sinus sigmoidei" pixMarks="3-16"/>
-     <cell nameRu="яремное отверстие" name="foramen jugulare" pixMarks="4-14, 5-15, 9-E, 22-62"/>
-	 <cell nameRu="яремный бугорок" name="tuberculum jugularis" pixMarks="21-49"/>
-	 <cell nameRu="отверстие затылочной артерии" name="foramen arteriae occipitalis" pixMarks="5-16"/>
-     <cell nameRu="внутренний затылочный гребень" name="crista occipitalis interna" pixMarks="4-16, 21-56"/>
-     <cell nameRu="наружный затылочный гребень" name="crista occipitalis externa" pixMarks="22-45"/>
-	 <cell nameRu="борозда поперечного синуса" name="sulcus sinus transversi" pixMarks="4-17, 21-54"/>
-	 <cell nameRu="борозда верхнего сагиттального синуса" name="sulcus sinus sagittalis superior" pixMarks="21-55"/>
-     <cell nameRu="большое затылочное отверстие" name="foramen occipitale magnum" pixMarks="4-31, 5-30, 21-51, 22-51, 25-35"/>
-	 <cell nameRu="мыщелковый канал" name="canalis condylaris" pixMarks="5-18, 21-50, 22-50, 25-33"/>
-	 <cell nameRu="нижняя выйная линия" name="linea nuchae inferior" pixMarks="5-28, 22-63, 25-41"/>
-	 <cell nameRu="верхняя выйная линия" name="linea nuchae superior" pixMarks="5-26, 22-60"/>
-	 <cell nameRu="глоточный бугорок" name="tuberculum pharyngeum" pixMarks="5-25, 22-64, 25-44"/>
-    </cell>
-    <cell nameRu="лобная кость" name="os frontale" pixMarks="1-1, 2-1, 3-3, 10-2">
-     <cell nameRu="надпереносье (глабелла)" name="glabella" pixMarks="1-2, 2-2"/>
-	 <cell nameRu="глазничная поверхность" name="facies orbitalis" pixMarks="26-9"/>
-	 <cell nameRu="поверхности решётчатых пазух" name="facies sinus ethmoidales" pixMarks="26-10"/>
-	 <cell nameRu="решётчатая вырезка" name="incisura ethmoidalis" pixMarks="26-11"/>
-	 <cell nameRu="теменной край" name="margo parietalis" pixMarks="26-12"/>
-     <cell nameRu="надглазничный край" name="margo supraorbitalis" pixMarks="1-3, 2-3, 26-8"/>
-     <cell nameRu="надглазничная вырезка" name="incisura supraorbitalis" pixMarks="2-4, 26-7"/>
-     <cell nameRu="блоковый (хрящевой) шип" name="spina trochlearis" pixMarks="2-5"/>
-	 <cell nameRu="ямка хрящевого блока" name="fossa trochlearis" pixMarks="26-2"/>
-	 <cell nameRu="ямка слёзной железы" name="fossa glandula lacrimalis" pixMarks="26-3"/>
-	 <cell nameRu="верхнее отверстие решётчатой кости" name="foramen superior ossis ethmoidalis" pixMarks="26-4"/>
-     <cell nameRu="нижнее отверстие решётчатой кости" name="foramen inferior ossis ethmoidalis" pixMarks="26-5"/>
-	 <cell nameRu="лобный гребень" name="crista frontalis" pixMarks="4-1, 26-15"/>
-	 <!--cell nameRu="носовой гребень" name="crista nasalis" pixMarks="26-6"-->
-	 <cell nameRu="носовая ость" name="spina nasalis" pixMarks="26-17"/>
-	 <cell nameRu="лобная пазуха" name="sinus frontalis" pixMarks="3-27, 10-1, 11-10"/>
-     <cell nameRu="слепое отверстие" name="foramen caecum" pixMarks="4-2, 26-16"/>
-	 <cell nameRu="скуловой отросток" name="processus zygomaticus" pixMarks="26-18"/>
-     <cell nameRu="пальцевые вдавления" name="impressio digitatae" pixMarks="4-19"/>
-	 <cell nameRu="борозда верхнего сагиттального синуса" name="sulcus sinus sagittalis superioris" pixMarks="26-13"/>
-    </cell>
-    <cell nameRu="клиновидная кость" name="os sphenoidale" pixMarks="1-12, 2-12, 9-35, 22-17">
-     <cell nameRu="большое крыло" name="ala major" pixMarks="1-12, 2-12, 21-1, 22-1, 24-1"/>
-     <cell nameRu="малое крыло" name="ala minor" pixMarks="2-13, 4-5, 21-2, 24-2"/>
-	 <cell nameRu="клиновидный гребень" name="crista sphenoidalis" pixMarks="24-20"/>
-	 <cell nameRu="мозговая поверхность" name="facies cerebralis" pixMarks="24-3"/>
-	 <cell nameRu="глазничная поверхность" name="facies orbitalis" pixMarks="24-19"/>
-     <cell nameRu="верхняя глазничная щель" name="fissura orbitalis superior" pixMarks="2-14, 4-6, 24-23"/>
-     <cell nameRu="нижняя глазничная щель" name="fissura orbitalis inferior" pixMarks="2-15, 5-6"/>
-     <cell nameRu="подвисочный гребень" name="crista infratemporalis" pixMarks="1-13, 22-16"/>
-     <cell nameRu="латеральная пластинка крыловидного отростка" name="lamina lateralis processus pterygoidei" pixMarks="1-14, 3-20, 5-22, 10-21, 11-7, 15-10, 22-14, 24-16"/>
-     <cell nameRu="медиальная пластинка крыловидного отростка" name="lamina medialis processus pterygoidei" pixMarks="3-21, 5-23, 10-22, 15-11, 22-13, 24-22"/>
-     <cell nameRu="передний наклонённый отросток" name="processus clinoideus anterior" pixMarks="3-2, 4-22, 21-7, 24-5"/>
-     <cell nameRu="задний наклонённый отросток" name="processus clinoideus posterior" pixMarks="4-25, 21-10, 24-14"/>
-     <cell nameRu="турецкое седло (гипофизарная ямка)" name="sella turcica (fossa hypophysialis) " pixMarks="3-1, 4-24, 11-9, 21-8"/>
-     <cell nameRu="спинка турецкого седла" name="dorsum sellae" pixMarks="3-14, 4-26, 11-8, 21-10, 24-8"/>
-     <cell nameRu="клиновидная пазуха" name="sinus sphenoidalis" pixMarks="3-5, 10-5, 24-13"/>
-     <cell nameRu="круглое отверстие" name="foramen rotundum" pixMarks="4-7, 11-21, 21-3, 24-4"/>
-     <cell nameRu="овальное отверстие" name="foramen ovale" pixMarks="4-10, 5-9, 9-B, 21-4, 22-4, 24-6"/>
-     <cell nameRu="остистое отверстие" name="foramen spinosum" pixMarks="4-11, 21-5, 22-5"/>
-     <cell nameRu="борозда сонной артерии" name="sulcus caroticus" pixMarks="4-8"/>
-     <cell nameRu="борозда перекрёста" name="sulcus chiasmatis" pixMarks="4-21"/>
-     <cell nameRu="зрительный канал" name="canalis opticus" pixMarks="4-23, 11-11, 21-11, 24-9"/>
-	 <cell nameRu="борозда слуховой трубы" name="sulcus tubae auditivae" pixMarks="5-10"/>
-	 <cell nameRu="крыловидный канал" name="canalis pterygoideus" pixMarks="5-11, 9-A, 24-15"/>
-	 <cell nameRu="крыловидная вырезка" name="incisura pterygoidea" pixMarks="24-17"/>
-	 <cell nameRu="крыловидный крючок" name="hamulus pterygoideus" pixMarks="10-24, 22-15, 24-18"/>
-	 <cell nameRu="клиновидный клюв" name="rostrum sphenoidale" pixMarks="22-12, 24-21"/>
-    </cell>
-    <cell nameRu="решётчатая кость" name="os ethmoidale" pixMarks="1-16, 2-11, 10-17">
-     <cell nameRu="верхняя носовая раковина" name="concha nasalis superior" pixMarks="3-6, 10-6"/>
-     <cell nameRu="средняя носовая раковина" name="concha nasalis media" pixMarks="2-23, 3-7, 5-7, 10-7, 20-4"/>
-     <cell nameRu="решётчатые ячейки (лабиринт)" name="cellulae (labyrinthus) ethmoidalis" pixMarks="3-4, 10-9, 20-3"/>
-	 <cell nameRu="переднее и заднее решётчатые отверстия" name="foramina ethmoidalis anterior et posterior" pixMarks="11-12"/>
-     <cell nameRu="петушиный гребень" name="crista galli" pixMarks="4-3, 10-3, 20-1"/>
-     <cell nameRu="решётчатая пластинка" name="lamina cribrosa" pixMarks="4-4, 20-2"/>
-	 <cell nameRu="перпендикулярная пластинка" name="lamina perpendicularis" pixMarks="20-5"/>
-	 <cell nameRu="глазничная пластинка" name="lamina orbitalis" pixMarks="1-16, 11-13, 20-6"/>
-	 <cell nameRu="крючковидный отросток" name="processus uncinatus" pixMarks="10-10, 11-16"/>
-    </cell>
-	<!--cell nameRu="каналы" name="canalis">
-     <cell nameRu="крыловидный канал" name="canalis pterygoideus" pixMarks="5-11, 9-A"/>
-	 <cell nameRu="сонный канал" name="canalis caroticus" pixMarks="5-13, 9-C"/>
-	 <cell nameRu="мыщелковый канал" name="canalis condylaris" pixMarks="5-18"/>
-	 <cell nameRu="носослёзный канал" name="canalis nasolacrimalis" pixMarks="11-15"/>
-    </cell-->
-   </group>
-   <group nameRu="швы" name="suturae">
-    <cell nameRu="венечный шов" name="sutura coronalis" pixMarks="1-29, 2-33"/>
-    <cell nameRu="лямбдовидный шов" name="sutura lambdoidea" pixMarks="1-30"/>
-    <cell nameRu="чешуйчатый шов" name="sutura squamosa" pixMarks="1-31"/>
-    <cell nameRu="межверхнечелюстной шов" name="sutura intermaxillaris" pixMarks="2-38"/>
-    <cell nameRu="межносовой шов" name="sutura internasalis" pixMarks="2-35"/>
-    <cell nameRu="лобный шов" name="sutura frontalis" pixMarks="2-32"/>
-	<cell nameRu="срединный нёбный шов" name="sutura palatina mediana" pixMarks="5-2, 15-34"/>
-	<cell nameRu="поперечный нёбный шов" name="sutura palatina transversa" pixMarks="5-4, 15-35"/>
-    <cell nameRu="носо-верхнечелюстной шов" name="sutura nasomaxillaris" pixMarks="1-32, 2-36"/>
-    <cell nameRu="скуло-верхнечелюстной шов" name="sutura zygomaticomaxillaris" pixMarks="2-37"/>
-    <cell nameRu="лобно-верхнечелюстной шов" name="sutura frontomaxillaris"/>
-	<cell nameRu="клиновидно-лобный шов" name="sutura sphenoidosquamosa" pixMarks="1-33"/>
-    <cell nameRu="лобно-носовой шов" name="sutura frontonasalis" pixMarks="2-34"/>
-    <cell nameRu="клиновидно-чешуйчатый шов" name="sutura sphenoidosquamosa" pixMarks="1-34"/>
-    <cell nameRu="затылочно-сосцевидный шов" name="sutura occipitomastoidea" pixMarks="1-35"/>
-   </group>
-   <group nameRu="общие образования" name="communis">
-     <cell nameRu="нижний носовой ход" name="meatus nasi inferior" pixMarks="3-10"/>
-     <cell nameRu="рваное отверстие" name="foramen lacerum" pixMarks="4-27, 21-6, 22-6"/>
-	 <cell nameRu="клиновидно-нёбное отверстие" name="foramen sphenopalatina" pixMarks="11-24"/>
-	 <cell nameRu="крыловидно-нёбная ямка" name="fossa pterygopalatina" pixMarks="10-19, 11-22"/>
-     <cell nameRu="передняя черепная ямка" name="fossa cranii anterior" pixMarks="4-20"/>
-     <cell nameRu="средняя черепная ямка" name="fossa cranii media" pixMarks="4-9"/>
-     <cell nameRu="задняя черепная ямка" name="fossa cranii posterior" pixMarks="4-32"/>
-     <cell nameRu="диплоэ (губч. вещество)" name="diploe" pixMarks="4-33"/>
-	 <cell nameRu="скат" name="clivus" pixMarks="4-12, 21-48"/>
-	 <cell nameRu="хоаны" name="choanae" pixMarks="15-36"/>
-	 <cell nameRu="клиновидно-затылочный синхондроз" name="synchondrosis sphenooccipitalis" pixMarks="22-65"/>
-   </group>
+п»ї<?xml version='1.0' encoding='utf-8'?>
+<osteologia name="osteologia" nameRu="РѕСЃС‚РµРѕР»РѕРіРёСЏ" id="0">
+ <group name="columna vertebralis" nameRu="РїРѕР·РІРѕРЅРѕС‡РЅС‹Р№ СЃС‚РѕР»Р±" id="1"/>
+ <group name="cranium" nameRu="С‡РµСЂРµРї" id="626">
+  <group name="communis" nameRu="РѕР±С‰РёРµ РѕР±СЂР°Р·РѕРІР°РЅРёСЏ" id="1251">
+   <cell name="choanae" nameRu="С…РѕР°РЅС‹" id="1376" pixMarks="15-36"/>
+   <cell name="clivus" nameRu="СЃРєР°С‚" id="1401" pixMarks="4-12, 21-48"/>
+   <cell name="diploe" nameRu="РґРёРїР»РѕСЌ (РіСѓР±С‡. РІРµС‰РµСЃС‚РІРѕ)" id="1426" pixMarks="4-33"/>
+   <cell name="foramen lacerum" nameRu="СЂРІР°РЅРѕРµ РѕС‚РІРµСЂСЃС‚РёРµ" id="1451" pixMarks="4-27, 21-6, 22-6"/>
+   <cell name="foramen sphenopalatina" nameRu="РєР»РёРЅРѕРІРёРґРЅРѕ-РЅС‘Р±РЅРѕРµ РѕС‚РІРµСЂСЃС‚РёРµ" id="1476" pixMarks="11-24"/>
+   <cell name="fossa cranii anterior" nameRu="РїРµСЂРµРґРЅСЏСЏ С‡РµСЂРµРїРЅР°СЏ СЏРјРєР°" id="1501" pixMarks="4-20"/>
+   <cell name="fossa cranii media" nameRu="СЃСЂРµРґРЅСЏСЏ С‡РµСЂРµРїРЅР°СЏ СЏРјРєР°" id="1526" pixMarks="4-9"/>
+   <cell name="fossa cranii posterior" nameRu="Р·Р°РґРЅСЏСЏ С‡РµСЂРµРїРЅР°СЏ СЏРјРєР°" id="1551" pixMarks="4-32"/>
+   <cell name="fossa pterygopalatina" nameRu="РєСЂС‹Р»РѕРІРёРґРЅРѕ-РЅС‘Р±РЅР°СЏ СЏРјРєР°" id="1576" pixMarks="10-19, 11-22"/>
+   <cell name="meatus nasi inferior" nameRu="РЅРёР¶РЅРёР№ РЅРѕСЃРѕРІРѕР№ С…РѕРґ" id="1601" pixMarks="3-10"/>
+   <cell name="synchondrosis sphenooccipitalis" nameRu="РєР»РёРЅРѕРІРёРґРЅРѕ-Р·Р°С‚С‹Р»РѕС‡РЅС‹Р№ СЃРёРЅС…РѕРЅРґСЂРѕР·" id="1626" pixMarks="22-65"/>
   </group>
-  <group nameRu="позвоночный столб" name="columna vertebralis"/>
-  <group nameRu="грудина и рёбра" name="manubrium et costae"/>
-  <group nameRu="верхняя конечность" name="membrum superius">
-   <group nameRu="пояс" name="cingulum"/>
-   <group nameRu="свободная часть" name="liber"/>
+  <group name="neurocranium" nameRu="РјРѕР·РіРѕРІРѕР№ РѕС‚РґРµР»" id="1651">
+   <cell name="os ethmoidale" nameRu="СЂРµС€С‘С‚С‡Р°С‚Р°СЏ РєРѕСЃС‚СЊ" id="1801" pixMarks="1-16, 2-11, 10-17">
+    <cell name="cellulae (labyrinthus) ethmoidalis" nameRu="СЂРµС€С‘С‚С‡Р°С‚С‹Рµ СЏС‡РµР№РєРё (Р»Р°Р±РёСЂРёРЅС‚)" id="1826" pixMarks="3-4, 10-9, 20-3"/>
+    <cell name="concha nasalis media" nameRu="СЃСЂРµРґРЅСЏСЏ РЅРѕСЃРѕРІР°СЏ СЂР°РєРѕРІРёРЅР°" id="1831" pixMarks="2-23, 3-7, 5-7, 10-7, 20-4"/>
+    <cell name="concha nasalis superior" nameRu="РІРµСЂС…РЅСЏСЏ РЅРѕСЃРѕРІР°СЏ СЂР°РєРѕРІРёРЅР°" id="1836" pixMarks="3-6, 10-6"/>
+    <cell name="crista galli" nameRu="РїРµС‚СѓС€РёРЅС‹Р№ РіСЂРµР±РµРЅСЊ" id="1841" pixMarks="4-3, 10-3, 20-1"/>
+    <cell name="foramina ethmoidalis anterior et posterior" nameRu="РїРµСЂРµРґРЅРµРµ Рё Р·Р°РґРЅРµРµ СЂРµС€С‘С‚С‡Р°С‚С‹Рµ РѕС‚РІРµСЂСЃС‚РёСЏ" id="1846" pixMarks="11-12"/>
+    <cell name="lamina cribrosa" nameRu="СЂРµС€С‘С‚С‡Р°С‚Р°СЏ РїР»Р°СЃС‚РёРЅРєР°" id="1851" pixMarks="4-4, 20-2"/>
+    <cell name="lamina orbitalis" nameRu="РіР»Р°Р·РЅРёС‡РЅР°СЏ РїР»Р°СЃС‚РёРЅРєР°" id="1856" pixMarks="1-16, 11-13, 20-6"/>
+    <cell name="lamina perpendicularis" nameRu="РїРµСЂРїРµРЅРґРёРєСѓР»СЏСЂРЅР°СЏ РїР»Р°СЃС‚РёРЅРєР°" id="1861" pixMarks="20-5"/>
+    <cell name="processus uncinatus" nameRu="РєСЂСЋС‡РєРѕРІРёРґРЅС‹Р№ РѕС‚СЂРѕСЃС‚РѕРє" id="1866" pixMarks="10-10, 11-16"/>
+   </cell>
+   <cell name="os frontale" nameRu="Р»РѕР±РЅР°СЏ РєРѕСЃС‚СЊ" id="1871" pixMarks="1-1, 2-1, 3-3, 10-2">
+    <cell name="crista frontalis" nameRu="Р»РѕР±РЅС‹Р№ РіСЂРµР±РµРЅСЊ" id="1901" pixMarks="4-1, 26-15"/>
+    <cell name="facies orbitalis" nameRu="РіР»Р°Р·РЅРёС‡РЅР°СЏ РїРѕРІРµСЂС…РЅРѕСЃС‚СЊ" id="1906" pixMarks="26-9"/>
+    <cell name="facies sinus ethmoidales" nameRu="РїРѕРІРµСЂС…РЅРѕСЃС‚Рё СЂРµС€С‘С‚С‡Р°С‚С‹С… РїР°Р·СѓС…" id="1911" pixMarks="26-10"/>
+    <cell name="foramen caecum" nameRu="СЃР»РµРїРѕРµ РѕС‚РІРµСЂСЃС‚РёРµ" id="1916" pixMarks="4-2, 26-16"/>
+    <cell name="foramen inferior ossis ethmoidalis" nameRu="РЅРёР¶РЅРµРµ РѕС‚РІРµСЂСЃС‚РёРµ СЂРµС€С‘С‚С‡Р°С‚РѕР№ РєРѕСЃС‚Рё" id="1921" pixMarks="26-5"/>
+    <cell name="foramen superior ossis ethmoidalis" nameRu="РІРµСЂС…РЅРµРµ РѕС‚РІРµСЂСЃС‚РёРµ СЂРµС€С‘С‚С‡Р°С‚РѕР№ РєРѕСЃС‚Рё" id="1926" pixMarks="26-4"/>
+    <cell name="fossa glandula lacrimalis" nameRu="СЏРјРєР° СЃР»С‘Р·РЅРѕР№ Р¶РµР»РµР·С‹" id="1931" pixMarks="26-3"/>
+    <cell name="fossa trochlearis" nameRu="СЏРјРєР° С…СЂСЏС‰РµРІРѕРіРѕ Р±Р»РѕРєР°" id="1936" pixMarks="26-2"/>
+    <cell name="glabella" nameRu="РЅР°РґРїРµСЂРµРЅРѕСЃСЊРµ (РіР»Р°Р±РµР»Р»Р°)" id="1941" pixMarks="1-2, 2-2"/>
+    <cell name="impressio digitatae" nameRu="РїР°Р»СЊС†РµРІС‹Рµ РІРґР°РІР»РµРЅРёСЏ" id="1946" pixMarks="4-19"/>
+    <cell name="incisura ethmoidalis" nameRu="СЂРµС€С‘С‚С‡Р°С‚Р°СЏ РІС‹СЂРµР·РєР°" id="1951" pixMarks="26-11"/>
+    <cell name="incisura supraorbitalis" nameRu="РЅР°РґРіР»Р°Р·РЅРёС‡РЅР°СЏ РІС‹СЂРµР·РєР°" id="1956" pixMarks="2-4, 26-7"/>
+    <cell name="margo parietalis" nameRu="С‚РµРјРµРЅРЅРѕР№ РєСЂР°Р№" id="1961" pixMarks="26-12"/>
+    <cell name="margo supraorbitalis" nameRu="РЅР°РґРіР»Р°Р·РЅРёС‡РЅС‹Р№ РєСЂР°Р№" id="1966" pixMarks="1-3, 2-3, 26-8"/>
+    <cell name="processus zygomaticus" nameRu="СЃРєСѓР»РѕРІРѕР№ РѕС‚СЂРѕСЃС‚РѕРє" id="1971" pixMarks="26-18"/>
+    <cell name="sinus frontalis" nameRu="Р»РѕР±РЅР°СЏ РїР°Р·СѓС…Р°" id="1976" pixMarks="3-27, 10-1, 11-10"/>
+    <cell name="spina nasalis" nameRu="РЅРѕСЃРѕРІР°СЏ РѕСЃС‚СЊ" id="1981" pixMarks="26-17"/>
+    <cell name="spina trochlearis" nameRu="Р±Р»РѕРєРѕРІС‹Р№ (С…СЂСЏС‰РµРІРѕР№) С€РёРї" id="1986" pixMarks="2-5"/>
+    <cell name="sulcus sinus sagittalis superioris" nameRu="Р±РѕСЂРѕР·РґР° РІРµСЂС…РЅРµРіРѕ СЃР°РіРёС‚С‚Р°Р»СЊРЅРѕРіРѕ СЃРёРЅСѓСЃР°" id="1991" pixMarks="26-13"/>
+   </cell>
+   <cell name="os occipitale" nameRu="Р·Р°С‚С‹Р»РѕС‡РЅР°СЏ РєРѕСЃС‚СЊ" id="1996" pixMarks="1-9, 9-38, 11-1">
+    <cell name="canalis condylaris" nameRu="РјС‹С‰РµР»РєРѕРІС‹Р№ РєР°РЅР°Р»" id="2021" pixMarks="5-18, 21-50, 22-50, 25-33"/>
+    <cell name="canalis hypoglossalis" nameRu="РїРѕРґСЉСЏР·С‹С‡РЅС‹Р№ РєР°РЅР°Р»" id="2026" pixMarks="3-17, 4-30, 9-F, 11-5, 25-28"/>
+    <cell name="condylus occipitalis" nameRu="Р·Р°С‚С‹Р»РѕС‡РЅС‹Р№ РјС‹С‰РµР»РѕРє" id="2031" pixMarks="1-11, 3-18, 5-17, 11-6, 22-58, 25-43"/>
+    <cell name="crista occipitalis externa" nameRu="РЅР°СЂСѓР¶РЅС‹Р№ Р·Р°С‚С‹Р»РѕС‡РЅС‹Р№ РіСЂРµР±РµРЅСЊ" id="2036" pixMarks="22-45"/>
+    <cell name="crista occipitalis interna" nameRu="РІРЅСѓС‚СЂРµРЅРЅРёР№ Р·Р°С‚С‹Р»РѕС‡РЅС‹Р№ РіСЂРµР±РµРЅСЊ" id="2041" pixMarks="4-16, 21-56"/>
+    <cell name="foramen arteriae occipitalis" nameRu="РѕС‚РІРµСЂСЃС‚РёРµ Р·Р°С‚С‹Р»РѕС‡РЅРѕР№ Р°СЂС‚РµСЂРёРё" id="2046" pixMarks="5-16"/>
+    <cell name="foramen jugulare" nameRu="СЏСЂРµРјРЅРѕРµ РѕС‚РІРµСЂСЃС‚РёРµ" id="2051" pixMarks="4-14, 5-15, 9-E, 22-62"/>
+    <cell name="foramen occipitale magnum" nameRu="Р±РѕР»СЊС€РѕРµ Р·Р°С‚С‹Р»РѕС‡РЅРѕРµ РѕС‚РІРµСЂСЃС‚РёРµ" id="2056" pixMarks="4-31, 5-30, 21-51, 22-51, 25-35"/>
+    <cell name="linea nuchae inferior" nameRu="РЅРёР¶РЅСЏСЏ РІС‹Р№РЅР°СЏ Р»РёРЅРёСЏ" id="2061" pixMarks="5-28, 22-63, 25-41"/>
+    <cell name="linea nuchae superior" nameRu="РІРµСЂС…РЅСЏСЏ РІС‹Р№РЅР°СЏ Р»РёРЅРёСЏ" id="2066" pixMarks="5-26, 22-60"/>
+    <cell name="protuberantia occipitalis externa" nameRu="РЅР°СЂСѓР¶РЅС‹Р№ Р·Р°С‚С‹Р»РѕС‡РЅС‹Р№ РІС‹СЃС‚СѓРї" id="2071" pixMarks="1-10, 5-20, 22-61, 25-39"/>
+    <cell name="protuberantia occipitalis interna" nameRu="РІРЅСѓС‚СЂРµРЅРЅРёР№ Р·Р°С‚С‹Р»РѕС‡РЅС‹Р№ РІС‹СЃС‚СѓРї" id="2076" pixMarks="4-18, 21-53"/>
+    <cell name="sulcus sinus sagittalis superior" nameRu="Р±РѕСЂРѕР·РґР° РІРµСЂС…РЅРµРіРѕ СЃР°РіРёС‚С‚Р°Р»СЊРЅРѕРіРѕ СЃРёРЅСѓСЃР°" id="2081" pixMarks="21-55"/>
+    <cell name="sulcus sinus sigmoidei" nameRu="Р±РѕСЂРѕР·РґР° СЃРёРіРјРѕРІРёРґРЅРѕРіРѕ СЃРёРЅСѓСЃР°" id="2086" pixMarks="3-16"/>
+    <cell name="sulcus sinus transversi" nameRu="Р±РѕСЂРѕР·РґР° РїРѕРїРµСЂРµС‡РЅРѕРіРѕ СЃРёРЅСѓСЃР°" id="2091" pixMarks="4-17, 21-54"/>
+    <cell name="tuberculum jugularis" nameRu="СЏСЂРµРјРЅС‹Р№ Р±СѓРіРѕСЂРѕРє" id="2096" pixMarks="21-49"/>
+    <cell name="tuberculum pharyngeum" nameRu="РіР»РѕС‚РѕС‡РЅС‹Р№ Р±СѓРіРѕСЂРѕРє" id="2101" pixMarks="5-25, 22-64, 25-44"/>
+   </cell>
+   <cell name="os parietale" nameRu="С‚РµРјРµРЅРЅР°СЏ РєРѕСЃС‚СЊ" id="2106" pixMarks="1-4, 2-6">
+    <cell name="angulus ossis sphenoidalis" nameRu="СѓРіРѕР» РєР»РёРЅРѕРІРёРґРЅРѕР№ РєРѕСЃС‚Рё" id="2131" pixMarks="27-12"/>
+    <cell name="foramen parietalis" nameRu="С‚РµРјРµРЅРЅРѕРµ РѕС‚РІРµСЂСЃС‚РёРµ" id="2136" pixMarks="27-6"/>
+    <cell name="linea temporalis superior" nameRu="РІРµСЂС…РЅСЏСЏ РІРёСЃРѕС‡РЅР°СЏ Р»РёРЅРёСЏ" id="2141" pixMarks="27-5"/>
+    <cell name="margo frontale" nameRu="Р»РѕР±РЅС‹Р№ РєСЂР°Р№" id="2146" pixMarks="27-10"/>
+    <cell name="margo occipitalis" nameRu="Р·Р°С‚С‹Р»РѕС‡РЅС‹Р№ РєСЂР°Р№" id="2151" pixMarks="27-9"/>
+    <cell name="margo sagittalis" nameRu="СЃР°РіРёС‚С‚Р°Р»СЊРЅС‹Р№ РєСЂР°Р№" id="2156" pixMarks="27-8"/>
+    <cell name="margo squamosus" nameRu="С‡РµС€СѓР№С‡Р°С‚С‹Р№ РєСЂР°Р№" id="2161" pixMarks="27-11"/>
+    <cell name="sulci artetia meningea mediae" nameRu="Р±РѕСЂРѕР·РґС‹ СЃСЂРµРґРЅРµР№ РјРµРЅРёРЅРіРµР°Р»СЊРЅРѕР№ Р°СЂС‚РµСЂРёРё" id="2166" pixMarks="3-13, 27-13"/>
+    <cell name="tuber parietale" nameRu="С‚РµРјРµРЅРЅРѕР№ Р±СѓРіРѕСЂ" id="2171" pixMarks="27-7"/>
+   </cell>
+   <cell name="os sphenoidale" nameRu="РєР»РёРЅРѕРІРёРґРЅР°СЏ РєРѕСЃС‚СЊ" id="2176" pixMarks="1-12, 2-12, 9-35, 22-17">
+    <cell name="ala major" nameRu="Р±РѕР»СЊС€РѕРµ РєСЂС‹Р»Рѕ" id="2201" pixMarks="1-12, 2-12, 21-1, 22-1, 24-1"/>
+    <cell name="ala minor" nameRu="РјР°Р»РѕРµ РєСЂС‹Р»Рѕ" id="2206" pixMarks="2-13, 4-5, 21-2, 24-2"/>
+    <cell name="canalis opticus" nameRu="Р·СЂРёС‚РµР»СЊРЅС‹Р№ РєР°РЅР°Р»" id="2211" pixMarks="4-23, 11-11, 21-11, 24-9"/>
+    <cell name="canalis pterygoideus" nameRu="РєСЂС‹Р»РѕРІРёРґРЅС‹Р№ РєР°РЅР°Р»" id="2216" pixMarks="5-11, 9-A, 24-15"/>
+    <cell name="crista infratemporalis" nameRu="РїРѕРґРІРёСЃРѕС‡РЅС‹Р№ РіСЂРµР±РµРЅСЊ" id="2221" pixMarks="1-13, 22-16"/>
+    <cell name="crista sphenoidalis" nameRu="РєР»РёРЅРѕРІРёРґРЅС‹Р№ РіСЂРµР±РµРЅСЊ" id="2226" pixMarks="24-20"/>
+    <cell name="dorsum sellae" nameRu="СЃРїРёРЅРєР° С‚СѓСЂРµС†РєРѕРіРѕ СЃРµРґР»Р°" id="2231" pixMarks="3-14, 4-26, 11-8, 21-10, 24-8"/>
+    <cell name="facies cerebralis" nameRu="РјРѕР·РіРѕРІР°СЏ РїРѕРІРµСЂС…РЅРѕСЃС‚СЊ" id="2236" pixMarks="24-3"/>
+    <cell name="facies orbitalis" nameRu="РіР»Р°Р·РЅРёС‡РЅР°СЏ РїРѕРІРµСЂС…РЅРѕСЃС‚СЊ" id="2241" pixMarks="24-19"/>
+    <cell name="fissura orbitalis inferior" nameRu="РЅРёР¶РЅСЏСЏ РіР»Р°Р·РЅРёС‡РЅР°СЏ С‰РµР»СЊ" id="2246" pixMarks="2-15, 5-6"/>
+    <cell name="fissura orbitalis superior" nameRu="РІРµСЂС…РЅСЏСЏ РіР»Р°Р·РЅРёС‡РЅР°СЏ С‰РµР»СЊ" id="2251" pixMarks="2-14, 4-6, 24-23"/>
+    <cell name="foramen ovale" nameRu="РѕРІР°Р»СЊРЅРѕРµ РѕС‚РІРµСЂСЃС‚РёРµ" id="2256" pixMarks="4-10, 5-9, 9-B, 21-4, 22-4, 24-6"/>
+    <cell name="foramen rotundum" nameRu="РєСЂСѓРіР»РѕРµ РѕС‚РІРµСЂСЃС‚РёРµ" id="2261" pixMarks="4-7, 11-21, 21-3, 24-4"/>
+    <cell name="foramen spinosum" nameRu="РѕСЃС‚РёСЃС‚РѕРµ РѕС‚РІРµСЂСЃС‚РёРµ" id="2266" pixMarks="4-11, 21-5, 22-5"/>
+    <cell name="hamulus pterygoideus" nameRu="РєСЂС‹Р»РѕРІРёРґРЅС‹Р№ РєСЂСЋС‡РѕРє" id="2271" pixMarks="10-24, 22-15, 24-18"/>
+    <cell name="incisura pterygoidea" nameRu="РєСЂС‹Р»РѕРІРёРґРЅР°СЏ РІС‹СЂРµР·РєР°" id="2276" pixMarks="24-17"/>
+    <cell name="lamina lateralis processus pterygoidei" nameRu="Р»Р°С‚РµСЂР°Р»СЊРЅР°СЏ РїР»Р°СЃС‚РёРЅРєР° РєСЂС‹Р»РѕРІРёРґРЅРѕРіРѕ РѕС‚СЂРѕСЃС‚РєР°" id="2281" pixMarks="1-14, 3-20, 5-22, 10-21, 11-7, 15-10, 22-14, 24-16"/>
+    <cell name="lamina medialis processus pterygoidei" nameRu="РјРµРґРёР°Р»СЊРЅР°СЏ РїР»Р°СЃС‚РёРЅРєР° РєСЂС‹Р»РѕРІРёРґРЅРѕРіРѕ РѕС‚СЂРѕСЃС‚РєР°" id="2286" pixMarks="3-21, 5-23, 10-22, 15-11, 22-13, 24-22"/>
+    <cell name="processus clinoideus anterior" nameRu="РїРµСЂРµРґРЅРёР№ РЅР°РєР»РѕРЅС‘РЅРЅС‹Р№ РѕС‚СЂРѕСЃС‚РѕРє" id="2291" pixMarks="3-2, 4-22, 21-7, 24-5"/>
+    <cell name="processus clinoideus posterior" nameRu="Р·Р°РґРЅРёР№ РЅР°РєР»РѕРЅС‘РЅРЅС‹Р№ РѕС‚СЂРѕСЃС‚РѕРє" id="2296" pixMarks="4-25, 21-10, 24-14"/>
+    <cell name="rostrum sphenoidale" nameRu="РєР»РёРЅРѕРІРёРґРЅС‹Р№ РєР»СЋРІ" id="2301" pixMarks="22-12, 24-21"/>
+    <cell name="sella turcica (fossa hypophysialis) " nameRu="С‚СѓСЂРµС†РєРѕРµ СЃРµРґР»Рѕ (РіРёРїРѕС„РёР·Р°СЂРЅР°СЏ СЏРјРєР°)" id="2306" pixMarks="3-1, 4-24, 11-9, 21-8"/>
+    <cell name="sinus sphenoidalis" nameRu="РєР»РёРЅРѕРІРёРґРЅР°СЏ РїР°Р·СѓС…Р°" id="2311" pixMarks="3-5, 10-5, 24-13"/>
+    <cell name="sulcus caroticus" nameRu="Р±РѕСЂРѕР·РґР° СЃРѕРЅРЅРѕР№ Р°СЂС‚РµСЂРёРё" id="2316" pixMarks="4-8"/>
+    <cell name="sulcus chiasmatis" nameRu="Р±РѕСЂРѕР·РґР° РїРµСЂРµРєСЂС‘СЃС‚Р°" id="2321" pixMarks="4-21"/>
+    <cell name="sulcus tubae auditivae" nameRu="Р±РѕСЂРѕР·РґР° СЃР»СѓС…РѕРІРѕР№ С‚СЂСѓР±С‹" id="2326" pixMarks="5-10"/>
+   </cell>
+   <cell name="os temporale" nameRu="РІРёСЃРѕС‡РЅР°СЏ РєРѕСЃС‚СЊ" id="2331" pixMarks="1-5, 2-7, 9-37">
+    <cell name="aqueductus vestibuli" nameRu="РІРѕРґРѕРїСЂРѕРІРѕРґ РїСЂРµРґРґРІРµСЂРёСЏ" id="2356" pixMarks="23-41"/>
+    <cell name="canaliculus cochlea" nameRu="РєР°РЅР°Р»РµС† СѓР»РёС‚РєРё" id="2361" pixMarks="23-40"/>
+    <cell name="canaliculus mastoideus" nameRu="СЃРѕСЃС†РµРІРёРґРЅС‹Р№ РєР°РЅР°Р»РµС†" id="2366" pixMarks="22-32"/>
+    <cell name="canalis caroticus" nameRu="СЃРѕРЅРЅС‹Р№ РєР°РЅР°Р»" id="2371" pixMarks="5-13, 9-C, 11-4, 21-19, 22-19"/>
+    <cell name="canalis musculotubarius" nameRu="РјС‹С€РµС‡РЅРѕ-С‚СЂСѓР±РЅС‹Р№ РєР°РЅР°Р»" id="2376" pixMarks="22-28"/>
+    <cell name="eminentia arcuata" nameRu="РґСѓРіРѕРѕР±СЂР°Р·РЅРѕРµ РІРѕР·РІС‹С€РµРЅРёРµ" id="2381" pixMarks="21-21, 23-21"/>
+    <cell name="fissura petrotympanica" nameRu="РєР°РјРµРЅРёСЃС‚Рѕ-Р±Р°СЂР°Р±Р°РЅРЅР°СЏ С‰РµР»СЊ" id="2386" pixMarks="22-27, 23-27"/>
+    <cell name="foramen mastoideus" nameRu="СЃРѕСЃС†РµРІРёРґРЅРѕРµ РѕС‚РІРµСЂСЃС‚РёРµ" id="2391" pixMarks="23-23"/>
+    <cell name="foramen stylomastoideus" nameRu="С€РёР»РѕСЃРѕСЃС†РµРІРёРґРЅРѕРµ РѕС‚РІРµСЂСЃС‚РёРµ" id="2396" pixMarks="5-14, 9-D, 22-31"/>
+    <cell name="fossa jugularis" nameRu="СЏСЂРµРјРЅР°СЏ СЏРјРєР°" id="2401" pixMarks="22-33"/>
+    <cell name="fossa mandibularis" nameRu="РЅРёР¶РЅРµС‡РµР»СЋСЃС‚РЅР°СЏ СЏРјРєР°" id="2406" pixMarks="5-24, 22-26, 23-26"/>
+    <cell name="hiatus canalis n. petrosi majoris" nameRu="С‰РµР»СЊ РєР°РЅР°Р»Р° Р±РѕР»СЊС€РѕРіРѕ РєР°РјРµРЅРёСЃС‚РѕРіРѕ РЅРµСЂРІР°" id="2411" pixMarks="4-28, 21-20"/>
+    <cell name="impressio n. trigemini" nameRu="РІРґР°РІР»РµРЅРёРµ С‚СЂРѕР№РЅРёС‡РЅРѕРіРѕ РЅРµСЂРІР°" id="2416" pixMarks="23-44"/>
+    <cell name="incisura mastoidea" nameRu="СЃРѕСЃС†РµРІРёРґРЅР°СЏ РІС‹СЂРµР·РєР°" id="2421" pixMarks="5-29, 22-35"/>
+    <cell name="margo occipitalis" nameRu="Р·Р°С‚С‹Р»РѕС‡РЅС‹Р№ РєСЂР°Р№" id="2426" pixMarks="23-39"/>
+    <cell name="margo parietalis" nameRu="С‚РµРјРµРЅРЅРѕР№ РєСЂР°Р№" id="2431" pixMarks="23-37"/>
+    <cell name="margo sphenoidalis" nameRu="РєР»РёРЅРѕРІРёРґРЅС‹Р№ РєСЂР°Р№" id="2436" pixMarks="23-38"/>
+    <cell name="meatus acusticus externus" nameRu="РЅР°СЂСѓР¶РЅС‹Р№ СЃР»СѓС…РѕРІРѕР№ РїСЂРѕС…РѕРґ" id="2441" pixMarks="1-8, 22-29, 23-29"/>
+    <cell name="meatus acusticus internus" nameRu="РІРЅСѓС‚СЂРµРЅРЅРёР№ СЃР»СѓС…РѕРІРѕР№ РїСЂРѕС…РѕРґ" id="2446" pixMarks="3-15, 4-29, 11-3, 23-24"/>
+    <cell name="pars petrosa" nameRu="РєР°РјРµРЅРёСЃС‚Р°СЏ С‡Р°СЃС‚СЊ" id="2451" pixMarks="11-2"/>
+    <cell name="pars squamosa" nameRu="С‡РµС€СѓР№С‡Р°С‚Р°СЏ С‡Р°СЃС‚СЊ" id="2456" pixMarks="2-7, 21-18, 23-18"/>
+    <cell name="pars tympanica" nameRu="Р±Р°СЂР°Р±Р°РЅРЅР°СЏ С‡Р°СЃС‚СЊ" id="2461" pixMarks="1-8, 23-43"/>
+    <cell name="processus mastoideus" nameRu="СЃРѕСЃС†РµРІРёРґРЅС‹Р№ РѕС‚СЂРѕСЃС‚РѕРє" id="2466" pixMarks="1-7, 5-27, 22-34, 23-34"/>
+    <cell name="processus styloideus" nameRu="С€РёР»РѕРІРёРґРЅС‹Р№ РѕС‚СЂРѕСЃС‚РѕРє" id="2471" pixMarks="5-12, 22-30"/>
+    <cell name="processus zygomaticus" nameRu="СЃРєСѓР»РѕРІРѕР№ РѕС‚СЂРѕСЃС‚РѕРє" id="2476" pixMarks="1-6, 21-25, 22-25, 23-25"/>
+    <cell name="sulci artetia meningea mediae" nameRu="Р±РѕСЂРѕР·РґС‹ СЃСЂРµРґРЅРµР№ РјРµРЅРёРЅРіРµР°Р»СЊРЅРѕР№ Р°СЂС‚РµСЂРёРё" id="2481" pixMarks="23-36"/>
+    <cell name="sulcus sinus petrosi superioris" nameRu="Р±РѕСЂРѕР·РґР° РІРµСЂС…РЅРµРіРѕ РєР°РјРµРЅРёСЃС‚РѕРіРѕ СЃРёРЅСѓСЃР°" id="2486" pixMarks="4-13, 23-47"/>
+    <cell name="sulcus sinus sigmoidei" nameRu="Р±РѕСЂРѕР·РґР° СЃРёРіРјРѕРІРёРґРЅРѕРіРѕ СЃРёРЅСѓСЃР°" id="2491" pixMarks="3-16, 4-15, 21-22, 23-22"/>
+    <cell name="tuberculum articulare" nameRu="СЃСѓСЃС‚Р°РІРЅРѕР№ Р±СѓРіРѕСЂРѕРє" id="2496" pixMarks="1-6, 22-45, 23-45"/>
+   </cell>
   </group>
-  <group nameRu="нижняя конечность" name="membrum inferius">
-   <group nameRu="пояс" name="cingulum"/>
-   <group nameRu="свободная часть" name="liber"/>
+  <group name="splanchnocranium" nameRu="Р»РёС†РµРІРѕР№ РѕС‚РґРµР»" id="2501">
+   <cell name="concha nasalis inferior" nameRu="РЅРёР¶РЅСЏСЏ РЅРѕСЃРѕРІР°СЏ СЂР°РєРѕРІРёРЅР°" id="2626" pixMarks="2-24, 3-9, 11-17">
+    <cell name="pars anterior" nameRu="РїРµСЂРµРґРЅСЏСЏ С‡Р°СЃС‚СЊ" id="2651" pixMarks="12-2"/>
+    <cell name="pars posterior" nameRu="Р·Р°РґРЅСЏСЏ С‡Р°СЃС‚СЊ" id="2656" pixMarks="12-7"/>
+    <cell name="processus ethmoidalis" nameRu="СЂРµС€С‘С‚С‡Р°С‚С‹Р№ РѕС‚СЂРѕСЃС‚РѕРє" id="2661" pixMarks="12-1"/>
+    <cell name="processus lacrimalis" nameRu="СЃР»С‘Р·РЅС‹Р№ РѕС‚СЂРѕСЃС‚РѕРє" id="2666" pixMarks="12-6"/>
+    <cell name="processus maxillaris" nameRu="РІРµСЂС…РЅРµС‡РµР»СЋСЃС‚РЅРѕР№ РѕС‚СЂРѕСЃС‚РѕРє" id="2671" pixMarks="11-17, 12-8"/>
+   </cell>
+   <cell name="mandibula" nameRu="РЅРёР¶РЅСЏСЏ С‡РµР»СЋСЃС‚СЊ" id="2676" pixMarks="1-23, 2-30">
+    <cell name="angulus mandibulae" nameRu="СѓРіРѕР» РЅРёР¶РЅРµР№ С‡РµР»СЋСЃС‚Рё" id="2701" pixMarks="1-28, 18-17"/>
+    <cell name="corpus mandibulae" nameRu="С‚РµР»Рѕ РЅРёР¶РЅРµР№ С‡РµР»СЋСЃС‚Рё" id="2706" pixMarks="2-26, 18-18"/>
+    <cell name="foramen mandibulae" nameRu="РѕС‚РІРµСЂСЃС‚РёРµ РЅРёР¶РЅРµР№ С‡РµР»СЋСЃС‚Рё" id="2711" pixMarks="3-23, 18-26"/>
+    <cell name="foramen mentale" nameRu="РїРѕРґР±РѕСЂРѕРґРѕС‡РЅРѕРµ РѕС‚РІРµСЂСЃС‚РёРµ" id="2716" pixMarks="1-26, 2-28"/>
+    <cell name="fossa mandibularis" nameRu="РЅРёР¶РЅРµС‡РµР»СЋСЃС‚РЅР°СЏ СЏРјРєР°" id="2721" pixMarks="18-14"/>
+    <cell name="fossa submandibularis" nameRu="РїРѕРґРЅРёР¶РЅРµС‡РµР»СЋСЃС‚РЅР°СЏ СЏРјРєР°" id="2726" pixMarks="3-26, 18-30"/>
+    <cell name="linea mylohyoidea" nameRu="С‡РµР»СЋСЃС‚РЅРѕ-РїРѕРґСЉСЏР·С‹С‡РЅР°СЏ Р»РёРЅРёСЏ" id="2731" pixMarks="3-25, 18-29"/>
+    <cell name="lingula mandibulae" nameRu="СЏР·С‹С‡РѕРє РЅРёР¶РЅРµР№ С‡РµР»СЋСЃС‚Рё" id="2736" pixMarks="3-22, 18-27"/>
+    <cell name="processus alveolaris" nameRu="Р°Р»СЊРІРµРѕР»СЏСЂРЅС‹Р№ РѕС‚СЂРѕСЃС‚РѕРє" id="2741" pixMarks="2-29, 18-20"/>
+    <cell name="processus articularis (condylaris)" nameRu="СЃСѓСЃС‚Р°РІРЅРѕР№ (РјС‹С‰РµР»РєРѕРІС‹Р№) РѕС‚СЂРѕСЃС‚РѕРє" id="2746" pixMarks="1-25, 3-19, 18-24"/>
+    <cell name="processus coronoideus" nameRu="РІРµРЅРµС‡РЅС‹Р№ РѕС‚СЂРѕСЃС‚РѕРє" id="2751" pixMarks="18-19"/>
+    <cell name="protuberantia mentalis" nameRu="РїРѕРґР±РѕСЂРѕРґРѕС‡РЅРѕРµ РІРѕР·РІС‹С€РµРЅРёРµ" id="2756" pixMarks="1-27, 2-31, 18-23"/>
+    <cell name="ramus mandibulae" nameRu="РІРµС‚РІСЊ РЅРёР¶РЅРµР№ С‡РµР»СЋСЃС‚Рё" id="2761" pixMarks="2-27, 18-15"/>
+    <cell name="spinae mentalis" nameRu="РїРѕРґР±РѕСЂРѕРґРѕС‡РЅС‹Рµ РѕСЃС‚Рё" id="2766" pixMarks="3-12"/>
+    <cell name="sulcus mylohyoideus" nameRu="С‡РµР»СЋСЃС‚РЅРѕ-РїРѕРґСЉСЏР·С‹С‡РЅР°СЏ Р±РѕСЂРѕР·РґР°" id="2771" pixMarks="3-24, 18-28"/>
+   </cell>
+   <cell name="maxilla" nameRu="РІРµСЂС…РЅСЏСЏ С‡РµР»СЋСЃС‚СЊ" id="2776" pixMarks="1-19, 2-20, 9-32">
+    <cell name="canalis incisivus" nameRu="СЂРµР·С†РѕРІС‹Р№ РєР°РЅР°Р»" id="2801" pixMarks="5-1, 7-30, 15-32"/>
+    <cell name="corpus maxillae" nameRu="С‚РµР»Рѕ РІРµСЂС…РЅРµР№ С‡РµР»СЋСЃС‚Рё" id="2806" pixMarks="1-19, 2-20"/>
+    <cell name="crista lacrimalis anterior" nameRu="РїРµСЂРµРґРЅРёР№ СЃР»С‘Р·РЅС‹Р№ РіСЂРµР±РµРЅСЊ" id="2811" pixMarks="6-19"/>
+    <cell name="facies anterior" nameRu="РїРµСЂРµРґРЅСЏСЏ РїРѕРІРµСЂС…РЅРѕСЃС‚СЊ" id="2816"/>
+    <cell name="facies infratemporalis" nameRu="РїРѕРґРІРёСЃРѕС‡РЅР°СЏ РїРѕРІРµСЂС…РЅРѕСЃС‚СЊ" id="2821"/>
+    <cell name="facies nasalis" nameRu="РЅРѕСЃРѕРІР°СЏ РїРѕРІРµСЂС…РЅРѕСЃС‚СЊ" id="2826"/>
+    <cell name="facies orbitalis" nameRu="РіР»Р°Р·РЅРёС‡РЅР°СЏ РїРѕРІРµСЂС…РЅРѕСЃС‚СЊ" id="2831" pixMarks="6-16"/>
+    <cell name="foramen infraorbitalis" nameRu="РїРѕРґРіР»Р°Р·РЅРёС‡РЅРѕРµ РѕС‚РІРµСЂСЃС‚РёРµ" id="2836" pixMarks="2-18, 6-17"/>
+    <cell name="fossa canina" nameRu="РєР»С‹РєРѕРІР°СЏ СЏРјРєР°" id="2841" pixMarks="6-20"/>
+    <cell name="hiatus maxillaris" nameRu="РІРµСЂС…РЅРµС‡РµР»СЋСЃС‚РЅР°СЏ С‰РµР»СЊ" id="2846" pixMarks="7-24, 10-11, 11-25"/>
+    <cell name="juga alveolaria" nameRu="Р°Р»СЊРІРµРѕР»СЏСЂРЅС‹Рµ РІРѕР·РІС‹С€РµРЅРёСЏ" id="2851" pixMarks="6-23"/>
+    <cell name="margo infraorbitalis" nameRu="РїРѕРґРіР»Р°Р·РЅРёС‡РЅС‹Р№ РєСЂР°Р№" id="2856"/>
+    <cell name="processus alveolaris" nameRu="Р°Р»СЊРІРµРѕР»СЏСЂРЅС‹Р№ РѕС‚СЂРѕСЃС‚РѕРє" id="2861" pixMarks="1-20, 2-21, 6-21, 7-16, 10-14, 11-20"/>
+    <cell name="processus frontalis" nameRu="Р»РѕР±РЅС‹Р№ РѕС‚СЂРѕСЃС‚РѕРє" id="2866" pixMarks="1-21, 2-17, 6-13, 7-14, 10-8"/>
+    <cell name="processus palatinus" nameRu="РЅС‘Р±РЅС‹Р№ РѕС‚СЂРѕСЃС‚РѕРє" id="2871" pixMarks="5-3, 7-17, 15-23"/>
+    <cell name="processus zygomaticus" nameRu="СЃРєСѓР»РѕРІРѕР№ РѕС‚СЂРѕСЃС‚РѕРє" id="2876" pixMarks="2-19, 6-18"/>
+    <cell name="sinus maxillaris" nameRu="РІРµСЂС…РЅРµС‡РµР»СЋСЃС‚РЅР°СЏ РїР°Р·СѓС…Р°" id="2881" pixMarks="10-20, 11-18"/>
+    <cell name="spina nasalis anterior" nameRu="РїРµСЂРµРґРЅСЏСЏ РЅРѕСЃРѕРІР°СЏ РѕСЃС‚СЊ" id="2886" pixMarks="1-22, 3-11, 6-22, 7-18, 11-19"/>
+    <cell name="sulcus infraorbitalis" nameRu="РїРѕРґРіР»Р°Р·РЅРёС‡РЅР°СЏ Р±РѕСЂРѕР·РґР°" id="2891" pixMarks="6-15"/>
+    <cell name="sulcus lacrimalis" nameRu="СЃР»С‘Р·РЅР°СЏ Р±РѕСЂРѕР·РґР°" id="2896" pixMarks="6-24, 7-26"/>
+    <cell name="tuber maxillae" nameRu="Р±СѓРіРѕСЂ РІРµСЂС…РЅРµР№ С‡РµР»СЋСЃС‚Рё" id="2901" pixMarks="6-25, 11-23"/>
+   </cell>
+   <cell name="os hyoideum" nameRu="РїРѕРґСЉСЏР·С‹С‡РЅР°СЏ РєРѕСЃС‚СЊ" id="2906">
+    <cell name="cornu major" nameRu="Р±РѕР»СЊС€РѕР№ СЂРѕРі" id="2931" pixMarks="19-1"/>
+    <cell name="cornu minor" nameRu="РјР°Р»С‹Р№ СЂРѕРі" id="2936" pixMarks="19-2"/>
+    <cell name="corpus ossis hyoidei" nameRu="С‚РµР»Рѕ РїРѕРґСЉСЏР·С‹С‡РЅРѕР№ РєРѕСЃС‚Рё" id="2941" pixMarks="19-3"/>
+   </cell>
+   <cell name="os lacrimale" nameRu="СЃР»С‘Р·РЅР°СЏ РєРѕСЃС‚СЊ" id="2946" pixMarks="1-17, 2-9, 10-18">
+    <cell name="crista lacrimalis posterior" nameRu="Р·Р°РґРЅРёР№ СЃР»С‘Р·РЅС‹Р№ РіСЂРµР±РµРЅСЊ" id="2971" pixMarks="2-10, 8-13"/>
+    <cell name="fossa sacci lacrimalis" nameRu="СЏРјРєР° СЃР»С‘Р·РЅРѕРіРѕ РјРµС€РєР°" id="2976" pixMarks="8-14"/>
+    <cell name="hamulus lacrimalis" nameRu="СЃР»С‘Р·РЅС‹Р№ РєСЂСЋС‡РѕРє" id="2981" pixMarks="8-15"/>
+    <cell name="sulcus lacrimalis" nameRu="СЃР»С‘Р·РЅР°СЏ Р±РѕСЂРѕР·РґР°" id="2986" pixMarks="8-12"/>
+   </cell>
+   <cell name="os nasale" nameRu="РЅРѕСЃРѕРІР°СЏ РєРѕСЃС‚СЊ" id="2991" pixMarks="1-15, 2-8, 10-4, 11-4">
+    <cell name="foramina nasales" nameRu="РЅРѕСЃРѕРІС‹Рµ РѕС‚РІРµСЂСЃС‚РёСЏ" id="3016" pixMarks="17-18"/>
+   </cell>
+   <cell name="os palatinum" nameRu="РЅС‘Р±РЅР°СЏ РєРѕСЃС‚СЊ" id="3021" pixMarks="9-33, 10-12">
+    <cell name="crista conchalis" nameRu="СЂР°РєРѕРІРёРЅРЅС‹Р№ РіСЂРµР±РµРЅСЊ" id="3046" pixMarks="14-11"/>
+    <cell name="crista nasalis" nameRu="РЅРѕСЃРѕРІРѕР№ РіСЂРµР±РµРЅСЊ" id="3051" pixMarks="14-12"/>
+    <cell name="foramen palatina major" nameRu="Р±РѕР»СЊС€РѕРµ РЅС‘Р±РЅРѕРµ РѕС‚РІРµСЂСЃС‚РёРµ" id="3056" pixMarks="10-13, 15-18"/>
+    <cell name="foramen palatina minor" nameRu="РјР°Р»РѕРµ РЅС‘Р±РЅРѕРµ РѕС‚РІРµСЂСЃС‚РёРµ" id="3061" pixMarks="15-17"/>
+    <cell name="incisura sphenopalatina" nameRu="РєР»РёРЅРѕРІРёРґРЅРѕ-РЅС‘Р±РЅР°СЏ РІС‹СЂРµР·РєР°" id="3066" pixMarks="14-9"/>
+    <cell name="lamina horizontalis" nameRu="РіРѕСЂРёР·РѕРЅС‚Р°Р»СЊРЅР°СЏ РїР»Р°СЃС‚РёРЅРєР°" id="3071" pixMarks="14-4, 15-15"/>
+    <cell name="lamina perpendicularis" nameRu="РїРµСЂРїРµРЅРґРёРєСѓР»СЏСЂРЅР°СЏ РїР»Р°СЃС‚РёРЅРєР°" id="3076" pixMarks="14-10"/>
+    <cell name="processus maxillaris" nameRu="РІРµСЂС…РЅРµС‡РµР»СЋСЃС‚РЅРѕР№ РѕС‚СЂРѕСЃС‚РѕРє" id="3081" pixMarks="14-7"/>
+    <cell name="processus orbitalis" nameRu="РіР»Р°Р·РЅРёС‡РЅС‹Р№ РѕС‚СЂРѕСЃС‚РѕРє" id="3086" pixMarks="14-8"/>
+    <cell name="processus pyramidalis" nameRu="РїРёСЂР°РјРёРґР°Р»СЊРЅС‹Р№ РѕС‚СЂРѕСЃС‚РѕРє" id="3091" pixMarks="14-6, 15-16"/>
+    <cell name="processus sphenoidalis" nameRu="РєР»РёРЅРѕРІРёРґРЅС‹Р№ РѕС‚СЂРѕСЃС‚РѕРє" id="3096" pixMarks="14-13"/>
+   </cell>
+   <cell name="os zygomaticum" nameRu="СЃРєСѓР»РѕРІР°СЏ РєРѕСЃС‚СЊ" id="3101" pixMarks="1-18, 2-16, 5-21, 9-36, 10-16">
+    <cell name="facies lateralis" nameRu="Р»Р°С‚РµСЂР°Р»СЊРЅР°СЏ РїРѕРІРµСЂС…РЅРѕСЃС‚СЊ" id="3126" pixMarks="16-5"/>
+    <cell name="facies orbitalis" nameRu="РіР»Р°Р·РЅРёС‡РЅР°СЏ РїРѕРІРµСЂС…РЅРѕСЃС‚СЊ" id="3131" pixMarks="16-1"/>
+    <cell name="facies temporalis" nameRu="РІРёСЃРѕС‡РЅР°СЏ РїРѕРІРµСЂС…РЅРѕСЃС‚СЊ" id="3136" pixMarks="16-3"/>
+    <cell name="foramen zygomaticofaciale" nameRu="СЃРєСѓР»РѕР»РёС†РµРІРѕРµ РѕС‚РІРµСЂСЃС‚РёРµ" id="3141" pixMarks="16-6"/>
+    <cell name="foramen zygomaticotemporale" nameRu="СЃРєСѓР»РѕРІРёСЃРѕС‡РЅРѕРµ РѕС‚РІРµСЂСЃС‚РёРµ" id="3146" pixMarks="16-4"/>
+    <cell name="foramina zygomaticoorbitalia" nameRu="СЃРєСѓР»РѕРіР»Р°Р·РЅРёС‡РЅС‹Рµ РѕС‚РІРµСЂСЃС‚РёСЏ" id="3151" pixMarks="16-2"/>
+    <cell name="processus frontalis" nameRu="Р»РѕР±РЅС‹Р№ РѕС‚СЂРѕСЃС‚РѕРє" id="3156" pixMarks="16-7"/>
+    <cell name="processus temporalis" nameRu="РІРёСЃРѕС‡РЅС‹Р№ РѕС‚СЂРѕСЃС‚РѕРє" id="3161" pixMarks="16-8"/>
+   </cell>
+   <cell name="vomer" nameRu="СЃРѕС€РЅРёРє" id="3166" pixMarks="2-25, 5-8, 9-34, 15-33">
+    <cell name="ala vomeris" nameRu="РєСЂС‹Р»Рѕ СЃРѕС€РЅРёРєР°" id="3191" pixMarks="13-4, 15-33"/>
+   </cell>
   </group>
+  <group name="suturae" nameRu="С€РІС‹" id="3196">
+   <cell name="sutura coronalis" nameRu="РІРµРЅРµС‡РЅС‹Р№ С€РѕРІ" id="3321" pixMarks="1-29, 2-33"/>
+   <cell name="sutura frontalis" nameRu="Р»РѕР±РЅС‹Р№ С€РѕРІ" id="3346" pixMarks="2-32"/>
+   <cell name="sutura frontomaxillaris" nameRu="Р»РѕР±РЅРѕ-РІРµСЂС…РЅРµС‡РµР»СЋСЃС‚РЅРѕР№ С€РѕРІ" id="3371"/>
+   <cell name="sutura frontonasalis" nameRu="Р»РѕР±РЅРѕ-РЅРѕСЃРѕРІРѕР№ С€РѕРІ" id="3396" pixMarks="2-34"/>
+   <cell name="sutura intermaxillaris" nameRu="РјРµР¶РІРµСЂС…РЅРµС‡РµР»СЋСЃС‚РЅРѕР№ С€РѕРІ" id="3421" pixMarks="2-38"/>
+   <cell name="sutura internasalis" nameRu="РјРµР¶РЅРѕСЃРѕРІРѕР№ С€РѕРІ" id="3446" pixMarks="2-35"/>
+   <cell name="sutura lambdoidea" nameRu="Р»СЏРјР±РґРѕРІРёРґРЅС‹Р№ С€РѕРІ" id="3471" pixMarks="1-30"/>
+   <cell name="sutura nasomaxillaris" nameRu="РЅРѕСЃРѕ-РІРµСЂС…РЅРµС‡РµР»СЋСЃС‚РЅРѕР№ С€РѕРІ" id="3496" pixMarks="1-32, 2-36"/>
+   <cell name="sutura occipitomastoidea" nameRu="Р·Р°С‚С‹Р»РѕС‡РЅРѕ-СЃРѕСЃС†РµРІРёРґРЅС‹Р№ С€РѕРІ" id="3521" pixMarks="1-35"/>
+   <cell name="sutura palatina mediana" nameRu="СЃСЂРµРґРёРЅРЅС‹Р№ РЅС‘Р±РЅС‹Р№ С€РѕРІ" id="3546" pixMarks="5-2, 15-34"/>
+   <cell name="sutura palatina transversa" nameRu="РїРѕРїРµСЂРµС‡РЅС‹Р№ РЅС‘Р±РЅС‹Р№ С€РѕРІ" id="3571" pixMarks="5-4, 15-35"/>
+   <cell name="sutura sphenoidosquamosa" nameRu="РєР»РёРЅРѕРІРёРґРЅРѕ-С‡РµС€СѓР№С‡Р°С‚С‹Р№ С€РѕРІ" id="3596" pixMarks="1-34"/>
+   <cell name="sutura squamosa" nameRu="С‡РµС€СѓР№С‡Р°С‚С‹Р№ С€РѕРІ" id="3621" pixMarks="1-31"/>
+   <cell name="sutura zygomaticomaxillaris" nameRu="СЃРєСѓР»Рѕ-РІРµСЂС…РЅРµС‡РµР»СЋСЃС‚РЅРѕР№ С€РѕРІ" id="3646" pixMarks="2-37"/>
+  </group>
+ </group>
+ <group name="manubrium et costae" nameRu="РіСЂСѓРґРёРЅР° Рё СЂС‘Р±СЂР°" id="3671"/>
+ <group name="membrum inferius" nameRu="РЅРёР¶РЅСЏСЏ РєРѕРЅРµС‡РЅРѕСЃС‚СЊ" id="4296">
+  <group name="cingulum" nameRu="РїРѕСЏСЃ" id="4921"/>
+  <group name="liber" nameRu="СЃРІРѕР±РѕРґРЅР°СЏ С‡Р°СЃС‚СЊ" id="5046"/>
+ </group>
+ <group name="membrum superius" nameRu="РІРµСЂС…РЅСЏСЏ РєРѕРЅРµС‡РЅРѕСЃС‚СЊ" id="5171">
+  <group name="cingulum" nameRu="РїРѕСЏСЃ" id="5796"/>
+  <group name="liber" nameRu="СЃРІРѕР±РѕРґРЅР°СЏ С‡Р°СЃС‚СЊ" id="5921"/>
+ </group>
 </osteologia>

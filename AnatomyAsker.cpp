@@ -267,6 +267,31 @@ void AnatomyAsker::parsePixMarks(QVector<QPair<int, QString>>& pixVect, QString 
         pixVect.push_back({num1.toInt(), num2});
     }
 }
+void AnatomyAsker::sortOsteoXml() {
+    qDebug() << QString(dbg_spacing, (QChar) ' ') << "Begin: " << __func__; dbg_spacing += 3;
+    int cnt = 0;
+    QDomElement rootEl = osteoDoc.documentElement();
+    rootEl.setAttribute("id", cnt);
+    cnt += 1;
+    sortOsteoXmlDfs(rootEl, cnt, 625);
+    dbg_spacing -= 3; qDebug() << QString(dbg_spacing, (QChar) ' ') << "End:   " << __func__;
+}
+void AnatomyAsker::sortOsteoXmlDfs(QDomElement& parEl, int& cnt, int delta) {
+    QDomNodeList nodeList = parEl.childNodes();
+    QMap<QString, QDomNode> map;
+
+    while (!nodeList.isEmpty()) {
+        map[nodeList.at(0).toElement().attribute("name")] = nodeList.at(0).cloneNode();
+        parEl.removeChild(nodeList.at(0));
+    }
+    for (auto it : map) {
+        QDomElement curEl = it.toElement();
+        curEl.setAttribute("id", cnt);
+        cnt += delta;
+        parEl.appendChild(curEl);
+        sortOsteoXmlDfs(curEl, cnt, delta / 5);
+    }
+}
 void AnatomyAsker::processOsteoXml() {
     qDebug() << QString(dbg_spacing, (QChar) ' ') << "Begin: " << __func__; dbg_spacing += 3;
     QDomElement rootEl = osteoDoc.documentElement();
@@ -487,6 +512,8 @@ void AnatomyAsker::onPreStartOsteoAsk() {
     m_pWidgetAsk->hide();
 
     readXml(osteoDoc, ":/osteologia.xml");
+    //sortOsteoXml();
+    //writeXml(osteoDoc, "osteosort.xml");
     processOsteoXml();
     if (m_pTW != nullptr) {
         delete m_pTW;
