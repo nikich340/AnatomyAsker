@@ -1,3 +1,15 @@
+/* Copyright (c) 2019, Nikita Grebenyuk (@nikich340). All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 3
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
 #include "AnatomyAsker.h"
 
 /* PRIVATE FUNCTIONS */
@@ -226,7 +238,7 @@ void AnatomyAsker::genOsteoQuest() {
     m_pLblQuestion->setText(question);
 
     /* set picture */
-    m_pGPix->setPixmap(":/osteoPix/osteoPix" + to_str(pix) + ".png");
+    m_pGraphicsView->setPix(QPixmap(":/osteoPix/osteoPix" + to_str(pix) + ".png"));
 
     /* set answer buttons */
     std::shuffle(ans.begin(), ans.end(), dre);
@@ -337,16 +349,6 @@ void AnatomyAsker::viewOsteoTreeDfs(QDomElement& parEl, QTreeWidgetItem* pTWIPar
         curN = curN.nextSibling();
     }
 }
-void AnatomyAsker::updateGView(bool crutch) {
-    int pixW = m_pGPix->pixmap().width();
-    int pixH = m_pGPix->pixmap().height();
-
-    m_pGView->setMaximumWidth(this->width());
-    m_pGView->setSceneRect(QRect(0, 0, pixW, pixH));
-    if (crutch && pixH >= 1000) {
-        m_pGView->fitInView(QRect(0, 0, qMin(this->width(), (int)(pixW * 1.7)), qMin(this->height(), (int)(pixH* 1.7))), Qt::KeepAspectRatioByExpanding);
-    }
-}
 void AnatomyAsker::updateInfoLabel() {
     m_pLblInfo->setText((m_bLangRu ? "Всего: " : "Summary: ") + to_str(q_cnt) + "/" +
                         to_str(q_sum) + (m_bLangRu ? "\nВерно: " : "\nCorrect: ") +
@@ -365,9 +367,9 @@ void AnatomyAsker::writeXml(QDomDocument& doc, QString path) {
 }
 
 /* PUBLIC FUNCTIONS */
-AnatomyAsker::AnatomyAsker(QWidget *pwgt) : QWidget(pwgt), m_pCheckRus(new QCheckBox), m_pCheckLatin(new QCheckBox),
-  m_pGPix(new QGraphicsPixmapItem), m_pGScene(new QGraphicsScene), m_pGView(new QGraphicsView),
-  m_pLblQuestion(new QLabel), m_pLblInfo(new QLabel), m_pBtnNext(new QPushButton), m_pBtnFinish(new QPushButton),
+AnatomyAsker::AnatomyAsker(QWidget *pwgt) : QWidget(pwgt), m_pGraphicsView(new GraphicsView),
+  m_pCheckRus(new QCheckBox), m_pCheckLatin(new QCheckBox), m_pLblQuestion(new QLabel),
+  m_pLblInfo(new QLabel), m_pBtnNext(new QPushButton), m_pBtnFinish(new QPushButton),
   m_pBtnPre(new QPushButton), m_settings("nikich340", "AnatomyAsker"), m_pLayoutMain(new QVBoxLayout),
   m_pLayoutMenu(new QVBoxLayout), m_pLayoutPreAsk(new QVBoxLayout), m_pLayoutAsk(new QVBoxLayout),
   m_pWidgetMenu(new QWidget), m_pWidgetPreAsk(new QWidget), m_pWidgetAsk(new QWidget)
@@ -380,10 +382,7 @@ AnatomyAsker::AnatomyAsker(QWidget *pwgt) : QWidget(pwgt), m_pCheckRus(new QChec
                         "QLabel { alignment: center; text-align: center; font-size: 20px; background-color: rgba(255,255,255,100) }"
                         "QTreeWidget { alignment: center; text-align: center; font-size: 23px; background-color: rgba(255,255,255,200) }");
 
-    m_pGScene->addItem(m_pGPix);
-    m_pGView->setStyleSheet("background-color: rgba(255, 255, 255, 64)");
-    m_pGView->setDragMode(QGraphicsView::ScrollHandDrag);
-    m_pGView->setScene(m_pGScene);
+    m_pGraphicsView->setStyleSheet("background-color: rgba(255, 255, 255, 64)");
 
     m_pLblQuestion->setWordWrap(true);
     m_pLblQuestion->setMaximumWidth(this->width() * 0.85);
@@ -494,7 +493,6 @@ void AnatomyAsker::onNextOsteoAsk() {
     genOsteoQuest();
     ++q_cnt;
     updateInfoLabel();
-    updateGView(true);
     dbg_spacing -= 3; qDebug() << QString(dbg_spacing, (QChar) ' ') << "End:   " << __func__;
 }
 void AnatomyAsker::onPreStartOsteoAsk() {
@@ -559,10 +557,6 @@ void AnatomyAsker::onStartAsk() {
     }
     updateInfoLabel();
 
-    m_pGView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    m_pGView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    updateGView(false);
-
     pHLayout->addWidget(m_pLblQuestion);
     pHLayout->addWidget(m_pLblInfo);
     pGridLayout->addWidget(m_pBtnFinish, maxAns / 2, 0);
@@ -573,7 +567,7 @@ void AnatomyAsker::onStartAsk() {
     m_pWidgetAsk->show();
 
     m_pLayoutAsk->addLayout(pHLayout);
-    m_pLayoutAsk->addWidget(m_pGView);
+    m_pLayoutAsk->addWidget(m_pGraphicsView);
     m_pLayoutAsk->addLayout(pGridLayout);
     dbg_spacing -= 3; qDebug() << QString(dbg_spacing, (QChar) ' ') << "End:   " << __func__;
 }

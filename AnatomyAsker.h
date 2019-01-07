@@ -1,21 +1,32 @@
+/* Copyright (c) 2019, Nikita Grebenyuk (@nikich340). All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 3
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
 #pragma once
 
+#include "GraphicsView.h"
 #include <QtWidgets>
 #include <QtXml>
 
 #define upn(x, init, n) for(int x = init; x <= n; ++x)
 #define to_str(a) QString::number(a)
-#define VERSION 2.2
+#define VERSION 2.3
 
 class AnatomyAsker : public QWidget {
 Q_OBJECT
 private:
     static const int maxAns = 6;
+    GraphicsView* m_pGraphicsView;
     QCheckBox *m_pCheckRus, *m_pCheckLatin;
     QDialog *m_pDialogSettings = nullptr;
-    QGraphicsPixmapItem* m_pGPix;
-    QGraphicsScene* m_pGScene;
-    QGraphicsView* m_pGView;
     QLabel *m_pLblQuestion, *m_pLblInfo, *m_pLblAns[maxAns];
     QPushButton *m_pBtnRight, *m_pBtnNext, *m_pBtnFinish, *m_pBtnPre, *m_pBtnSet[5], *m_pBtnAns[maxAns];
     QSettings m_settings;
