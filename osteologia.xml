@@ -9,7 +9,7 @@
    <cell name="clivus" nameRu="скат" id="1401" pixMarks="4-12, 21-48"/>
    <cell name="diploe" nameRu="диплоэ (губч. вещество)" id="1426" pixMarks="4-33"/>
    <cell name="foramen lacerum" nameRu="рваное отверстие" id="1451" pixMarks="4-27, 21-6, 22-6"/>
-   <cell name="foramen sphenopalatina" nameRu="клиновидно-нёбное отверстие" id="1476" pixMarks="11-24"/>
+   <cell name="foramen sphenopalatinum" nameRu="клиновидно-нёбное отверстие" id="1476" pixMarks="11-24"/>
    <cell name="fossa cranii anterior" nameRu="передняя черепная ямка" id="1501" pixMarks="4-20"/>
    <cell name="fossa cranii media" nameRu="средняя черепная ямка" id="1526" pixMarks="4-9"/>
    <cell name="fossa cranii posterior" nameRu="задняя черепная ямка" id="1551" pixMarks="4-32"/>
@@ -34,8 +34,8 @@
     <cell name="facies orbitalis" nameRu="глазничная поверхность" id="1906" pixMarks="26-9"/>
     <cell name="facies sinus ethmoidales" nameRu="поверхности решётчатых пазух" id="1911" pixMarks="26-10"/>
     <cell name="foramen caecum" nameRu="слепое отверстие" id="1916" pixMarks="4-2, 26-16"/>
-    <cell name="foramen inferior ossis ethmoidalis" nameRu="нижнее отверстие решётчатой кости" id="1921" pixMarks="26-5"/>
-    <cell name="foramen superior ossis ethmoidalis" nameRu="верхнее отверстие решётчатой кости" id="1926" pixMarks="26-4"/>
+    <cell name="foramen inferius ossis ethmoidalis" nameRu="нижнее отверстие решётчатой кости" id="1921" pixMarks="26-5"/>
+    <cell name="foramen superius ossis ethmoidalis" nameRu="верхнее отверстие решётчатой кости" id="1926" pixMarks="26-4"/>
     <cell name="fossa glandula lacrimalis" nameRu="ямка слёзной железы" id="1931" pixMarks="26-3"/>
     <cell name="fossa trochlearis" nameRu="ямка хрящевого блока" id="1936" pixMarks="26-2"/>
     <cell name="glabella" nameRu="надпереносье (глабелла)" id="1941" pixMarks="1-2, 2-2"/>
@@ -71,7 +71,7 @@
    </cell>
    <cell name="os parietale" nameRu="теменная кость" id="2106" pixMarks="1-4, 2-6">
     <cell name="angulus ossis sphenoidalis" nameRu="угол клиновидной кости" id="2131" pixMarks="27-12"/>
-    <cell name="foramen parietalis" nameRu="теменное отверстие" id="2136" pixMarks="27-6"/>
+    <cell name="foramen parietale" nameRu="теменное отверстие" id="2136" pixMarks="27-6"/>
     <cell name="linea temporalis superior" nameRu="верхняя височная линия" id="2141" pixMarks="27-5"/>
     <cell name="margo frontale" nameRu="лобный край" id="2146" pixMarks="27-10"/>
     <cell name="margo occipitalis" nameRu="затылочный край" id="2151" pixMarks="27-9"/>
@@ -114,13 +114,17 @@
     <cell name="canaliculus mastoideus" nameRu="сосцевидный каналец" id="2366" pixMarks="22-32"/>
     <cell name="canalis caroticus" nameRu="сонный канал" id="2371" pixMarks="5-13, 9-C, 11-4, 21-19, 22-19"/>
     <cell name="canalis musculotubarius" nameRu="мышечно-трубный канал" id="2376" pixMarks="22-28"/>
+	<cell name="cavitas tympani" nameRu="барабанная полость" id="2377"/>
     <cell name="eminentia arcuata" nameRu="дугообразное возвышение" id="2381" pixMarks="21-21, 23-21"/>
     <cell name="fissura petrotympanica" nameRu="каменисто-барабанная щель" id="2386" pixMarks="22-27, 23-27"/>
-    <cell name="foramen mastoideus" nameRu="сосцевидное отверстие" id="2391" pixMarks="23-23"/>
-    <cell name="foramen stylomastoideus" nameRu="шилососцевидное отверстие" id="2396" pixMarks="5-14, 9-D, 22-31"/>
+	<cell name="fissura tympanomastoidea" nameRu="каменисто-барабанная щель" id="2387"/>
+    <cell name="foramen mastoideum" nameRu="сосцевидное отверстие" id="2391" pixMarks="23-23"/>
+    <cell name="foramen stylomastoideum" nameRu="шилососцевидное отверстие" id="2396" pixMarks="5-14, 9-D, 22-31"/>
     <cell name="fossa jugularis" nameRu="яремная ямка" id="2401" pixMarks="22-33"/>
     <cell name="fossa mandibularis" nameRu="нижнечелюстная ямка" id="2406" pixMarks="5-24, 22-26, 23-26"/>
+	<cell name="fossula petrosa" nameRu="каменистая ямочка" id="2407"/>
     <cell name="hiatus canalis n. petrosi majoris" nameRu="щель канала большого каменистого нерва" id="2411" pixMarks="4-28, 21-20"/>
+	<cell name="hiatus canalis n. petrosi minoris" nameRu="щель канала малого каменистого нерва" id="2412"/>
     <cell name="impressio n. trigemini" nameRu="вдавление тройничного нерва" id="2416" pixMarks="23-44"/>
     <cell name="incisura mastoidea" nameRu="сосцевидная вырезка" id="2421" pixMarks="5-29, 22-35"/>
     <cell name="margo occipitalis" nameRu="затылочный край" id="2426" pixMarks="23-39"/>
@@ -205,8 +209,8 @@
    <cell name="os palatinum" nameRu="нёбная кость" id="3021" pixMarks="9-33, 10-12">
     <cell name="crista conchalis" nameRu="раковинный гребень" id="3046" pixMarks="14-11"/>
     <cell name="crista nasalis" nameRu="носовой гребень" id="3051" pixMarks="14-12"/>
-    <cell name="foramen palatina major" nameRu="большое нёбное отверстие" id="3056" pixMarks="10-13, 15-18"/>
-    <cell name="foramen palatina minor" nameRu="малое нёбное отверстие" id="3061" pixMarks="15-17"/>
+    <cell name="foramen palatinum majus" nameRu="большое нёбное отверстие" id="3056" pixMarks="10-13, 15-18"/>
+    <cell name="foramen palatinum minus" nameRu="малое нёбное отверстие" id="3061" pixMarks="15-17"/>
     <cell name="incisura sphenopalatina" nameRu="клиновидно-нёбная вырезка" id="3066" pixMarks="14-9"/>
     <cell name="lamina horizontalis" nameRu="горизонтальная пластинка" id="3071" pixMarks="14-4, 15-15"/>
     <cell name="lamina perpendicularis" nameRu="перпендикулярная пластинка" id="3076" pixMarks="14-10"/>
@@ -244,6 +248,62 @@
    <cell name="sutura sphenoidosquamosa" nameRu="клиновидно-чешуйчатый шов" id="3596" pixMarks="1-34"/>
    <cell name="sutura squamosa" nameRu="чешуйчатый шов" id="3621" pixMarks="1-31"/>
    <cell name="sutura zygomaticomaxillaris" nameRu="скуло-верхнечелюстной шов" id="3646" pixMarks="2-37"/>
+  </group>
+  <group name="canales ossis temporalis" nameRu="каналы височной кости" id="3196">
+   <canalis name="canalis n. facialis" nameRu="канал лицевого нерва" pixMarks="28-11">
+      <begin>на дне @meatus acusticus internus@</begin>
+	  <end>в @foramen stylomastoideum@</end>
+	  <pathRu>начинается на дне @meatus acusticus internus@, 
+	  затем идёт латерально в толще пирамиды до @hiatus canalis n. petrosi majoris@,
+	  где образует изгиб под углом 90° - коленце (geniculum), далее в
+	  горизонтальной плоскости направляется назад и, огибая @cavitas tympani@, 
+	  поворачивает вертикально вниз, заканчиваясь в @foramen stylomastoideum@</pathRu>
+   </canalis>
+   <canalis name="canalis n. petrosi majoris" nameRu="канал верхнего каменистого нерва" pixMarks="4-28, 21-20">
+      <begin>от @canalis n. facialis@ в области его коленца</begin>
+	  <end>в @hiatus canalis n. petrosi majoris@</end>
+	  <pathRu>начинается от @canalis n. facialis@ в области его коленца, 
+	  открываясь на передней поверхности пирамиды височной кости в @hiatus canalis n. petrosi majoris@</pathRu>
+   </canalis>
+   <canalis name="canalis musculotubarius" nameRu="мышечно-трубный канал" pixMarks="22-28">
+      <begin>в @cavitas tympani@</begin>
+	  <end>на верхушке пирамиды</end>
+	  <pathRu>соединяет @cavitas tympani@ и верхушку пирамиды, горизонтальной
+	  перегородкой разделяется на 2 части: верхнюю - полуканал мышцы, напрягающей
+	  барабанную перепонку [semicanalis m. tensori tympani]; нижнюю - полуканал
+	  слуховой трубы [semicanalis tubae auditivae]</pathRu>
+   </canalis>
+   <canalis name="canalis caroticus" nameRu="сонный канал" pixMarks="28-13">
+      <begin>на нижней поверхность пирамиды</begin>
+	  <end>на верхушке пирамиды</end>
+	  <pathRu>начинается на нижней поверхности пирамиды, поднимается кверху и
+	  изгибается кпереди под углом 90°, затем направляется вперёд и медиально,
+	  открываясь на верхушке пирамиды</pathRu>
+   </canalis>
+   <canalis name="canaliculus chordae tympani" nameRu="каналец барабанной струны" pixMarks="28-26">
+      <begin>от @canalis n. facialis@ немного выше @foramen stylomastoideum@</begin>
+	  <end>в @fissura petrotympanica@</end>
+	  <pathRu>начинается от @canalis n. facialis@ немного выше @foramen stylomastoideum@, 
+	  проходит через @cavitas tympani@ и заканчивается в пределах @fissura petrotympanica@</pathRu>
+   </canalis>
+   <canalis name="canaliculus tympanicus" nameRu="барабанный каналец">
+      <begin>в @fossula petrosa@</begin>
+	  <end>в @hiatus canalis n. petrosi minoris@</end>
+	  <pathRu>начинается в @fossula petrosa@, проходит через @cavitas tympani@ 
+	  и заканчивается на передней поверхности пирамиды в @hiatus canalis n. petrosi minoris@</pathRu>
+   </canalis>
+   <canalis name="canaliculi caroticotympanici" nameRu="сонно-барабанные канальцы">
+      <begin>от @canalis caroticus@ возле его наружной апертуры (на верхушке пирамиды)</begin>
+	  <end>в @cavitas tympani@</end>
+	  <pathRu>ответвляются от @canalis caroticus@ возле его наружной апертуры (на верхушке пирамиды),
+	  проникают в @cavitas tympani@</pathRu>
+   </canalis>
+   <canalis name="canaliculus mastoideus" nameRu="сосцевидный каналец" pixMarks="28-30">
+      <begin>в @fossa jugularis@</begin>
+	  <end>в @fissura tympanomastoidea@</end>
+	  <pathRu>начинается в @fossa jugularis@, перекрещивает @canalis n. facialis@ и
+	  открывается в @fissura tympanomastoidea@</pathRu>
+   </canalis>
   </group>
  </group>
  <group name="membrum inferius" nameRu="нижняя конечность" id="4296">

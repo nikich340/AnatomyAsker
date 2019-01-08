@@ -84,6 +84,25 @@ QString AnatomyAsker::elName(QDomElement& element) {
         return element.attribute("name");
     }
 }
+QString AnatomyAsker::parseLinks(QString text) {
+    qDebug() << QString(dbg_spacing, (QChar) ' ') << "Begin: " << __func__; dbg_spacing += 3;
+    QString ret = "";
+    upn(i, 0, text.length() - 1) {
+        if (text[i] == '@') {
+            ++i;
+            QString name = "";
+            while (text[i] != '@' && i < text.length()) {
+                name.push_back(text[i]);
+                ++i;
+            }
+            ret += elName(findElementByName[name]);
+        } else {
+            ret.push_back(text[i]);
+        }
+    }
+    qDebug() << QString(dbg_spacing, (QChar) ' ') << "End: " << __func__; dbg_spacing -= 3;
+    return ret;
+}
 bool AnatomyAsker::isDigit(QChar c) {
     return (c >= '0' && c <= '9');
 }
@@ -134,8 +153,8 @@ void AnatomyAsker::crash(QString reason) {
 }
 void AnatomyAsker::genOsteoQuest() {
     qDebug() << QString(dbg_spacing, (QChar) ' ') << "Begin: " << __func__; dbg_spacing += 3;
-    std::default_random_engine dre(QDateTime::currentMSecsSinceEpoch());
-    QVector<QString> ans;
+    //std::default_random_engine dre(QDateTime::currentMSecsSinceEpoch());
+    QSet<QString> ans;
     QString rightAns;
     QString question;
     if (unusedOsteos.empty()) {
@@ -147,6 +166,7 @@ void AnatomyAsker::genOsteoQuest() {
     int idx = rand(0, unusedOsteos.size() - 1);
     QDomElement pEl = unusedOsteos[idx];
     unusedOsteos.erase(unusedOsteos.begin() + idx);
+
     QVector<QPair<int, QString>> pixMarks;
     qDebug() << "Main structure: " << elName(pEl);
     parsePixMarks(pixMarks, pEl.attribute("pixMarks"));
@@ -154,81 +174,123 @@ void AnatomyAsker::genOsteoQuest() {
     int pix = pixMarks[pixIdx].first;
     QString mark = findMark(pixMarks, pix);
     QDomElement rEl, lEl, parEl = pEl.parentNode().toElement();
-    int type = rand(1, 2);
+    QDomNodeList nodeList = parEl.childNodes();
+    QVector<int> av;
+    upn(i, 0, nodeList.size() - 1) {
+        av.push_back(i);
+    }
+    int prob = rand(1, 100);
+    qDebug() << "prob: " << prob;
 
-    if (type == 1) { /* ask about mark by struct */
-        rightAns = mark;
-        ans.push_back(rightAns);
-        rEl = pEl.previousSiblingElement();
-        lEl = pEl.nextSiblingElement();
-        while (ans.size() < maxAns && (!rEl.isNull() || !lEl.isNull())) {
-            if (!rEl.isNull()) {
-                parsePixMarks(pixMarks, rEl.attribute("pixMarks"));
+    if (pEl.tagName() == "canalis") {
+        if (prob <= 60) {
+            rightAns = elName(pEl);
+            ans.insert(rightAns);
+            while (ans.size() < maxAns && !av.empty()) {
+                idx = rand(0, av.size() - 1);
+                QDomElement curEl = nodeList.at(av[idx]).cloneNode().toElement();
+                qDebug() << "Ok curEl";
+                av.erase(av.begin() + idx);
+                if (prob <= 20 && pEl.childNodes().at(0).toElement().text() == curEl.childNodes().at(0).toElement().text()) {
+                    continue;
+                }
+                if (prob > 20 && prob <= 40 && pEl.childNodes().at(1).toElement().text() == curEl.childNodes().at(1).toElement().text()) {
+                    continue;
+                }
+                ans.insert(elName(curEl));
+            }
+            if (m_bLangRu) {
+                if (prob <= 20) {                       /* ask about canalis by begin */
+                    question = "Какой канал начинается " + parseLinks(pEl.childNodes().at(0).toElement().text()) + "?";
+                } else if (prob > 20 && prob <= 40) {   /* ask about canalis by end */
+                    question = "Какой канал заканчивается " + parseLinks(pEl.childNodes().at(1).toElement().text()) + "?";
+                } else if (prob > 40 && prob <= 60) {   /* ask about canalis by path */
+                    question = "О каком канале идёт речь: " + parseLinks(pEl.childNodes().at(2).toElement().text()) + "?";
+                }
+            } else {
+                if (prob <= 20) {                       /* ask about canalis by begin */
+                    question = "What canalis begins in " + parseLinks(pEl.childNodes().at(0).toElement().text()) + "?";
+                } else if (prob > 20 && prob <= 40) {   /* ask about canalis by end */
+                    question = "What canalis ends in " + parseLinks(pEl.childNodes().at(1).toElement().text()) + "?";
+                } else if (prob > 40 && prob <= 60) {   /* ask about canalis by path */
+                    question = "What canalis is described: " + parseLinks(pEl.childNodes().at(2).toElement().text()) + "?";
+                }
+            }
+        } else if (prob > 60 && prob <= 80) {   /* ask about begin by canalis */
+            rightAns = parseLinks(pEl.childNodes().at(0).toElement().text());
+            ans.insert(rightAns);
+            while (ans.size() < maxAns && !av.empty()) {
+                idx = rand(0, av.size() - 1);
+                QDomElement curEl = nodeList.at(av[idx]).cloneNode().toElement();
+                av.erase(av.begin() + idx);
+                QString curBegin = parseLinks(curEl.childNodes().at(0).toElement().text());
+                QString curEnd = parseLinks(curEl.childNodes().at(1).toElement().text());
+                ans.insert(curBegin);
+                if (ans.size() < maxAns)
+                    ans.insert(curEnd);
+            }
+            if (m_bLangRu) {
+                question = "Где начинается " + elName(pEl) + "?";
+            } else {
+                question = "Where does " + elName(pEl) + " begin?";
+            }
+        } else if (prob > 80) {                 /* ask about end by canalis */
+            rightAns = parseLinks(pEl.childNodes().at(1).toElement().text());
+            ans.insert(rightAns);
+            while (ans.size() < maxAns && !av.empty()) {
+                idx = rand(0, av.size() - 1);
+                QDomElement curEl = nodeList.at(av[idx]).cloneNode().toElement();
+                av.erase(av.begin() + idx);
+                QString curBegin = parseLinks(curEl.childNodes().at(0).toElement().text());
+                QString curEnd = parseLinks(curEl.childNodes().at(1).toElement().text());
+                ans.insert(curBegin);
+                if (ans.size() < maxAns)
+                    ans.insert(curEnd);
+            }
+            if (m_bLangRu) {
+                question = "Где заканчивается " + elName(pEl) + "?";
+            } else {
+                question = "Where does " + elName(pEl) + "end?";
+            }
+        }
+    } else if (pEl.tagName() == "cell") {
+        if (prob <= 50) {                       /* ask about mark by struct */
+            rightAns = mark;
+            ans.insert(rightAns);
+            while (ans.size() < maxAns && !av.empty()) {
+                idx = rand(0, av.size() - 1);
+                QDomElement curEl = nodeList.at(av[idx]).cloneNode().toElement();
+                parsePixMarks(pixMarks, curEl.attribute("pixMarks"));
                 QString checkMark = findMark(pixMarks, pix);
-                if (checkMark != "-1" && checkMark != mark)
-                    ans.push_back(checkMark);
-                rEl = rEl.previousSiblingElement();
+                if (checkMark != "-1")
+                    ans.insert(checkMark);
+
+                av.erase(av.begin() + idx);
             }
-            if (!lEl.isNull() && ans.size() < maxAns) {
-                parsePixMarks(pixMarks, lEl.attribute("pixMarks"));
-                QString checkMark = findMark(pixMarks, pix);
-                if (checkMark != "-1" && checkMark != mark)
-                    ans.push_back(checkMark);
-                lEl = lEl.nextSiblingElement();
+            if (m_bLangRu) {
+                question = "Каким номером на картинке отмечен(а/о) " + elName(pEl) + " (структура: " + elName(parEl) + ") ?";
+            } else {
+                question = "What number is " + elName(pEl) + " (structure: " + elName(parEl) + ") marked with ?";
             }
-        }
-        if (m_bLangRu) {
-            question = "Каким номером на картинке отмечен(а/о) " + elName(pEl) + " (структура: " + elName(parEl) + ") ?";
-        } else {
-            question = "What number is " + elName(pEl) + " (structure: " + elName(parEl) + ") marked with ?";
-        }
-    } else if (type == 2) { /* ask about struct by mark */
-        rightAns = elName(pEl);
-        ans.push_back(rightAns);
-        rEl = pEl.previousSiblingElement();
-        lEl = pEl.nextSiblingElement();
-        while (ans.size() < maxAns && (!rEl.isNull() || !lEl.isNull())) {
-            if (!rEl.isNull()) {
-                parsePixMarks(pixMarks, rEl.attribute("pixMarks"));
-                QString checkMark = findMark(pixMarks, pix);
-                if (checkMark != mark)
-                    ans.push_back(elName(rEl));
-                rEl = rEl.previousSiblingElement();
+        } else if (prob > 50) {                 /* ask about struct by mark */
+            rightAns = elName(pEl);
+            ans.insert(rightAns);
+            rEl = pEl.previousSiblingElement();
+            lEl = pEl.nextSiblingElement();
+            while (ans.size() < maxAns && !av.empty()) {
+                idx = rand(0, av.size() - 1);
+                QDomElement curEl = nodeList.at(av[idx]).cloneNode().toElement();
+                ans.insert(elName(curEl));
+
+                av.erase(av.begin() + idx);
             }
-            if (!lEl.isNull() && ans.size() < maxAns) {
-                parsePixMarks(pixMarks, lEl.attribute("pixMarks"));
-                QString checkMark = findMark(pixMarks, pix);
-                if (checkMark != mark)
-                    ans.push_back(elName(lEl));
-                lEl = lEl.nextSiblingElement();
+            if (m_bLangRu) {
+                question = "Какое образование (структура: " + elName(parEl) + ") помечено на картинке номером " + mark + "?";
+            } else {
+                question = "What formation (structure: " + elName(parEl) + ") is marked on picture with number " + mark + "?";
             }
         }
-        if (m_bLangRu) {
-            question = "Какое образование (структура: " + elName(parEl) + ") помечено на картинке номером " + mark + "?";
-        } else {
-            question = "What formation (structure: " + elName(parEl) + ") is marked on picture with number " + mark + "?";
-        }
-    }/* else if (type == 3) { ask about parent struct
-        rightAns = elName(parEl);
-        ans.push_back(rightAns);
-        rEl = parEl.previousSiblingElement();
-        lEl = parEl.nextSiblingElement();
-        while (ans.size() < maxAns && (!rEl.isNull() || !lEl.isNull())) {
-            if (!rEl.isNull()) {
-                ans.push_back(elName(rEl));
-                rEl = rEl.previousSiblingElement();
-            }
-            if (!lEl.isNull() && ans.size() < maxAns) {
-                ans.push_back(elName(lEl));
-                lEl = lEl.nextSiblingElement();
-            }
-        }
-        if (m_bLangRu) {
-            question = "К какой структуре принадлежит " + elName(pEl) + " (номер " + mark + " на картинке)?";
-        } else {
-            question = "What structure contains " + elName(pEl) + " (number " + mark + " on picture)?";
-        }
-    }*/
+    }
 
     if (ans.size() < 2) {
         genOsteoQuest();
@@ -241,15 +303,16 @@ void AnatomyAsker::genOsteoQuest() {
     m_pGraphicsView->setPix(QPixmap(":/osteoPix/osteoPix" + to_str(pix) + ".png"));
 
     /* set answer buttons */
-    std::shuffle(ans.begin(), ans.end(), dre);
-    upn(j, 0, ans.size() - 1) {
-        m_pLblAns[j]->setText(ans[j]);
-        if (ans[j] == rightAns) {
-            m_pBtnRight = m_pBtnAns[j];
+    int i = 0;
+    for (auto &it : ans) {
+        m_pLblAns[i]->setText(it);
+        if (it == rightAns) {
+            m_pBtnRight = m_pBtnAns[i];
         }
-        m_pBtnAns[j]->show();
+        m_pBtnAns[i]->show();
+        ++i;
     }
-    upn(j, ans.size(), maxAns - 1) {
+    upn(j, i, maxAns - 1) {
         m_pBtnAns[j]->hide();
     }
     dbg_spacing -= 3; qDebug() << QString(dbg_spacing, (QChar) ' ') << "End:   " << __func__;
@@ -274,21 +337,22 @@ void AnatomyAsker::parsePixMarks(QVector<QPair<int, QString>>& pixVect, QString 
             ++i;
         }
         if (num1 == "" || num2 == "") {
-            crash("parsePixMarks: null pix (" + num1 + ") or mark (" + num2 + ")");
+            qDebug() << QString(dbg_spacing, (QChar) ' ') << "parsePixMarks: null pix (" + num1 + ") or mark (" + num2 + ")";
+            num1 = num2 = "0";
         }
         pixVect.push_back({num1.toInt(), num2});
     }
 }
 void AnatomyAsker::sortOsteoXml() {
     qDebug() << QString(dbg_spacing, (QChar) ' ') << "Begin: " << __func__; dbg_spacing += 3;
-    int cnt = 0;
     QDomElement rootEl = osteoDoc.documentElement();
-    rootEl.setAttribute("id", cnt);
-    cnt += 1;
-    sortOsteoXmlDfs(rootEl, cnt, 625);
+    sortOsteoXmlDfs(rootEl);
     dbg_spacing -= 3; qDebug() << QString(dbg_spacing, (QChar) ' ') << "End:   " << __func__;
 }
-void AnatomyAsker::sortOsteoXmlDfs(QDomElement& parEl, int& cnt, int delta) {
+void AnatomyAsker::sortOsteoXmlDfs(QDomElement& parEl) {
+    if (parEl.hasAttribute("id")) {
+        parEl.removeAttribute("id");
+    }
     QDomNodeList nodeList = parEl.childNodes();
     QMap<QString, QDomNode> map;
 
@@ -298,10 +362,8 @@ void AnatomyAsker::sortOsteoXmlDfs(QDomElement& parEl, int& cnt, int delta) {
     }
     for (auto it : map) {
         QDomElement curEl = it.toElement();
-        curEl.setAttribute("id", cnt);
-        cnt += delta;
         parEl.appendChild(curEl);
-        sortOsteoXmlDfs(curEl, cnt, delta / 5);
+        sortOsteoXmlDfs(curEl);
     }
 }
 void AnatomyAsker::processOsteoXml() {
@@ -311,10 +373,13 @@ void AnatomyAsker::processOsteoXml() {
     dbg_spacing -= 3; qDebug() << QString(dbg_spacing, (QChar) ' ') << "End:   " << __func__;
 }
 void AnatomyAsker::processOsteoXmlDfs(QDomElement& parEl) {
+    findElementByName[parEl.attribute("name")] = parEl;
     if (parEl.tagName() == "cell") {
         if (parEl.hasAttribute("name") && parEl.hasAttribute("pixMarks")) {
             unusedOsteos.push_back(parEl);
         }
+    } else if (parEl.tagName() == "canalis") {
+        unusedOsteos.push_back(parEl);
     }
 
     QDomNode curN = parEl.firstChild();
@@ -339,14 +404,14 @@ void AnatomyAsker::readXml(QDomDocument& doc, QString path) {
     dbg_spacing -= 3; qDebug() << QString(dbg_spacing, (QChar) ' ') << "End:   " << __func__;
 }
 void AnatomyAsker::viewOsteoTreeDfs(QDomElement& parEl, QTreeWidgetItem* pTWIPar) {
-    QDomNode curN = parEl.firstChild();
-    while (!curN.isNull()) {
+    QDomElement curEl = parEl.firstChildElement();
+    while (!curEl.isNull()) {
         QTreeWidgetItem* pTWI = new QTreeWidgetItem;
-        QDomElement curEl = curN.toElement();
         pTWI->setText(0, elName(curEl));
         pTWIPar->addChild(pTWI);
-        viewOsteoTreeDfs(curEl, pTWI);
-        curN = curN.nextSibling();
+        if (curEl.tagName() != "canalis")
+            viewOsteoTreeDfs(curEl, pTWI);
+        curEl = curEl.nextSiblingElement();
     }
 }
 void AnatomyAsker::updateInfoLabel() {
@@ -385,7 +450,7 @@ AnatomyAsker::AnatomyAsker(QWidget *pwgt) : QWidget(pwgt), m_pGraphicsView(new G
     m_pGraphicsView->setStyleSheet("background-color: rgba(255, 255, 255, 64)");
 
     m_pLblQuestion->setWordWrap(true);
-    m_pLblQuestion->setMaximumWidth(this->width() * 0.85);
+    m_pLblQuestion->setMinimumWidth(QGuiApplication::primaryScreen()->geometry().width() * 0.85);
     m_pLblQuestion->setAlignment(Qt::AlignCenter);
     m_pLblQuestion->setStyleSheet("font-size: 23px; font-weight:bold;"
                                   "color: #001a00");
@@ -393,7 +458,7 @@ AnatomyAsker::AnatomyAsker(QWidget *pwgt) : QWidget(pwgt), m_pGraphicsView(new G
     m_pLblInfo->setWordWrap(true);
     m_pLblInfo->setAlignment(Qt::AlignCenter);
     m_pLblInfo->setStyleSheet("font-size: 20px; color: #990099");
-    m_pLblInfo->setMaximumWidth(this->width() * 0.15);
+    m_pLblInfo->setMinimumWidth(QGuiApplication::primaryScreen()->geometry().width() * 0.15);
 
     upn(i, 0, 4) {
         m_pBtnSet[i] = new QPushButton;
@@ -460,7 +525,7 @@ void AnatomyAsker::onFinishAsk() {
     qDebug() << QString(dbg_spacing, (QChar) ' ') << "Begin: " << __func__; dbg_spacing += 3;
     QDialog* pdlg = createDialog((m_bLangRu ? "Ваш результат: " : "Your result is: ")
                                  + to_str(q_rightAnsCnt) + "/" + to_str(q_cnt)
-                                 + (m_bLangRu ? "\nЖдём Вас снова! :)" : "Waiting for you again! :)"),
+                                 + (m_bLangRu ? "\nЖдём Вас снова! :)" : "\nWaiting for you again! :)"),
                                  m_bLangRu ? "Меню" : "Menu", m_bLangRu ? "Выход" : "Quit", true);
     connect(pdlg, SIGNAL(accepted()), this, SLOT(onMenu()));
     connect(pdlg, SIGNAL(rejected()), qApp, SLOT(quit()));
@@ -513,14 +578,13 @@ void AnatomyAsker::onPreStartOsteoAsk() {
     //sortOsteoXml();
     //writeXml(osteoDoc, "osteosort.xml");
     processOsteoXml();
-    if (m_pTW != nullptr) {
-        delete m_pTW;
+    if (m_pTW == nullptr) {
+        m_pTW = viewOsteoTree();
+        m_pTW->setCurrentItem(m_pTW->topLevelItem(0));
+        m_pTW->expandItem(m_pTW->currentItem());
     }
     connect(m_pBtnFinish, SIGNAL(clicked(bool)), this, SLOT(onFinishOsteoAsk()));
     connect(m_pBtnPre, SIGNAL(clicked(bool)), this, SLOT(onStartOsteoAsk()));
-    m_pTW = viewOsteoTree();
-    m_pTW->setCurrentItem(m_pTW->topLevelItem(0));
-    m_pTW->expandItem(m_pTW->currentItem());
     m_pLayoutPreAsk->addWidget(m_pTW);
     m_pLayoutPreAsk->addWidget(m_pBtnPre);
     dbg_spacing -= 3; qDebug() << QString(dbg_spacing, (QChar) ' ') << "End:   " << __func__;
@@ -530,7 +594,7 @@ void AnatomyAsker::onSettings() {
     if (m_pDialogSettings == nullptr) {
         m_pDialogSettings = new QDialog;
         m_pDialogSettings->setWindowOpacity(0.9);
-        m_pDialogSettings->setMinimumWidth(this->width() * 0.8);
+        m_pDialogSettings->setMinimumWidth(QGuiApplication::primaryScreen()->geometry().width() * 0.8);
         QVBoxLayout* pvbox = new QVBoxLayout;
         QPushButton* pBtnOk = new QPushButton("OK");
         m_pCheckRus->setTristate(false);
