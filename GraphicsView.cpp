@@ -14,6 +14,7 @@
 #include "GraphicsView.h"
 #include <QTouchEvent>
 #include <QWheelEvent>
+#include <QDebug>
 
 GraphicsView::GraphicsView(QGraphicsScene *scene, QGraphicsPixmapItem *pixItem, QWidget *parent)
     : QGraphicsView(scene, parent), m_pPixItem(pixItem), totalScaleFactor(1.0)
@@ -89,6 +90,6 @@ bool GraphicsView::viewportEvent(QEvent *event)
 void GraphicsView::setPix(QPixmap pix) {
     m_pPixItem->setPixmap(pix);
     this->scene()->setSceneRect(QRect(0, 0, pix.width(), pix.height()));
-    this->fitInView(this->sceneRect(), Qt::KeepAspectRatio);
-    totalScaleFactor = qMax(this->transform().m11(), this->transform().m22());
+    totalScaleFactor = qMin((qreal)this->width() / (qreal)pix.width(), (qreal)this->height() / (qreal)pix.height());
+    setTransform(QTransform().scale(totalScaleFactor, totalScaleFactor));
 }

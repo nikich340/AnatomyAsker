@@ -24,27 +24,29 @@ class AnatomyAsker : public QWidget {
 Q_OBJECT
 private:
     static const int maxAns = 6;
-    GraphicsView* m_pGraphicsView;
+    GraphicsView *m_pGraphicsView, *m_pGraphicsViewMore = nullptr;
     QCheckBox *m_pCheckRus, *m_pCheckLatin;
     QDialog *m_pDialogSettings = nullptr;
-    QLabel *m_pLblQuestion, *m_pLblInfo, *m_pLblAns[maxAns];
-    QPushButton *m_pBtnRight, *m_pBtnNext, *m_pBtnFinish, *m_pBtnPre, *m_pBtnSet[5], *m_pBtnAns[maxAns];
+    QLabel *m_pLblQuestion, *m_pLblInfo, *m_pLblAns[maxAns], *m_pLblMore = nullptr;
+    QPushButton *m_pBtnRight, *m_pBtnNext, *m_pBtnFinish, *m_pBtnPre, *m_pBtnMore,
+                *m_pBtnBack, *m_pBtnSet[5], *m_pBtnAns[maxAns];
     QSettings m_settings;
-    QTreeWidget* m_pTW = nullptr;
-    QVBoxLayout* m_pLayoutMain, *m_pLayoutMenu, *m_pLayoutPreAsk, *m_pLayoutAsk;
-    QWidget *m_pWidgetMenu, *m_pWidgetPreAsk, *m_pWidgetAsk;
+    QTreeWidget *m_pTW = nullptr;
+    QVBoxLayout *m_pLayoutMain, *m_pLayoutMenu, *m_pLayoutPreAsk, *m_pLayoutAsk, *m_pLayoutMore;
+    QWidget *m_pWidgetMenu, *m_pWidgetPreAsk, *m_pWidgetAsk, *m_pWidgetMore;
 
-    bool m_bLangRu = true;
-    bool m_bLatin = true;
+    bool m_bLangRu = true, m_bLatin = true;
     int dbg_spacing = 0;
-    int q_sum = 0;
-    int q_cnt = 1;
-    int q_rightAnsCnt = 0;
-    int q_ansType = 0; // 0 - undefined, 1 - right, -1 - wrong
+    int q_sum = 0, q_rightAnsCnt = 0, q_cnt = 1, q_ansType = 0;
 
     QMap<QString, QDomElement> findElementByName;
     QDomDocument osteoDoc;
     QVector<QDomElement> unusedOsteos;
+
+    QVector<QPair<int, QString>> morePixVect;
+    QString moreText;
+    int morePixNum;
+
 
     QDialog* createDialog(QString info, QString accept, QString reject, bool mod);
     QPushButton* setUpBtn(QLabel* pLbl);
@@ -77,6 +79,10 @@ public slots:
     void onFinishAsk();
     void onFinishOsteoAsk();
     void onMenu();
+    void onMore();
+    void onMoreBack();
+    void onMoreCurrentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous);
+    void onMoreNextPix();
     void onNextOsteoAsk();
     void onPreStartOsteoAsk();
     void onSettings();
