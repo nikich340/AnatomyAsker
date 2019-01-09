@@ -438,7 +438,7 @@ void AnatomyAsker::writeXml(QDomDocument& doc, QString path) {
 }
 
 /* PUBLIC FUNCTIONS */
-AnatomyAsker::AnatomyAsker(QWidget *pwgt) : QWidget(pwgt), m_pGraphicsView(new GraphicsView),
+AnatomyAsker::AnatomyAsker(QStackedWidget *pswgt) : QStackedWidget(pswgt), m_pGraphicsView(new GraphicsView),
   m_pCheckRus(new QCheckBox), m_pCheckLatin(new QCheckBox), m_pLblQuestion(new QLabel),
   m_pLblInfo(new QLabel), m_pBtnNext(new QPushButton), m_pBtnFinish(new QPushButton),
   m_pBtnPre(new QPushButton), m_pBtnMore(new QPushButton), m_pBtnBack(new QPushButton), m_settings("nikich340", "AnatomyAsker"), m_pLayoutMain(new QVBoxLayout),
@@ -496,11 +496,10 @@ AnatomyAsker::AnatomyAsker(QWidget *pwgt) : QWidget(pwgt), m_pGraphicsView(new G
     m_pWidgetAsk->setLayout(m_pLayoutAsk);
     m_pWidgetMore->setLayout(m_pLayoutMore);
 
-    m_pLayoutMain->addWidget(m_pWidgetMenu);
-    m_pLayoutMain->addWidget(m_pWidgetPreAsk);
-    m_pLayoutMain->addWidget(m_pWidgetAsk);
-    m_pLayoutMain->addWidget(m_pWidgetMore);
-    this->setLayout(m_pLayoutMain);
+    this->addWidget(m_pWidgetMenu);
+    this->addWidget(m_pWidgetPreAsk);
+    this->addWidget(m_pWidgetAsk);
+    this->addWidget(m_pWidgetMore);
 
     onUpdateLanguage(m_bLangRu ? Qt::Checked : Qt::Unchecked);
     updateInfoLabel();
@@ -555,10 +554,9 @@ void AnatomyAsker::onFinishOsteoAsk() {
 }
 void AnatomyAsker::onMenu() {
     qDebug() << QString(dbg_spacing, (QChar) ' ') << "Begin: " << __func__; dbg_spacing += 3;
-    m_pWidgetMenu->show();
-    m_pWidgetPreAsk->hide();
-    m_pWidgetAsk->hide();
-    m_pWidgetMore->hide();
+
+    setCurrentWidget(m_pWidgetMenu);
+
     dbg_spacing -= 3; qDebug() << QString(dbg_spacing, (QChar) ' ') << "End:   " << __func__;
 }
 void AnatomyAsker::onMore() {
@@ -609,10 +607,8 @@ void AnatomyAsker::onMore() {
 
     connect(m_pBtnNext, SIGNAL(clicked(bool)), this, SLOT(onMoreNextPix()));
     connect(m_pBtnBack, SIGNAL(clicked(bool)), this, SLOT(onMoreBack()));
-    m_pWidgetMenu->hide();
-    m_pWidgetPreAsk->hide();
-    m_pWidgetAsk->hide();
-    m_pWidgetMore->show();
+
+    setCurrentWidget(m_pWidgetMore);
 
     dbg_spacing -= 3; qDebug() << QString(dbg_spacing, (QChar) ' ') << "End:   " << __func__;
 }
@@ -665,10 +661,7 @@ void AnatomyAsker::onPreStartOsteoAsk() {
         pdlg->deleteLater();
     }
 
-    m_pWidgetMenu->hide();
-    m_pWidgetPreAsk->show();
-    m_pWidgetAsk->hide();
-    m_pWidgetMore->hide();
+    setCurrentWidget(m_pWidgetPreAsk);
 
     if (osteoDoc.documentElement().isNull()) {
         readXml(osteoDoc, ":/osteologia.xml");
@@ -731,10 +724,7 @@ void AnatomyAsker::onStartAsk() {
     pGridLayout->addWidget(m_pBtnFinish, maxAns / 2, 0);
     pGridLayout->addWidget(m_pBtnNext, maxAns / 2, 1);
 
-    m_pWidgetMenu->hide();
-    m_pWidgetPreAsk->hide();
-    m_pWidgetAsk->show();
-    m_pWidgetMore->hide();
+    setCurrentWidget(m_pWidgetAsk);
 
     m_pLayoutAsk->addLayout(pHLayout);
     m_pLayoutAsk->addWidget(m_pGraphicsView);

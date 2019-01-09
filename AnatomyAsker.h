@@ -20,7 +20,7 @@
 #define to_str(a) QString::number(a)
 #define VERSION 2.4
 
-class AnatomyAsker : public QWidget {
+class AnatomyAsker : public QStackedWidget {
 Q_OBJECT
 private:
     static const int maxAns = 6;
@@ -72,7 +72,7 @@ private:
     void viewOsteoTreeDfs(QDomElement& parEl, QTreeWidgetItem* pTWI);
     void writeXml(QDomDocument& doc, QString path);
 public:
-    AnatomyAsker(QWidget *pwgt = nullptr);
+    AnatomyAsker(QStackedWidget *pswgt = nullptr);
     virtual ~AnatomyAsker();
 public slots:
     void onAns();
