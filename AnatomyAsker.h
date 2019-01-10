@@ -18,23 +18,44 @@
 
 #define upn(x, init, n) for(int x = init; x <= n; ++x)
 #define to_str(a) QString::number(a)
-#define VERSION 2.4
+#define dbg(a) qDebug() << a
+#define VERSION 3.0
 
 class AnatomyAsker : public QStackedWidget {
 Q_OBJECT
 private:
-    static const int maxAns = 6;
-    GraphicsView *m_pGraphicsView, *m_pGraphicsViewMore = nullptr;
-    QCheckBox *m_pCheckRus, *m_pCheckLatin;
-    QDialog *m_pDialogSettings = nullptr;
-    QLabel *m_pLblQuestion, *m_pLblInfo, *m_pLblAns[maxAns], *m_pLblMore = nullptr;
-    QPushButton *m_pBtnRight, *m_pBtnNext, *m_pBtnFinish, *m_pBtnPre, *m_pBtnMore,
-                *m_pBtnBack, *m_pBtnSet[5], *m_pBtnAns[maxAns];
+    /* GENERAL */
     QSettings m_settings;
-    QTreeWidget *m_pTW = nullptr;
     QVBoxLayout *m_pLayoutMain, *m_pLayoutMenu, *m_pLayoutPreAsk, *m_pLayoutAsk, *m_pLayoutMore;
     QWidget *m_pWidgetMenu, *m_pWidgetPreAsk, *m_pWidgetAsk, *m_pWidgetMore;
 
+    /* MENU */
+    QCheckBox *m_pCheckRus, *m_pCheckLatin;
+
+    /* SETTINGS */
+    QDialog *m_pDialogSettings;
+    QPushButton *m_pBtnMenu[5];
+
+    /* PREASK */
+    QPushButton *m_pBtnStart, *m_pBtnMore;
+    QTreeWidget *m_pTreeOsteo;
+
+    /* MORE */
+    GraphicsView *m_pGraphicsViewMore;
+    QLabel *m_pLblMore;
+    QPushButton *m_pBtnNextPix, *m_pBtnBack;
+
+    QVector<QPair<int, QString>> morePixVect;
+    QString moreText;
+    int morePixNum;
+
+    /* ASK */
+    static const int maxAns = 6;
+    GraphicsView *m_pGraphicsView;
+    QLabel *m_pLblQuestion, *m_pLblInfo, *m_pLblAns[maxAns];
+    QPushButton *m_pBtnRight, *m_pBtnNext, *m_pBtnFinish, *m_pBtnAns[maxAns];
+
+    /* OTHER */
     bool m_bLangRu = true, m_bLatin = true;
     int dbg_spacing = 0;
     int q_sum = 0, q_rightAnsCnt = 0, q_cnt = 1, q_ansType = 0;
@@ -42,11 +63,6 @@ private:
     QMap<QString, QDomElement> findElementByName;
     QDomDocument osteoDoc;
     QVector<QDomElement> unusedOsteos;
-
-    QVector<QPair<int, QString>> morePixVect;
-    QString moreText;
-    int morePixNum;
-
 
     QDialog* createDialog(QString info, QString accept, QString reject, bool mod);
     QPushButton* setUpBtn(QLabel* pLbl);
@@ -64,6 +80,7 @@ private:
     void parsePixMarks(QVector<QPair<int, QString>>& pixVect, QString pixStr);
     void processOsteoXml();
     void processOsteoXmlDfs(QDomElement& curEl);
+    void setUpObjects();
     void sortOsteoXml();
     void sortOsteoXmlDfs(QDomElement& curEl);
     void readXml(QDomDocument& doc, QString path);
@@ -80,13 +97,12 @@ public slots:
     void onFinishOsteoAsk();
     void onMenu();
     void onMore();
-    void onMoreBack();
-    void onMoreCurrentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous);
     void onMoreNextPix();
     void onNextOsteoAsk();
     void onPreStartOsteoAsk();
     void onSettings();
     void onStartAsk();
     void onStartOsteoAsk();
+    void onTreeCurrentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous);
     void onUpdateLanguage(int check);
 };

@@ -348,6 +348,121 @@ void AnatomyAsker::parsePixMarks(QVector<QPair<int, QString>>& pixVect, QString 
         pixVect.push_back({0, "0"});
     }
 }
+void AnatomyAsker::setUpObjects() {
+    /* GENERAL */
+    m_pLayoutMain = new QVBoxLayout;
+    m_pLayoutMenu = new QVBoxLayout;
+    m_pLayoutPreAsk = new QVBoxLayout;
+    m_pLayoutAsk = new QVBoxLayout;
+    m_pLayoutMore = new QVBoxLayout;
+    m_pWidgetMenu = new QWidget;
+    m_pWidgetPreAsk = new QWidget;
+    m_pWidgetAsk = new QWidget;
+    m_pWidgetMore = new QWidget;
+
+    /* MENU */
+    upn(i, 0, 4) {
+        m_pBtnMenu[i] = new QPushButton;
+        m_pBtnMenu[i]->setStyleSheet("text-align: center; font-size: 23px; "
+                                    "color: #000000; background-color: rgba(255,255,255,100)");
+        m_pLayoutMenu->addWidget(m_pBtnMenu[i]);
+    }
+    connect(m_pBtnMenu[0], SIGNAL(clicked(bool)), this, SLOT(onPreStartOsteoAsk()));
+    connect(m_pBtnMenu[3], SIGNAL(clicked(bool)), this, SLOT(onSettings()));
+    connect(m_pBtnMenu[4], SIGNAL(clicked(bool)), qApp, SLOT(quit()));
+
+    /* SETTINGS */
+    m_pCheckRus = new QCheckBox;
+    m_pCheckLatin = new QCheckBox;
+
+    m_pDialogSettings = new QDialog;
+    QVBoxLayout* pvbox = new QVBoxLayout;
+    QPushButton* pBtnOk = new QPushButton("OK");
+    m_pDialogSettings->setWindowOpacity(0.9);
+    m_pDialogSettings->setMinimumWidth(QGuiApplication::primaryScreen()->geometry().width() * 0.75);
+    m_pCheckRus->setTristate(false);
+    m_pCheckLatin->setTristate(false);
+    connect(pBtnOk, SIGNAL(clicked(bool)), m_pDialogSettings, SLOT(accept()));
+    pvbox->addWidget(m_pCheckRus);
+    pvbox->addWidget(m_pCheckLatin);
+    pvbox->addWidget(pBtnOk);
+    m_pDialogSettings->setModal(true);
+    m_pDialogSettings->setLayout(pvbox);
+
+    /* PREASK */
+    m_pTreeOsteo = viewOsteoTree();
+    m_pTreeOsteo->setCurrentItem(m_pTreeOsteo->topLevelItem(0));
+    m_pTreeOsteo->expandItem(m_pTreeOsteo->currentItem());
+    connect(m_pTreeOsteo, SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)), this, SLOT(onTreeCurrentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)));
+
+    m_pBtnMore = new QPushButton;
+    m_pBtnStart = new QPushButton;
+    QHBoxLayout* pHbox = new QHBoxLayout;
+    m_pBtnMore->setEnabled(false);
+    pHbox->addWidget(m_pBtnMore);
+    pHbox->addWidget(m_pBtnStart);
+    m_pLayoutPreAsk->addWidget(m_pTreeOsteo);
+    m_pLayoutPreAsk->addLayout(pHbox);
+    connect(m_pBtnMore, SIGNAL(clicked(bool)), this, SLOT(onMore()));
+
+    /* MORE */
+    m_pGraphicsViewMore = new GraphicsView;
+    m_pLblMore = new QLabel;
+    m_pBtnBack = new QPushButton;
+    m_pBtnNextPix = new QPushButton;
+    QHBoxLayout* pHbox2 = new QHBoxLayout;
+
+    m_pLblMore->setMinimumWidth(QGuiApplication::primaryScreen()->geometry().width() * 0.75);
+    m_pLblMore->setWordWrap(true);
+    m_pLblMore->setAlignment(Qt::AlignCenter);
+    pHbox2->addWidget(m_pBtnBack);
+    pHbox2->addWidget(m_pBtnNextPix);
+    m_pLayoutMore->addWidget(m_pLblMore);
+    m_pLayoutMore->addWidget(m_pGraphicsViewMore);
+    m_pLayoutMore->addLayout(pHbox2);
+
+    connect(m_pBtnNextPix, SIGNAL(clicked(bool)), this, SLOT(onMoreNextPix()));
+    connect(m_pBtnBack, SIGNAL(clicked(bool)), this, SLOT(onPreStartOsteoAsk()));
+
+    /* ASK */
+    m_pGraphicsView = new GraphicsView;
+    m_pLblQuestion = new QLabel;
+    m_pLblInfo = new QLabel;
+    m_pBtnNext = new QPushButton;
+    m_pBtnFinish = new QPushButton;
+    m_pBtnNext->setStyleSheet("color:white; background-color: rgba(0,0,255,175); min-height: 40px");
+    m_pBtnFinish->setStyleSheet("color:white; background-color: rgba(0,0,0,175); min-height: 40px");
+    upn(i, 0, maxAns - 1) {
+        m_pLblAns[i] = new QLabel;
+        m_pBtnAns[i] = setUpBtn(m_pLblAns[i]);
+        connect(m_pBtnAns[i], SIGNAL(clicked(bool)), this, SLOT(onAns()));
+    }
+    m_pLblQuestion->setWordWrap(true);
+    m_pLblQuestion->setMinimumWidth(QGuiApplication::primaryScreen()->geometry().width() * 0.8);
+    m_pLblQuestion->setAlignment(Qt::AlignCenter);
+    m_pLblQuestion->setStyleSheet("font-size: 23px; font-weight:bold;"
+                                  "color: #001a00");
+    m_pLblInfo->setWordWrap(true);
+    m_pLblInfo->setAlignment(Qt::AlignCenter);
+    m_pLblInfo->setStyleSheet("font-size: 20px; color: #990099");
+    m_pLblInfo->setMinimumWidth(QGuiApplication::primaryScreen()->geometry().width() * 0.15);
+
+    QGridLayout* pGridLayout = new QGridLayout;
+    QHBoxLayout* pHLayout = new QHBoxLayout;
+    upn(i, 0, maxAns - 1) {
+        pGridLayout->addWidget(m_pBtnAns[i], i / 2, i % 2);
+    }
+    updateInfoLabel();
+
+    pHLayout->addWidget(m_pLblQuestion);
+    pHLayout->addWidget(m_pLblInfo);
+    pGridLayout->addWidget(m_pBtnFinish, maxAns / 2, 0);
+    pGridLayout->addWidget(m_pBtnNext, maxAns / 2, 1);
+
+    m_pLayoutAsk->addLayout(pHLayout);
+    m_pLayoutAsk->addWidget(m_pGraphicsView);
+    m_pLayoutAsk->addLayout(pGridLayout);
+}
 void AnatomyAsker::sortOsteoXml() {
     qDebug() << QString(dbg_spacing, (QChar) ' ') << "Begin: " << __func__; dbg_spacing += 3;
     QDomElement rootEl = osteoDoc.documentElement();
@@ -438,58 +553,23 @@ void AnatomyAsker::writeXml(QDomDocument& doc, QString path) {
 }
 
 /* PUBLIC FUNCTIONS */
-AnatomyAsker::AnatomyAsker(QStackedWidget *pswgt) : QStackedWidget(pswgt), m_pGraphicsView(new GraphicsView),
-  m_pCheckRus(new QCheckBox), m_pCheckLatin(new QCheckBox), m_pLblQuestion(new QLabel),
-  m_pLblInfo(new QLabel), m_pBtnNext(new QPushButton), m_pBtnFinish(new QPushButton),
-  m_pBtnPre(new QPushButton), m_pBtnMore(new QPushButton), m_pBtnBack(new QPushButton), m_settings("nikich340", "AnatomyAsker"), m_pLayoutMain(new QVBoxLayout),
-  m_pLayoutMenu(new QVBoxLayout), m_pLayoutPreAsk(new QVBoxLayout), m_pLayoutAsk(new QVBoxLayout), m_pLayoutMore(new QVBoxLayout),
-  m_pWidgetMenu(new QWidget), m_pWidgetPreAsk(new QWidget), m_pWidgetAsk(new QWidget), m_pWidgetMore(new QWidget)
+AnatomyAsker::AnatomyAsker(QStackedWidget *pswgt) : QStackedWidget(pswgt), m_settings("nikich340", "AnatomyAsker")
 {
     qDebug() << QString(dbg_spacing, (QChar) ' ') << "Begin: " << __func__; dbg_spacing += 3;
+
     m_bLangRu = m_settings.value("/settings/m_bLangRu", false).toBool();
     m_bLatin = m_settings.value("/settings/m_bLatin", true).toBool();
 
+    readXml(osteoDoc, ":/osteologia.xml");
+    processOsteoXml();
+
     this->setStyleSheet("QPushButton { alignment: center; text-align: center; min-height: 75px; font-size: 20px; background-color: rgba(255,255,255,150) }"
                         "QLabel { alignment: center; text-align: center; font-size: 20px; background-color: rgba(255,255,255,100) }"
-                        "QTreeWidget { alignment: center; text-align: center; font-size: 23px; background-color: rgba(255,255,255,200) }");
+                        "QTreeWidget { alignment: center; text-align: center; font-size: 23px; background-color: rgba(255,255,255,200) }"
+                        "GraphicsView { background-color: rgba(255, 255, 255, 64) }");
+    setUpObjects();
 
-    m_pGraphicsView->setStyleSheet("background-color: rgba(255, 255, 255, 64)");
-
-    m_pLblQuestion->setWordWrap(true);
-    m_pLblQuestion->setMinimumWidth(QGuiApplication::primaryScreen()->geometry().width() * 0.85);
-    m_pLblQuestion->setAlignment(Qt::AlignCenter);
-    m_pLblQuestion->setStyleSheet("font-size: 23px; font-weight:bold;"
-                                  "color: #001a00");
-
-    m_pLblInfo->setWordWrap(true);
-    m_pLblInfo->setAlignment(Qt::AlignCenter);
-    m_pLblInfo->setStyleSheet("font-size: 20px; color: #990099");
-    m_pLblInfo->setMinimumWidth(QGuiApplication::primaryScreen()->geometry().width() * 0.15);
-
-    upn(i, 0, 4) {
-        m_pBtnSet[i] = new QPushButton;
-        m_pBtnSet[i]->setStyleSheet("text-align: center; font-size: 23px; "
-                                    "color: #000000; background-color: rgba(255,255,255,100)");
-    }
-
-    upn(i, 0, maxAns - 1) {
-        m_pLblAns[i] = new QLabel;
-        m_pBtnAns[i] = setUpBtn(m_pLblAns[i]);
-        connect(m_pBtnAns[i], SIGNAL(clicked(bool)), this, SLOT(onAns()));
-    }
-
-    m_pBtnNext->setStyleSheet("color:white; background-color: rgba(0,0,255,175); min-height: 40px");
-    m_pBtnFinish->setStyleSheet("color:white; background-color: rgba(0,0,0,175); min-height: 40px");
-    m_pBtnBack->setStyleSheet("min-height: 40px");
-    m_pBtnMore->setEnabled(false);
-    connect(m_pBtnSet[0], SIGNAL(clicked(bool)), this, SLOT(onPreStartOsteoAsk()));
-    connect(m_pBtnSet[3], SIGNAL(clicked(bool)), this, SLOT(onSettings()));
     connect(m_pCheckRus, SIGNAL(stateChanged(int)), this, SLOT(onUpdateLanguage(int)));
-    connect(m_pBtnSet[4], SIGNAL(clicked(bool)), qApp, SLOT(quit()));
-    connect(m_pBtnMore, SIGNAL(clicked(bool)), this, SLOT(onMore()));
-    upn(i, 0, 4) {
-        m_pLayoutMenu->addWidget(m_pBtnSet[i]);
-    }
 
     m_pWidgetMenu->setLayout(m_pLayoutMenu);
     m_pWidgetPreAsk->setLayout(m_pLayoutPreAsk);
@@ -500,6 +580,7 @@ AnatomyAsker::AnatomyAsker(QStackedWidget *pswgt) : QStackedWidget(pswgt), m_pGr
     this->addWidget(m_pWidgetPreAsk);
     this->addWidget(m_pWidgetAsk);
     this->addWidget(m_pWidgetMore);
+    this->layout()->setSizeConstraint(QLayout::SetMaximumSize);
 
     onUpdateLanguage(m_bLangRu ? Qt::Checked : Qt::Unchecked);
     updateInfoLabel();
@@ -546,9 +627,9 @@ void AnatomyAsker::onFinishAsk() {
 }
 void AnatomyAsker::onFinishOsteoAsk() {
     qDebug() << QString(dbg_spacing, (QChar) ' ') << "Begin: " << __func__; dbg_spacing += 3;
-    disconnect(m_pBtnNext, SIGNAL(clicked(bool)), this, SLOT(onNextOsteoAsk()));
-    disconnect(m_pBtnPre, SIGNAL(clicked(bool)), this, SLOT(onStartOsteoAsk()));
+    disconnect(m_pBtnStart, SIGNAL(clicked(bool)), this, SLOT(onStartOsteoAsk()));
     disconnect(m_pBtnFinish, SIGNAL(clicked(bool)), this, SLOT(onFinishOsteoAsk()));
+    disconnect(m_pBtnNext, SIGNAL(clicked(bool)), this, SLOT(onNextOsteoAsk()));
     onFinishAsk();
     dbg_spacing -= 3; qDebug() << QString(dbg_spacing, (QChar) ' ') << "End:   " << __func__;
 }
@@ -561,63 +642,42 @@ void AnatomyAsker::onMenu() {
 }
 void AnatomyAsker::onMore() {
     qDebug() << QString(dbg_spacing, (QChar) ' ') << "Begin: " << __func__; dbg_spacing += 3;
-    QDomElement curEl = findElementByName[m_pTW->currentItem()->text(1)];
-    qDebug() << m_pTW->currentItem()->text(1);
+    QDomElement curEl = findElementByName[m_pTreeOsteo->currentItem()->text(1)];
     QDomElement parEl = curEl.parentNode().toElement();
-    if (m_pLblMore == nullptr) {
-       m_pGraphicsViewMore = new GraphicsView;
-
-       m_pLblMore = new QLabel;
-       m_pLblMore->setAlignment(Qt::AlignCenter);
-       m_pLayoutMore->addWidget(m_pLblMore);
-       m_pLayoutMore->addWidget(m_pGraphicsView);
-       QHBoxLayout* pHbox = new QHBoxLayout;
-       pHbox->addWidget(m_pBtnBack);
-       pHbox->addWidget(m_pBtnNext);
-       m_pLayoutMore->addLayout(pHbox);
-    }
 
     morePixVect.clear();
     morePixNum = 0;
     parsePixMarks(morePixVect, curEl.attribute("pixMarks"));
-    m_pGraphicsView->setPix(QPixmap(":/osteoPix/osteoPix" + to_str(morePixVect[0].first) + ".png"));
-    m_pBtnNext->setEnabled(morePixVect.size() > 1);
-    moreText = "<h3><span style=\"color: #0000ff;\">" + elName(curEl) +
-            "<span style=\"color: #ff00ff;\"> (" + elName(parEl) + ")<br /></span></span></h3>";
+    m_pGraphicsViewMore->setPix(QPixmap(":/osteoPix/osteoPix" + to_str(morePixVect[0].first) + ".png"));
+    m_pBtnNextPix->setEnabled(morePixVect.size() > 1);
+    moreText = "<h2><span style=\"color: #0000ff;\">" + elName(curEl) +
+            "<span style=\"color: #ff00ff;\"> (" + elName(parEl) + ")<br /></span></span></h2>";
     if (curEl.tagName() == "canalis") {
         if (m_bLangRu) {
-            moreText += "<p><strong>Начало:</strong> " + parseLinks(curEl.childNodes().at(0).toElement().text()) +
+            moreText += "<h3><strong>Начало:</strong> " + parseLinks(curEl.childNodes().at(0).toElement().text()) +
                     "<br /><strong>Конец:</strong> " + parseLinks(curEl.childNodes().at(1).toElement().text()) +
-                    "<br /><strong>Описание:</strong> " + parseLinks(curEl.childNodes().at(2).toElement().text()) + "</p>";
+                    "<br /><strong>Описание:</strong> " + parseLinks(curEl.childNodes().at(2).toElement().text()) + "</h3>";
         } else {
-            moreText += "<p><strong>Begin:</strong> " + parseLinks(curEl.childNodes().at(0).toElement().text()) +
+            moreText += "<h3><strong>Begin:</strong> " + parseLinks(curEl.childNodes().at(0).toElement().text()) +
                     "<br /><strong>End:</strong> " + parseLinks(curEl.childNodes().at(1).toElement().text()) +
-                    "<br /><strong>Description:</strong> " + parseLinks(curEl.childNodes().at(2).toElement().text()) + "</p>";
+                    "<br /><strong>Description:</strong> " + parseLinks(curEl.childNodes().at(2).toElement().text()) + "</h3>";
         }
     }
     if (morePixVect[0].second != "0") {
         if (m_bLangRu) {
-            m_pLblMore->setText(moreText + "<p>Номер " + morePixVect[0].second + " на текущей картинке</p>");
+            m_pLblMore->setText(moreText + "<h2>Номер " + morePixVect[0].second + " на текущей картинке</h2>");
         } else {
-            m_pLblMore->setText(moreText + "<p>Mark " + morePixVect[0].second + " on current picture</p>");
+            m_pLblMore->setText(moreText + "<h2>Mark " + morePixVect[0].second + " on current picture</h2>");
         }
     } else {
         m_pLblMore->setText(moreText);
     }
 
-    connect(m_pBtnNext, SIGNAL(clicked(bool)), this, SLOT(onMoreNextPix()));
-    connect(m_pBtnBack, SIGNAL(clicked(bool)), this, SLOT(onMoreBack()));
-
     setCurrentWidget(m_pWidgetMore);
 
     dbg_spacing -= 3; qDebug() << QString(dbg_spacing, (QChar) ' ') << "End:   " << __func__;
 }
-void AnatomyAsker::onMoreBack() {
-    disconnect(m_pBtnNext, SIGNAL(clicked(bool)), this, SLOT(onMoreNextPix()));
-    disconnect(m_pBtnBack, SIGNAL(clicked(bool)), this, SLOT(onMoreBack()));
-    onPreStartOsteoAsk();
-}
-void AnatomyAsker::onMoreCurrentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous) {
+void AnatomyAsker::onTreeCurrentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous) {
     QDomElement curEl = findElementByName[current->text(1)];
     if (curEl.tagName() == "canalis" || (curEl.hasAttribute("pixMarks") && curEl.tagName() == "cell")) {
         m_pBtnMore->setEnabled(true);
@@ -635,9 +695,9 @@ void AnatomyAsker::onMoreNextPix() {
     }
     m_pGraphicsViewMore->setPix(QPixmap(":/osteoPix/osteoPix" + to_str(morePixVect[morePixNum].first) + ".png"));
     if (m_bLangRu) {
-        m_pLblMore->setText(moreText + "<p>Номер " + morePixVect[morePixNum].second + " на текущей картинке</p>");
+        m_pLblMore->setText(moreText + "<h2>Номер " + morePixVect[morePixNum].second + " на текущей картинке</h2>");
     } else {
-        m_pLblMore->setText(moreText + "<p>Mark " + morePixVect[morePixNum].second + " on current picture</p>");
+        m_pLblMore->setText(moreText + "<h2>Mark " + morePixVect[morePixNum].second + " on current picture</h2>");
     }
 }
 void AnatomyAsker::onNextOsteoAsk() {
@@ -663,47 +723,14 @@ void AnatomyAsker::onPreStartOsteoAsk() {
 
     setCurrentWidget(m_pWidgetPreAsk);
 
-    if (osteoDoc.documentElement().isNull()) {
-        readXml(osteoDoc, ":/osteologia.xml");
-    }
-    //sortOsteoXml();
-    //writeXml(osteoDoc, "osteosort.xml");
     unusedOsteos.clear();
     processOsteoXml();
-    if (m_pTW == nullptr) {
-        m_pTW = viewOsteoTree();
-        m_pTW->setCurrentItem(m_pTW->topLevelItem(0));
-        m_pTW->expandItem(m_pTW->currentItem());
-        connect(m_pTW, SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)), this, SLOT(onMoreCurrentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)));
 
-        m_pLayoutPreAsk->addWidget(m_pTW);
-        QHBoxLayout* pHbox = new QHBoxLayout;
-        //m_pBtnMore->setEnabled(false);
-        pHbox->addWidget(m_pBtnMore);
-        pHbox->addWidget(m_pBtnPre);
-        m_pLayoutPreAsk->addLayout(pHbox);
-    }
-    connect(m_pBtnFinish, SIGNAL(clicked(bool)), this, SLOT(onFinishOsteoAsk()));
-    connect(m_pBtnPre, SIGNAL(clicked(bool)), this, SLOT(onStartOsteoAsk()));
+    connect(m_pBtnStart, SIGNAL(clicked(bool)), this, SLOT(onStartOsteoAsk()));
     dbg_spacing -= 3; qDebug() << QString(dbg_spacing, (QChar) ' ') << "End:   " << __func__;
 }
 void AnatomyAsker::onSettings() {
     qDebug() << QString(dbg_spacing, (QChar) ' ') << "Begin: " << __func__; dbg_spacing += 3;
-    if (m_pDialogSettings == nullptr) {
-        m_pDialogSettings = new QDialog;
-        m_pDialogSettings->setWindowOpacity(0.9);
-        m_pDialogSettings->setMinimumWidth(QGuiApplication::primaryScreen()->geometry().width() * 0.8);
-        QVBoxLayout* pvbox = new QVBoxLayout;
-        QPushButton* pBtnOk = new QPushButton("OK");
-        m_pCheckRus->setTristate(false);
-        m_pCheckLatin->setTristate(false);
-        m_pDialogSettings->setModal(true);
-        m_pDialogSettings->setLayout(pvbox);
-        connect(pBtnOk, SIGNAL(clicked(bool)), m_pDialogSettings, SLOT(accept()));
-        pvbox->addWidget(m_pCheckRus);
-        pvbox->addWidget(m_pCheckLatin);
-        pvbox->addWidget(pBtnOk);
-    }
     m_pCheckRus->setCheckState(m_bLangRu ? Qt::Checked : Qt::Unchecked);
     m_pCheckLatin->setCheckState(m_bLatin ? Qt::Checked : Qt::Unchecked);
 
@@ -712,31 +739,21 @@ void AnatomyAsker::onSettings() {
 }
 void AnatomyAsker::onStartAsk() {
     qDebug() << QString(dbg_spacing, (QChar) ' ') << "Begin: " << __func__; dbg_spacing += 3;
-    QGridLayout* pGridLayout = new QGridLayout;
-    QHBoxLayout* pHLayout = new QHBoxLayout;
-    upn(i, 0, maxAns - 1) {
-        pGridLayout->addWidget(m_pBtnAns[i], i / 2, i % 2);
-    }
-    updateInfoLabel();
 
-    pHLayout->addWidget(m_pLblQuestion);
-    pHLayout->addWidget(m_pLblInfo);
-    pGridLayout->addWidget(m_pBtnFinish, maxAns / 2, 0);
-    pGridLayout->addWidget(m_pBtnNext, maxAns / 2, 1);
+    updateInfoLabel();
 
     setCurrentWidget(m_pWidgetAsk);
 
-    m_pLayoutAsk->addLayout(pHLayout);
-    m_pLayoutAsk->addWidget(m_pGraphicsView);
-    m_pLayoutAsk->addLayout(pGridLayout);
     dbg_spacing -= 3; qDebug() << QString(dbg_spacing, (QChar) ' ') << "End:   " << __func__;
 }
 void AnatomyAsker::onStartOsteoAsk() {
     qDebug() << QString(dbg_spacing, (QChar) ' ') << "Begin: " << __func__; dbg_spacing += 3;
 
-    chooseOsteoQuests(m_pTW->currentItem()->text(0));
+    chooseOsteoQuests(m_pTreeOsteo->currentItem()->text(0));
     q_sum = unusedOsteos.size();
     genOsteoQuest();
+
+    connect(m_pBtnFinish, SIGNAL(clicked(bool)), this, SLOT(onFinishOsteoAsk()));
     connect(m_pBtnNext, SIGNAL(clicked(bool)), this, SLOT(onNextOsteoAsk()));
     dbg_spacing -= 3; qDebug() << QString(dbg_spacing, (QChar) ' ') << "End:   " << __func__;
     onStartAsk();
@@ -750,14 +767,15 @@ void AnatomyAsker::onUpdateLanguage(int check) {
     }
     m_pCheckLatin->setCheckable(m_bLangRu);
     m_pBtnBack->setText(m_bLangRu ? "Назад" : "Back");
-    m_pBtnSet[0]->setText(m_bLangRu ? "Остеология" : "Osteologia");
-    m_pBtnSet[1]->setText(m_bLangRu ? "Артрология" : "Artrologia");
-    m_pBtnSet[2]->setText(m_bLangRu ? "Миология" : "Myologia");
-    m_pBtnSet[3]->setText(m_bLangRu ? "Настройки" : "Settings");
-    m_pBtnSet[4]->setText(m_bLangRu ? "Выход" : "Quit");
-    m_pBtnPre->setText(m_bLangRu ? "Начать" : "Start");
+    m_pBtnMenu[0]->setText(m_bLangRu ? "Остеология" : "Osteologia");
+    m_pBtnMenu[1]->setText(m_bLangRu ? "Артрология" : "Artrologia");
+    m_pBtnMenu[2]->setText(m_bLangRu ? "Миология" : "Myologia");
+    m_pBtnMenu[3]->setText(m_bLangRu ? "Настройки" : "Settings");
+    m_pBtnMenu[4]->setText(m_bLangRu ? "Выход" : "Quit");
+    m_pBtnStart->setText(m_bLangRu ? "Начать" : "Start");
     m_pBtnMore->setText(m_bLangRu ? "Подробнее" : "More");
     m_pBtnNext->setText(m_bLangRu ? "Далее" : "Next");
+    m_pBtnNextPix->setText(m_bLangRu ? "Следующая картинка" : "Next picture");
     m_pBtnFinish->setText(m_bLangRu ? " Завершить" : " Finish");
     m_pCheckRus->setText(m_bLangRu ? "Русский язык" : "Russian language");
     m_pCheckLatin->setText(m_bLangRu ? "Добавлять латинские названия" : "Add latin name");

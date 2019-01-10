@@ -14,7 +14,6 @@
 #include "GraphicsView.h"
 #include <QTouchEvent>
 #include <QWheelEvent>
-#include <QDebug>
 
 GraphicsView::GraphicsView(QGraphicsScene *scene, QGraphicsPixmapItem *pixItem, QWidget *parent)
     : QGraphicsView(scene, parent), m_pPixItem(pixItem), totalScaleFactor(1.0)
