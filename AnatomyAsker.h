@@ -19,7 +19,7 @@
 #define upn(x, init, n) for(int x = init; x <= n; ++x)
 #define to_str(a) QString::number(a)
 #define dbg(a) qDebug() << a
-#define VERSION 3.0
+#define VERSION 3.1
 
 class AnatomyAsker : public QStackedWidget {
 Q_OBJECT
@@ -64,7 +64,7 @@ private:
     QDomDocument osteoDoc;
     QVector<QDomElement> unusedOsteos;
 
-    QDialog* createDialog(QString info, QString accept, QString reject, bool mod);
+    QDialog* createDialog(QString info, QString pix, QString accept, QString reject, bool mod);
     QPushButton* setUpBtn(QLabel* pLbl);
     QString findMark(QVector<QPair<int, QString>>& pixVect, int pixNum);
     QString elName(QDomElement& element);
@@ -73,6 +73,8 @@ private:
     bool isDigit(QChar c);
     bool isUpper(QChar c);
     int rand(int L, int R);
+    void _dbg_start(QString func);
+    void _dbg_end(QString func);
     void chooseOsteoQuests(QString root);
     void clearLayout(QLayout* layout);
     void crash(QString reason);

@@ -13,9 +13,8 @@
 #include "AnatomyAsker.h"
 
 /* PRIVATE FUNCTIONS */
-QDialog* AnatomyAsker::createDialog(QString info, QString accept, QString reject, bool mod) {
+QDialog* AnatomyAsker::createDialog(QString info, QString pix, QString accept, QString reject, bool mod) {
     QDialog* pdlg = new QDialog(this);
-    pdlg->setWindowOpacity(0.9);
     QHBoxLayout* phbox = new QHBoxLayout;
     QVBoxLayout* pvbox = new QVBoxLayout;
     QLabel* plbl = new QLabel(info);
@@ -34,6 +33,14 @@ QDialog* AnatomyAsker::createDialog(QString info, QString accept, QString reject
     }
 
     pvbox->addWidget(plbl);
+    if (pix != "-") {
+        QLabel* plblPix = new QLabel;
+        qreal maxW = QGuiApplication::primaryScreen()->geometry().width() * 0.9;
+        qreal maxH = QGuiApplication::primaryScreen()->geometry().height() * 0.6;
+        plblPix->setScaledContents(true);
+        plblPix->setPixmap(QPixmap(pix).scaled(QSize(maxW, maxH), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+        pvbox->addWidget(plblPix);
+    }
     pvbox->addLayout(phbox);
     pdlg->setModal(mod);
     pdlg->setLayout(pvbox);
@@ -51,7 +58,7 @@ QPushButton* AnatomyAsker::setUpBtn(QLabel* pLbl) {
     return pBtn;
 }
 QTreeWidget* AnatomyAsker::viewOsteoTree() {
-   qDebug() << QString(dbg_spacing, (QChar) ' ') << "Begin: " << __func__; dbg_spacing += 3;
+   _dbg_start(__func__);
    QTreeWidget* pTW = new QTreeWidget;
    pTW->setHeaderLabel(m_bLangRu ? "Выберите структуру для вопросов" : "Choose structure for questions");
    pTW->setColumnCount(1);
@@ -63,7 +70,7 @@ QTreeWidget* AnatomyAsker::viewOsteoTree() {
    pTW->addTopLevelItem(pRoot);
    viewOsteoTreeDfs(rootEl, pRoot);
 
-   dbg_spacing -= 3; qDebug() << QString(dbg_spacing, (QChar) ' ') << "End:   " << __func__;
+   _dbg_end(__func__);
    return pTW;
 }
 QString AnatomyAsker::findMark(QVector<QPair<int, QString>>& pixVect, int pixNum) {
@@ -86,7 +93,7 @@ QString AnatomyAsker::elName(QDomElement& element) {
     }
 }
 QString AnatomyAsker::parseLinks(QString text) {
-    qDebug() << QString(dbg_spacing, (QChar) ' ') << "Begin: " << __func__; dbg_spacing += 3;
+    _dbg_start(__func__);
     QString ret = "";
     upn(i, 0, text.length() - 1) {
         if (text[i] == '@') {
@@ -116,6 +123,24 @@ int AnatomyAsker::rand(int L, int R) {
         return -1;
     return L + qrand() % (R - L + 1);
 }
+void AnatomyAsker::_dbg_start(QString func) {
+    QString out = "";
+    upn(i, 1, dbg_spacing) {
+        out.push_back(' ');
+    }
+    out += func;
+    dbg_spacing += 3;
+    qDebug() << out;
+}
+void AnatomyAsker::_dbg_end(QString func) {
+    QString out = "";
+    dbg_spacing -= 3;
+    upn(i, 1, dbg_spacing) {
+        out.push_back(' ');
+    }
+    out += func;
+    qDebug() << out;
+}
 void AnatomyAsker::clearLayout(QLayout* layout) {
     while (QLayoutItem* item = layout->takeAt(0)) {
         if (QWidget* widget = item->widget()) {
@@ -126,13 +151,12 @@ void AnatomyAsker::clearLayout(QLayout* layout) {
             childLayout->deleteLater();
         }
         if (item != nullptr) {
-            qDebug() << "Not clear";
             delete item;
         }
     }
 }
 void AnatomyAsker::chooseOsteoQuests(QString rootPattern) {
-    qDebug() << QString(dbg_spacing, (QChar) ' ') << "Begin: " << __func__; dbg_spacing += 3;
+    _dbg_start(__func__);
     QVector<QDomElement> tmpV;
     for (auto curEl : unusedOsteos) {
         QDomElement from = curEl;
@@ -143,17 +167,17 @@ void AnatomyAsker::chooseOsteoQuests(QString rootPattern) {
             tmpV.push_back(from);
     }
     unusedOsteos = tmpV;
-    dbg_spacing -= 3; qDebug() << QString(dbg_spacing, (QChar) ' ') << "End:   " << __func__;
+    _dbg_end(__func__);
 }
 void AnatomyAsker::crash(QString reason) {
     qDebug() << "Crash! Reason: " << reason << "\n";
-    QDialog* pdlg = createDialog("Crash! Reason: " + reason + "\n", "Quit", "Try ignore", true);
+    QDialog* pdlg = createDialog("Crash! Reason: " + reason + "\n", "-", "Quit", "Try ignore", true);
     connect(pdlg, SIGNAL(accepted()), qApp, SLOT(quit()));
     pdlg->exec();
     pdlg->deleteLater();
 }
 void AnatomyAsker::genOsteoQuest() {
-    qDebug() << QString(dbg_spacing, (QChar) ' ') << "Begin: " << __func__; dbg_spacing += 3;
+    _dbg_start(__func__);
     //std::default_random_engine dre(QDateTime::currentMSecsSinceEpoch());
     QSet<QString> ans;
     QString rightAns;
@@ -181,7 +205,6 @@ void AnatomyAsker::genOsteoQuest() {
         av.push_back(i);
     }
     int prob = rand(1, 100);
-    qDebug() << "prob: " << prob;
 
     if (pEl.tagName() == "canalis") {
         if (prob <= 60) {
@@ -190,7 +213,6 @@ void AnatomyAsker::genOsteoQuest() {
             while (ans.size() < maxAns && !av.empty()) {
                 idx = rand(0, av.size() - 1);
                 QDomElement curEl = nodeList.at(av[idx]).cloneNode().toElement();
-                qDebug() << "Ok curEl";
                 av.erase(av.begin() + idx);
                 if (prob <= 20 && pEl.childNodes().at(0).toElement().text() == curEl.childNodes().at(0).toElement().text()) {
                     continue;
@@ -202,11 +224,14 @@ void AnatomyAsker::genOsteoQuest() {
             }
             if (m_bLangRu) {
                 if (prob <= 20) {                       /* ask about canalis by begin */
-                    question = "Какой канал начинается " + parseLinks(pEl.childNodes().at(0).toElement().text()) + "?";
+                    question = "Какой канал начинается " + parseLinks(pEl.childNodes().at(0).toElement().text());
                 } else if (prob > 20 && prob <= 40) {   /* ask about canalis by end */
-                    question = "Какой канал заканчивается " + parseLinks(pEl.childNodes().at(1).toElement().text()) + "?";
+                    question = "Какой канал заканчивается " + parseLinks(pEl.childNodes().at(1).toElement().text());
                 } else if (prob > 40 && prob <= 60) {   /* ask about canalis by path */
-                    question = "О каком канале идёт речь: " + parseLinks(pEl.childNodes().at(2).toElement().text()) + "?";
+                    question = "О каком канале идёт речь: " + parseLinks(pEl.childNodes().at(2).toElement().text());
+                }
+                if (mark != "0") {
+                    question += " (номер " + mark + ")?";
                 }
             } else {
                 if (prob <= 20) {                       /* ask about canalis by begin */
@@ -215,6 +240,9 @@ void AnatomyAsker::genOsteoQuest() {
                     question = "What canalis ends in " + parseLinks(pEl.childNodes().at(1).toElement().text()) + "?";
                 } else if (prob > 40 && prob <= 60) {   /* ask about canalis by path */
                     question = "What canalis is described: " + parseLinks(pEl.childNodes().at(2).toElement().text()) + "?";
+                }
+                if (mark != "0") {
+                    question += " (number " + mark + ")?";
                 }
             }
         } else if (prob > 60 && prob <= 80) {   /* ask about begin by canalis */
@@ -231,9 +259,9 @@ void AnatomyAsker::genOsteoQuest() {
                     ans.insert(curEnd);
             }
             if (m_bLangRu) {
-                question = "Где начинается " + elName(pEl) + "?";
+                question = "Где начинается " + elName(pEl) + " (номер " + mark + ")?";
             } else {
-                question = "Where does " + elName(pEl) + " begin?";
+                question = "Where does " + elName(pEl) + " begin (number " + mark + ")?";
             }
         } else if (prob > 80) {                 /* ask about end by canalis */
             rightAns = parseLinks(pEl.childNodes().at(1).toElement().text());
@@ -249,9 +277,9 @@ void AnatomyAsker::genOsteoQuest() {
                     ans.insert(curEnd);
             }
             if (m_bLangRu) {
-                question = "Где заканчивается " + elName(pEl) + "?";
+                question = "Где заканчивается " + elName(pEl) + " (номер " + mark + ")?";
             } else {
-                question = "Where does " + elName(pEl) + "end?";
+                question = "Where does " + elName(pEl) + "end (number " + mark + ")?";
             }
         }
     } else if (pEl.tagName() == "cell") {
@@ -317,7 +345,7 @@ void AnatomyAsker::genOsteoQuest() {
     upn(j, i, maxAns - 1) {
         m_pBtnAns[j]->hide();
     }
-    dbg_spacing -= 3; qDebug() << QString(dbg_spacing, (QChar) ' ') << "End:   " << __func__;
+    _dbg_end(__func__);
 }
 void AnatomyAsker::parsePixMarks(QVector<QPair<int, QString>>& pixVect, QString pixStr) {
     pixVect.clear();
@@ -339,7 +367,7 @@ void AnatomyAsker::parsePixMarks(QVector<QPair<int, QString>>& pixVect, QString 
             ++i;
         }
         if (num1 == "" || num2 == "") {
-            qDebug() << QString(dbg_spacing, (QChar) ' ') << "parsePixMarks: null pix (" + num1 + ") or mark (" + num2 + ")";
+            qDebug() << "parsePixMarks: null pix (" + num1 + ") or mark (" + num2 + ")";
             num1 = num2 = "0";
         }
         pixVect.push_back({num1.toInt(), num2});
@@ -464,10 +492,10 @@ void AnatomyAsker::setUpObjects() {
     m_pLayoutAsk->addLayout(pGridLayout);
 }
 void AnatomyAsker::sortOsteoXml() {
-    qDebug() << QString(dbg_spacing, (QChar) ' ') << "Begin: " << __func__; dbg_spacing += 3;
+    _dbg_start(__func__);
     QDomElement rootEl = osteoDoc.documentElement();
     sortOsteoXmlDfs(rootEl);
-    dbg_spacing -= 3; qDebug() << QString(dbg_spacing, (QChar) ' ') << "End:   " << __func__;
+    _dbg_end(__func__);
 }
 void AnatomyAsker::sortOsteoXmlDfs(QDomElement& parEl) {
     if (parEl.hasAttribute("id")) {
@@ -487,10 +515,10 @@ void AnatomyAsker::sortOsteoXmlDfs(QDomElement& parEl) {
     }
 }
 void AnatomyAsker::processOsteoXml() {
-    qDebug() << QString(dbg_spacing, (QChar) ' ') << "Begin: " << __func__; dbg_spacing += 3;
+    _dbg_start(__func__);
     QDomElement rootEl = osteoDoc.documentElement();
     processOsteoXmlDfs(rootEl);
-    dbg_spacing -= 3; qDebug() << QString(dbg_spacing, (QChar) ' ') << "End:   " << __func__;
+    _dbg_end(__func__);
 }
 void AnatomyAsker::processOsteoXmlDfs(QDomElement& parEl) {
     findElementByName[parEl.attribute("name")] = parEl;
@@ -510,7 +538,7 @@ void AnatomyAsker::processOsteoXmlDfs(QDomElement& parEl) {
     }
 }
 void AnatomyAsker::readXml(QDomDocument& doc, QString path) {
-    qDebug() << QString(dbg_spacing, (QChar) ' ') << "Begin: " << __func__; dbg_spacing += 3;
+    _dbg_start(__func__);
     QFile file(path);
     if (file.open(QIODevice::ReadOnly)) {
         QString error_msg;
@@ -521,7 +549,7 @@ void AnatomyAsker::readXml(QDomDocument& doc, QString path) {
         crash("File " + file.fileName() + " could not be opened in read-only mode");
     }
     file.close();
-    dbg_spacing -= 3; qDebug() << QString(dbg_spacing, (QChar) ' ') << "End:   " << __func__;
+    _dbg_end(__func__);
 }
 void AnatomyAsker::viewOsteoTreeDfs(QDomElement& parEl, QTreeWidgetItem* pTWIPar) {
     QDomElement curEl = parEl.firstChildElement();
@@ -541,7 +569,7 @@ void AnatomyAsker::updateInfoLabel() {
                         to_str(q_rightAnsCnt) + "/" + to_str(q_cnt));
 }
 void AnatomyAsker::writeXml(QDomDocument& doc, QString path) {
-    qDebug() << QString(dbg_spacing, (QChar) ' ') << "Begin: " << __func__; dbg_spacing += 3;
+    _dbg_start(__func__);
     QFile file(path);
     if (file.open(QIODevice::WriteOnly)) {
         file.write(doc.toByteArray());
@@ -549,13 +577,13 @@ void AnatomyAsker::writeXml(QDomDocument& doc, QString path) {
         crash("File " + file.fileName() + " could not be opened in write-only mode");
     }
     file.close();
-    dbg_spacing -= 3; qDebug() << QString(dbg_spacing, (QChar) ' ') << "End:   " << __func__;
+    _dbg_end(__func__);
 }
 
 /* PUBLIC FUNCTIONS */
 AnatomyAsker::AnatomyAsker(QStackedWidget *pswgt) : QStackedWidget(pswgt), m_settings("nikich340", "AnatomyAsker")
 {
-    qDebug() << QString(dbg_spacing, (QChar) ' ') << "Begin: " << __func__; dbg_spacing += 3;
+    _dbg_start(__func__);
 
     m_bLangRu = m_settings.value("/settings/m_bLangRu", false).toBool();
     m_bLatin = m_settings.value("/settings/m_bLatin", true).toBool();
@@ -585,18 +613,18 @@ AnatomyAsker::AnatomyAsker(QStackedWidget *pswgt) : QStackedWidget(pswgt), m_set
     onUpdateLanguage(m_bLangRu ? Qt::Checked : Qt::Unchecked);
     updateInfoLabel();
     onMenu();
-    dbg_spacing -= 3; qDebug() << QString(dbg_spacing, (QChar) ' ') << "End:   " << __func__;
+    _dbg_end(__func__);
 }
 AnatomyAsker::~AnatomyAsker() {
-    qDebug() << QString(dbg_spacing, (QChar) ' ') << "Begin: " << __func__; dbg_spacing += 3;
+    _dbg_start(__func__);
     m_settings.setValue("/settings/m_bLangRu", m_bLangRu);
     m_settings.setValue("/settings/m_bLatin", m_bLatin);
-    dbg_spacing -= 3; qDebug() << QString(dbg_spacing, (QChar) ' ') << "End:   " << __func__;
+    _dbg_end(__func__);
 }
 
 /* PUBLIC SLOTS */
 void AnatomyAsker::onAns() {
-    qDebug() << QString(dbg_spacing, (QChar) ' ') << "Begin: " << __func__; dbg_spacing += 3;
+    _dbg_start(__func__);
     QPushButton* pBtn = dynamic_cast<QPushButton*>(sender());
     if (m_pBtnRight == pBtn) {
         if (!q_ansType) {
@@ -613,61 +641,86 @@ void AnatomyAsker::onAns() {
     updateInfoLabel();
 }
 void AnatomyAsker::onFinishAsk() {
-    qDebug() << QString(dbg_spacing, (QChar) ' ') << "Begin: " << __func__; dbg_spacing += 3;
-    QDialog* pdlg = createDialog((m_bLangRu ? "Ваш результат: " : "Your result is: ")
-                                 + to_str(q_rightAnsCnt) + "/" + to_str(q_cnt)
-                                 + (m_bLangRu ? "\nЖдём Вас снова! :)" : "\nWaiting for you again! :)"),
-                                 m_bLangRu ? "Меню" : "Menu", m_bLangRu ? "Выход" : "Quit", true);
+    _dbg_start(__func__);
+    qreal score = (qreal) q_rightAnsCnt / (qreal) q_cnt;
+    QDialog* pdlg;
+    if (q_cnt < 5) {
+        pdlg = createDialog((m_bLangRu ? "Ваш результат: " : "Your result is: ")
+                            + to_str(q_rightAnsCnt) + "/" + to_str(q_cnt)
+                            + (m_bLangRu ? "\nОтветьте на 5 и более вопросов и получите оценку! :)" :
+                                           "\nAnswer on 5 and more questions and get score! :)"), "-",
+                            m_bLangRu ? "Меню" : "Menu", m_bLangRu ? "Выход" : "Quit", true);
+    } else {
+        QString pix;
+        qDebug() << score;
+        if (score >= 0.9) {
+            pix = ":/5.jpg";
+        } else if (score >= 0.7) {
+            pix = ":/4.jpg";
+        } else if (score >= 0.5) {
+            pix = ":/3.jpg";
+        } else {
+            pix = ":/2.jpg";
+        }
+        pdlg = createDialog((m_bLangRu ? "Ваш результат: " : "Your result is: ")
+                            + to_str(q_rightAnsCnt) + "/" + to_str(q_cnt), pix,
+                            m_bLangRu ? "Меню" : "Menu", m_bLangRu ? "Выход" : "Quit", true);
+    }
+
     connect(pdlg, SIGNAL(accepted()), this, SLOT(onMenu()));
     connect(pdlg, SIGNAL(rejected()), qApp, SLOT(quit()));
     pdlg->exec();
     pdlg->deleteLater();
-    q_sum = q_cnt = q_rightAnsCnt = q_ansType = 0;
-    dbg_spacing -= 3; qDebug() << QString(dbg_spacing, (QChar) ' ') << "End:   " << __func__;
+    q_sum = q_rightAnsCnt = q_ansType = 0;
+    q_cnt = 1;
+    _dbg_end(__func__);
 }
 void AnatomyAsker::onFinishOsteoAsk() {
-    qDebug() << QString(dbg_spacing, (QChar) ' ') << "Begin: " << __func__; dbg_spacing += 3;
+    _dbg_start(__func__);
     disconnect(m_pBtnStart, SIGNAL(clicked(bool)), this, SLOT(onStartOsteoAsk()));
     disconnect(m_pBtnFinish, SIGNAL(clicked(bool)), this, SLOT(onFinishOsteoAsk()));
     disconnect(m_pBtnNext, SIGNAL(clicked(bool)), this, SLOT(onNextOsteoAsk()));
     onFinishAsk();
-    dbg_spacing -= 3; qDebug() << QString(dbg_spacing, (QChar) ' ') << "End:   " << __func__;
+    _dbg_end(__func__);
 }
 void AnatomyAsker::onMenu() {
-    qDebug() << QString(dbg_spacing, (QChar) ' ') << "Begin: " << __func__; dbg_spacing += 3;
+    _dbg_start(__func__);
 
     setCurrentWidget(m_pWidgetMenu);
 
-    dbg_spacing -= 3; qDebug() << QString(dbg_spacing, (QChar) ' ') << "End:   " << __func__;
+    _dbg_end(__func__);
 }
 void AnatomyAsker::onMore() {
-    qDebug() << QString(dbg_spacing, (QChar) ' ') << "Begin: " << __func__; dbg_spacing += 3;
+    _dbg_start(__func__);
     QDomElement curEl = findElementByName[m_pTreeOsteo->currentItem()->text(1)];
     QDomElement parEl = curEl.parentNode().toElement();
 
     morePixVect.clear();
     morePixNum = 0;
+    if (curEl.hasAttribute("mainPix")) {
+        morePixVect.push_back({curEl.attribute("mainPix").toInt(), "..."});
+    }
     parsePixMarks(morePixVect, curEl.attribute("pixMarks"));
     m_pGraphicsViewMore->setPix(QPixmap(":/osteoPix/osteoPix" + to_str(morePixVect[0].first) + ".png"));
     m_pBtnNextPix->setEnabled(morePixVect.size() > 1);
-    moreText = "<h2><span style=\"color: #0000ff;\">" + elName(curEl) +
-            "<span style=\"color: #ff00ff;\"> (" + elName(parEl) + ")<br /></span></span></h2>";
+    moreText = "<h4><span style=\"color: #0000ff;\">" + elName(curEl) +
+            "<span style=\"color: #ff00ff;\"> (" + elName(parEl) + ")<br /></span></span>";
     if (curEl.tagName() == "canalis") {
         if (m_bLangRu) {
-            moreText += "<h3><strong>Начало:</strong> " + parseLinks(curEl.childNodes().at(0).toElement().text()) +
-                    "<br /><strong>Конец:</strong> " + parseLinks(curEl.childNodes().at(1).toElement().text()) +
-                    "<br /><strong>Описание:</strong> " + parseLinks(curEl.childNodes().at(2).toElement().text()) + "</h3>";
+            moreText += "<strong><span style=\"color: #800080;\">Начало:</span></strong> " + parseLinks(curEl.childNodes().at(0).toElement().text()) +
+                    "<br /><strong><span style=\"color: #800080;\">Конец:</span></strong> " + parseLinks(curEl.childNodes().at(1).toElement().text()) +
+                    "<br /><strong><span style=\"color: #800080;\">Описание:</span></strong> " + parseLinks(curEl.childNodes().at(2).toElement().text());
         } else {
-            moreText += "<h3><strong>Begin:</strong> " + parseLinks(curEl.childNodes().at(0).toElement().text()) +
-                    "<br /><strong>End:</strong> " + parseLinks(curEl.childNodes().at(1).toElement().text()) +
-                    "<br /><strong>Description:</strong> " + parseLinks(curEl.childNodes().at(2).toElement().text()) + "</h3>";
+            moreText += "<strong><span style=\"color: #800080;\">Begin:</span></strong> " + parseLinks(curEl.childNodes().at(0).toElement().text()) +
+                    "<br /><strong><span style=\"color: #800080;\">End:</span></strong> " + parseLinks(curEl.childNodes().at(1).toElement().text()) +
+                    "<br /><strong><span style=\"color: #800080;\">Description:</span></strong> " + parseLinks(curEl.childNodes().at(2).toElement().text());
         }
     }
     if (morePixVect[0].second != "0") {
         if (m_bLangRu) {
-            m_pLblMore->setText(moreText + "<h2>Номер " + morePixVect[0].second + " на текущей картинке</h2>");
+            m_pLblMore->setText(moreText + "<br /><strong><span style=\"color: #e60000;\">Номер " + morePixVect[0].second + " на текущей картинке</span></h4>");
         } else {
-            m_pLblMore->setText(moreText + "<h2>Mark " + morePixVect[0].second + " on current picture</h2>");
+            m_pLblMore->setText(moreText + "<br /><strong><span style=\"color: #e60000;\">Mark " + morePixVect[0].second + " on current picture</span></h4>");
         }
     } else {
         m_pLblMore->setText(moreText);
@@ -675,15 +728,7 @@ void AnatomyAsker::onMore() {
 
     setCurrentWidget(m_pWidgetMore);
 
-    dbg_spacing -= 3; qDebug() << QString(dbg_spacing, (QChar) ' ') << "End:   " << __func__;
-}
-void AnatomyAsker::onTreeCurrentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous) {
-    QDomElement curEl = findElementByName[current->text(1)];
-    if (curEl.tagName() == "canalis" || (curEl.hasAttribute("pixMarks") && curEl.tagName() == "cell")) {
-        m_pBtnMore->setEnabled(true);
-    } else {
-        m_pBtnMore->setEnabled(false);
-    }
+    _dbg_end(__func__);
 }
 void AnatomyAsker::onMoreNextPix() {
     if (morePixVect.size() == 1 && morePixVect[0].second == "0") {
@@ -695,13 +740,13 @@ void AnatomyAsker::onMoreNextPix() {
     }
     m_pGraphicsViewMore->setPix(QPixmap(":/osteoPix/osteoPix" + to_str(morePixVect[morePixNum].first) + ".png"));
     if (m_bLangRu) {
-        m_pLblMore->setText(moreText + "<h2>Номер " + morePixVect[morePixNum].second + " на текущей картинке</h2>");
+        m_pLblMore->setText(moreText + "<br /><strong><span style=\"color: #e60000;\">Номер " + morePixVect[morePixNum].second + " на текущей картинке</span></h4>");
     } else {
-        m_pLblMore->setText(moreText + "<h2>Mark " + morePixVect[morePixNum].second + " on current picture</h2>");
+        m_pLblMore->setText(moreText + "<br /><strong><span style=\"color: #e60000;\">Mark " + morePixVect[morePixNum].second + " on current picture</span></h4>");
     }
 }
 void AnatomyAsker::onNextOsteoAsk() {
-    qDebug() << QString(dbg_spacing, (QChar) ' ') << "Begin: " << __func__; dbg_spacing += 3;
+    _dbg_start(__func__);
     q_ansType = 0;
     upn(i, 0, maxAns - 1) {
         m_pBtnAns[i]->setStyleSheet("background-color: rgba(255,255,255,70)");
@@ -709,12 +754,12 @@ void AnatomyAsker::onNextOsteoAsk() {
     genOsteoQuest();
     ++q_cnt;
     updateInfoLabel();
-    dbg_spacing -= 3; qDebug() << QString(dbg_spacing, (QChar) ' ') << "End:   " << __func__;
+    _dbg_end(__func__);
 }
 void AnatomyAsker::onPreStartOsteoAsk() {
-    qDebug() << QString(dbg_spacing, (QChar) ' ') << "Begin: " << __func__; dbg_spacing += 3;
+    _dbg_start(__func__);
     if (!m_settings.value("/settings/launched" + to_str(VERSION), false).toBool()) {
-        QDialog* pdlg = createDialog("Необходимо перезайти в приложение (первый запуск)", "OK", "-", true);
+        QDialog* pdlg = createDialog("Необходимо перезайти в приложение (первый запуск)", "-", "OK", "-", true);
         connect(pdlg, SIGNAL(accepted()), qApp, SLOT(quit()));
         m_settings.setValue("/settings/launched" + to_str(VERSION), true);
         pdlg->exec();
@@ -727,27 +772,26 @@ void AnatomyAsker::onPreStartOsteoAsk() {
     processOsteoXml();
 
     connect(m_pBtnStart, SIGNAL(clicked(bool)), this, SLOT(onStartOsteoAsk()));
-    dbg_spacing -= 3; qDebug() << QString(dbg_spacing, (QChar) ' ') << "End:   " << __func__;
+    _dbg_end(__func__);
 }
 void AnatomyAsker::onSettings() {
-    qDebug() << QString(dbg_spacing, (QChar) ' ') << "Begin: " << __func__; dbg_spacing += 3;
+    _dbg_start(__func__);
     m_pCheckRus->setCheckState(m_bLangRu ? Qt::Checked : Qt::Unchecked);
     m_pCheckLatin->setCheckState(m_bLatin ? Qt::Checked : Qt::Unchecked);
 
     m_pDialogSettings->exec();
-    dbg_spacing -= 3; qDebug() << QString(dbg_spacing, (QChar) ' ') << "End:   " << __func__;
+    _dbg_end(__func__);
 }
 void AnatomyAsker::onStartAsk() {
-    qDebug() << QString(dbg_spacing, (QChar) ' ') << "Begin: " << __func__; dbg_spacing += 3;
+    _dbg_start(__func__);
 
     updateInfoLabel();
-
     setCurrentWidget(m_pWidgetAsk);
 
-    dbg_spacing -= 3; qDebug() << QString(dbg_spacing, (QChar) ' ') << "End:   " << __func__;
+    _dbg_end(__func__);
 }
 void AnatomyAsker::onStartOsteoAsk() {
-    qDebug() << QString(dbg_spacing, (QChar) ' ') << "Begin: " << __func__; dbg_spacing += 3;
+    _dbg_start(__func__);
 
     chooseOsteoQuests(m_pTreeOsteo->currentItem()->text(0));
     q_sum = unusedOsteos.size();
@@ -755,11 +799,19 @@ void AnatomyAsker::onStartOsteoAsk() {
 
     connect(m_pBtnFinish, SIGNAL(clicked(bool)), this, SLOT(onFinishOsteoAsk()));
     connect(m_pBtnNext, SIGNAL(clicked(bool)), this, SLOT(onNextOsteoAsk()));
-    dbg_spacing -= 3; qDebug() << QString(dbg_spacing, (QChar) ' ') << "End:   " << __func__;
+    _dbg_end(__func__);
     onStartAsk();
 }
+void AnatomyAsker::onTreeCurrentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous) {
+    QDomElement curEl = findElementByName[current->text(1)];
+    if (curEl.tagName() == "canalis" || (curEl.hasAttribute("pixMarks") || curEl.hasAttribute("mainPix"))) {
+        m_pBtnMore->setEnabled(true);
+    } else {
+        m_pBtnMore->setEnabled(false);
+    }
+}
 void AnatomyAsker::onUpdateLanguage(int check) {
-    qDebug() << QString(dbg_spacing, (QChar) ' ') << "Begin: " << __func__; dbg_spacing += 3;
+    _dbg_start(__func__);
     if (check == Qt::Checked) {
         m_bLangRu = true;
     } else {
@@ -779,5 +831,5 @@ void AnatomyAsker::onUpdateLanguage(int check) {
     m_pBtnFinish->setText(m_bLangRu ? " Завершить" : " Finish");
     m_pCheckRus->setText(m_bLangRu ? "Русский язык" : "Russian language");
     m_pCheckLatin->setText(m_bLangRu ? "Добавлять латинские названия" : "Add latin name");
-    dbg_spacing -= 3; qDebug() << QString(dbg_spacing, (QChar) ' ') << "End:   " << __func__;
+    _dbg_end(__func__);
 }
