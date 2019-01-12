@@ -11,13 +11,15 @@
  */
 
 #include "AnatomyAsker.h"
+#include <QMediaPlayer>
 
 /* PRIVATE FUNCTIONS */
 QDialog* AnatomyAsker::createDialog(QString info, QString pix, QString accept, QString reject, bool mod) {
     QDialog* pdlg = new QDialog(this);
     QHBoxLayout* phbox = new QHBoxLayout;
     QVBoxLayout* pvbox = new QVBoxLayout;
-    QLabel* plbl = new QLabel(info);
+    QLabel* plbl = new QLabel("<h3>" + info + "</h3>");
+    plbl->setAlignment(Qt::AlignCenter);
     plbl->setWordWrap(true);
 
     if (accept != "-") {
@@ -36,7 +38,7 @@ QDialog* AnatomyAsker::createDialog(QString info, QString pix, QString accept, Q
     if (pix != "-") {
         QLabel* plblPix = new QLabel;
         qreal maxW = QGuiApplication::primaryScreen()->geometry().width() * 0.9;
-        qreal maxH = QGuiApplication::primaryScreen()->geometry().height() * 0.6;
+        qreal maxH = QGuiApplication::primaryScreen()->geometry().height() * 0.7;
         plblPix->setScaledContents(true);
         plblPix->setPixmap(QPixmap(pix).scaled(QSize(maxW, maxH), Qt::KeepAspectRatio, Qt::SmoothTransformation));
         pvbox->addWidget(plblPix);
@@ -194,7 +196,7 @@ void AnatomyAsker::genOsteoQuest() {
 
     QVector<QPair<int, QString>> pixMarks;
     qDebug() << "Main structure: " << elName(pEl);
-    parsePixMarks(pixMarks, pEl.attribute("pixMarks"));
+    parsePixMarks(pixMarks, pEl.attribute("pixMarks"), true);
     int pixIdx = rand(0, pixMarks.size() - 1);
     int pix = pixMarks[pixIdx].first;
     QString mark = findMark(pixMarks, pix);
@@ -289,7 +291,7 @@ void AnatomyAsker::genOsteoQuest() {
             while (ans.size() < maxAns && !av.empty()) {
                 idx = rand(0, av.size() - 1);
                 QDomElement curEl = nodeList.at(av[idx]).cloneNode().toElement();
-                parsePixMarks(pixMarks, curEl.attribute("pixMarks"));
+                parsePixMarks(pixMarks, curEl.attribute("pixMarks"), true);
                 QString checkMark = findMark(pixMarks, pix);
                 if (checkMark != "-1")
                     ans.insert(checkMark);
@@ -304,8 +306,6 @@ void AnatomyAsker::genOsteoQuest() {
         } else if (prob > 50) {                 /* ask about struct by mark */
             rightAns = elName(pEl);
             ans.insert(rightAns);
-            rEl = pEl.previousSiblingElement();
-            lEl = pEl.nextSiblingElement();
             while (ans.size() < maxAns && !av.empty()) {
                 idx = rand(0, av.size() - 1);
                 QDomElement curEl = nodeList.at(av[idx]).cloneNode().toElement();
@@ -347,8 +347,9 @@ void AnatomyAsker::genOsteoQuest() {
     }
     _dbg_end(__func__);
 }
-void AnatomyAsker::parsePixMarks(QVector<QPair<int, QString>>& pixVect, QString pixStr) {
-    pixVect.clear();
+void AnatomyAsker::parsePixMarks(QVector<QPair<int, QString>>& pixVect, QString pixStr, bool clear) {
+    if (clear)
+        pixVect.clear();
     int i = 0;
     while (i < pixStr.length()) {
         QString num1, num2;
@@ -498,9 +499,6 @@ void AnatomyAsker::sortOsteoXml() {
     _dbg_end(__func__);
 }
 void AnatomyAsker::sortOsteoXmlDfs(QDomElement& parEl) {
-    if (parEl.hasAttribute("id")) {
-        parEl.removeAttribute("id");
-    }
     QDomNodeList nodeList = parEl.childNodes();
     QMap<QString, QDomNode> map;
 
@@ -511,7 +509,8 @@ void AnatomyAsker::sortOsteoXmlDfs(QDomElement& parEl) {
     for (auto it : map) {
         QDomElement curEl = it.toElement();
         parEl.appendChild(curEl);
-        sortOsteoXmlDfs(curEl);
+        if (curEl.tagName() != "canalis")
+            sortOsteoXmlDfs(curEl);
     }
 }
 void AnatomyAsker::processOsteoXml() {
@@ -644,6 +643,7 @@ void AnatomyAsker::onFinishAsk() {
     _dbg_start(__func__);
     qreal score = (qreal) q_rightAnsCnt / (qreal) q_cnt;
     QDialog* pdlg;
+    QMediaPlayer* pPlayer = new QMediaPlayer;
     if (q_cnt < 5) {
         pdlg = createDialog((m_bLangRu ? "Ваш результат: " : "Your result is: ")
                             + to_str(q_rightAnsCnt) + "/" + to_str(q_cnt)
@@ -652,15 +652,18 @@ void AnatomyAsker::onFinishAsk() {
                             m_bLangRu ? "Меню" : "Menu", m_bLangRu ? "Выход" : "Quit", true);
     } else {
         QString pix;
-        qDebug() << score;
         if (score >= 0.9) {
-            pix = ":/5.jpg";
+            pix = ":/score/5.jpg";
+            pPlayer->setMedia(QUrl("qrc:/score/5.mp3"));
         } else if (score >= 0.7) {
-            pix = ":/4.jpg";
+            pix = ":/score/4.jpg";
+            pPlayer->setMedia(QUrl("qrc:/score/4.mp3"));
         } else if (score >= 0.5) {
-            pix = ":/3.jpg";
+            pix = ":/score/3.jpg";
+            pPlayer->setMedia(QUrl("qrc:/score/3.mp3"));
         } else {
-            pix = ":/2.jpg";
+            pix = ":/score/2.jpg";
+            pPlayer->setMedia(QUrl("qrc:/score/2.mp3"));
         }
         pdlg = createDialog((m_bLangRu ? "Ваш результат: " : "Your result is: ")
                             + to_str(q_rightAnsCnt) + "/" + to_str(q_cnt), pix,
@@ -669,8 +672,17 @@ void AnatomyAsker::onFinishAsk() {
 
     connect(pdlg, SIGNAL(accepted()), this, SLOT(onMenu()));
     connect(pdlg, SIGNAL(rejected()), qApp, SLOT(quit()));
+    if (!pPlayer->media().isNull()) {
+        pPlayer->play();
+    }
     pdlg->exec();
     pdlg->deleteLater();
+    pPlayer->stop();
+    pPlayer->deleteLater();
+
+    upn(i, 0, maxAns - 1) {
+        m_pBtnAns[i]->setStyleSheet("background-color: rgba(255,255,255,70)");
+    }
     q_sum = q_rightAnsCnt = q_ansType = 0;
     q_cnt = 1;
     _dbg_end(__func__);
@@ -700,7 +712,7 @@ void AnatomyAsker::onMore() {
     if (curEl.hasAttribute("mainPix")) {
         morePixVect.push_back({curEl.attribute("mainPix").toInt(), "..."});
     }
-    parsePixMarks(morePixVect, curEl.attribute("pixMarks"));
+    parsePixMarks(morePixVect, curEl.attribute("pixMarks"), false);
     m_pGraphicsViewMore->setPix(QPixmap(":/osteoPix/osteoPix" + to_str(morePixVect[0].first) + ".png"));
     m_pBtnNextPix->setEnabled(morePixVect.size() > 1);
     moreText = "<h4><span style=\"color: #0000ff;\">" + elName(curEl) +
@@ -770,6 +782,8 @@ void AnatomyAsker::onPreStartOsteoAsk() {
 
     unusedOsteos.clear();
     processOsteoXml();
+    //sortOsteoXml();
+    //writeXml(osteoDoc, "osteosort.xml");
 
     connect(m_pBtnStart, SIGNAL(clicked(bool)), this, SLOT(onStartOsteoAsk()));
     _dbg_end(__func__);

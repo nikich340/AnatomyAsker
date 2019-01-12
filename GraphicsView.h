@@ -25,6 +25,7 @@ public:
     void setPix(QPixmap pix);
 
 private:
+    QPixmap source;
     QGraphicsPixmapItem *m_pPixItem;
     qreal totalScaleFactor;
 };

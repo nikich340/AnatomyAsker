@@ -24,6 +24,7 @@ GraphicsView::GraphicsView(QGraphicsScene *scene, QGraphicsPixmapItem *pixItem, 
     }
     if (m_pPixItem == nullptr) {
         m_pPixItem = new QGraphicsPixmapItem;
+        m_pPixItem->setTransformationMode(Qt::SmoothTransformation);
         this->scene()->addItem(m_pPixItem);
     }
     this->viewport()->setAttribute(Qt::WA_AcceptTouchEvents);
@@ -55,8 +56,7 @@ bool GraphicsView::viewportEvent(QEvent *event)
                 totalScaleFactor *= currentScaleFactor;
                 currentScaleFactor = 1;
             }
-            setTransform(QTransform().scale(totalScaleFactor * currentScaleFactor,
-                                            totalScaleFactor * currentScaleFactor));
+            setTransform(QTransform().scale(totalScaleFactor * currentScaleFactor, totalScaleFactor * currentScaleFactor));
             return true;
         }
         break;
@@ -90,5 +90,5 @@ void GraphicsView::setPix(QPixmap pix) {
     m_pPixItem->setPixmap(pix);
     this->scene()->setSceneRect(QRect(0, 0, pix.width(), pix.height()));
     totalScaleFactor = qMin((qreal)this->width() / (qreal)pix.width(), (qreal)this->height() / (qreal)pix.height());
-    setTransform(QTransform().scale(totalScaleFactor, totalScaleFactor));
+    this->setTransform(QTransform().scale(totalScaleFactor, totalScaleFactor));
 }

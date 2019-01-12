@@ -19,7 +19,7 @@
 #define upn(x, init, n) for(int x = init; x <= n; ++x)
 #define to_str(a) QString::number(a)
 #define dbg(a) qDebug() << a
-#define VERSION 3.1
+#define VERSION 3.2
 
 class AnatomyAsker : public QStackedWidget {
 Q_OBJECT
@@ -79,7 +79,7 @@ private:
     void clearLayout(QLayout* layout);
     void crash(QString reason);
     void genOsteoQuest();
-    void parsePixMarks(QVector<QPair<int, QString>>& pixVect, QString pixStr);
+    void parsePixMarks(QVector<QPair<int, QString>>& pixVect, QString pixStr, bool clear);
     void processOsteoXml();
     void processOsteoXmlDfs(QDomElement& curEl);
     void setUpObjects();
