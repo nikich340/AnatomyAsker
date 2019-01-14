@@ -521,6 +521,20 @@ void AnatomyAsker::processOsteoXml() {
 }
 void AnatomyAsker::processOsteoXmlDfs(QDomElement& parEl) {
     findElementByName[parEl.attribute("name")] = parEl;
+    if (parEl.hasAttribute("pixMarks")) {
+        QVector<QPair<int, QString>> pixMarks;
+        parsePixMarks(pixMarks, parEl.attribute("pixMarks"), true);
+        upn(i, 0, pixMarks.size() - 1) {
+            int pixN = pixMarks[i].first;
+            if (findNamesByPix.contains(pixN)) {
+                findNamesByPix[pixN].push_back(parEl.attribute("name"));
+            } else {
+                QVector<QString> tmp;
+                tmp.push_back(parEl.attribute("name"));
+                findNamesByPix[pixN] = tmp;
+            }
+        }
+    }
     if (parEl.tagName() == "cell") {
         if (parEl.hasAttribute("name") && parEl.hasAttribute("pixMarks")) {
             unusedOsteos.push_back(parEl);

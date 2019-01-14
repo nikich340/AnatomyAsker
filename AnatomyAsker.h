@@ -61,6 +61,7 @@ private:
     int q_sum = 0, q_rightAnsCnt = 0, q_cnt = 1, q_ansType = 0;
 
     QMap<QString, QDomElement> findElementByName;
+    QMap<int, QVector<QString>> findNamesByPix;
     QDomDocument osteoDoc;
     QVector<QDomElement> unusedOsteos;
 

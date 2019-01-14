@@ -464,45 +464,91 @@
   </group>
   <group name="liber" nameRu="свободная часть">
     <cell name="radius" mainPix="204" nameRu="лучевая кость">
-      <cell name="caput radii" nameRu="головка лучевой кости" pixMarks="204-1"/>
+      <cell name="caput radii" nameRu="головка луч. кости" pixMarks="204-1"/>
 	  <cell name="circumferentia articularis radii" nameRu="суставная окружность" pixMarks="204-2"/>
-	  <cell name="collum radii" nameRu="шейка лучевой кости" pixMarks="204-3"/>
-	  <cell name="tuberositas radii" nameRu="бугристость лучевой кости" pixMarks="204-4"/>
-	  <cell name="corpus radii" nameRu="тело лучевой кости" pixMarks="204-5"/>
-	  <cell name="processus styloideus" nameRu="шиловидный отросток" pixMarks="204-7"/>
+	  <cell name="collum radii" nameRu="шейка луч. кости" pixMarks="204-3"/>
+	  <cell name="tuberositas radii" nameRu="бугристость луч. кости" pixMarks="204-4"/>
+	  <cell name="corpus radii" nameRu="тело луч. кости" pixMarks="204-5"/>
+	  <cell name="processus styloideus radii" nameRu="шиловидный отросток луч. кости" pixMarks="204-7, 205-14"/>
 	  <cell name="incisura ulnaris" nameRu="локтевая вырезка" pixMarks="204-10"/>
 	</cell>
 	<cell name="ulna" mainPix="204" nameRu="локтевая кость">
       <cell name="incisura trochlearis" nameRu="блоковидная вырезка" pixMarks="204-11"/>
 	  <cell name="processus coronoideus" nameRu="венечный отросток" pixMarks="204-12"/>
 	  <cell name="incisura radialis" nameRu="лучевая вырезка" pixMarks="204-13"/>
-	  <cell name="tuberositas ulnae" nameRu="бугристость локтевой кости" pixMarks="204-14"/>
+	  <cell name="tuberositas ulnae" nameRu="бугристость локт. кости" pixMarks="204-14"/>
 	  <cell name="caput ulnae" nameRu="головка локтевой кости" pixMarks="204-15"/>
-	  <cell name="circumferentia articularis" nameRu="суставную окружность" pixMarks="204-16"/>
-	  <cell name="processus styloideus" nameRu="шиловидный отросток" pixMarks="204-17"/>
-	  <cell name="olecranon" nameRu="локтевой отросток (олекранон)" pixMarks="204-18"/>
+	  <cell name="circumferentia articularis ulnae" nameRu="суставная окружность локт. кости" pixMarks="204-16"/>
+	  <cell name="processus styloideus ulnae" nameRu="шиловидный отросток локт. кости" pixMarks="204-17, 205-3"/>
+	  <cell name="olecranon" nameRu="локтевой отросток (олекранон)" pixMarks="204-19"/>
 	</cell>
     <cell name="humerus" mainPix="203" nameRu="плечевая кость">
       <cell name="tuberculum majus" nameRu="большой бугорок" pixMarks="203-1"/>
 	  <cell name="tuberculum minus" nameRu="малый бугорок" pixMarks="203-2"/>
-	  <cell name="crista tuberculi majoris" nameRu="гребень большого бугорка" pixMarks="203-3"/>
-	  <cell name="crista tuberculi minoris" nameRu="гребень малого бугорка" pixMarks="203-4"/>
+	  <cell name="crista tuberculi majoris" nameRu="гребень большого бугорка" pixMarks="203-4"/>
+	  <cell name="crista tuberculi minoris" nameRu="гребень малого бугорка" pixMarks="203-3"/>
 	  <cell name="sulcus intertubercularis" nameRu="межбугорковая борозда" pixMarks="203-5"/>
 	  <cell name="collum chirurgicum" nameRu="хирургическая шейка" pixMarks="203-6"/>
 	  <cell name="tuberositas deltoidea" nameRu="дельтовидная бугристость" pixMarks="203-7"/>
 	  <cell name="crista supracondylaris lateralis" nameRu="латеральный надмыщелковый гребень" pixMarks="203-9"/>
 	  <cell name="fossa radialis" nameRu="лучевая ямка" pixMarks="203-10"/>
 	  <cell name="epicondylus lateralis" nameRu="латеральный надмыщелок" pixMarks="203-11"/>
-	  <cell name="capitulum humeri" nameRu="головочка плечевой кости" pixMarks="203-12"/>
-	  <cell name="caput humeri" nameRu="головка плечевой кости" pixMarks="203-13"/>
+	  <cell name="capitulum humeri" nameRu="головочка плеч.й кости" pixMarks="203-12"/>
+	  <cell name="caput humeri" nameRu="головка плеч. кости" pixMarks="203-13"/>
 	  <cell name="collum anatomicum" nameRu="анатомическая шейка" pixMarks="203-14"/>
 	  <cell name="crista supracondylaris medialis" nameRu="медиальный надмыщелковый гребень" pixMarks="203-16"/>
 	  <cell name="fossa coronoidea" nameRu="венечная ямка" pixMarks="203-17"/>
 	  <cell name="epicondylus medialis" nameRu="медиальный надмыщелок" pixMarks="203-18"/>
 	  <cell name="trochlea humeri" nameRu="блок плечевой кости" pixMarks="203-19"/>
-	  <cell name="sulcus n. ulnaris" nameRu="борозда локтевого нерва" pixMarks="203-21"/>
-	  <cell name="sulcus n. radialis" nameRu="борозда лучевого нерва" pixMarks="203-22"/>
-	  <cell name="fossa olecrani" nameRu="ямка локтевого отростка (олекранона)" pixMarks="203-23"/>
+	  <cell name="sulcus n. ulnaris" nameRu="борозда локт. нерва" pixMarks="203-21"/>
+	  <cell name="sulcus n. radialis" nameRu="борозда луч. нерва" pixMarks="203-22"/>
+	  <cell name="fossa olecrani" nameRu="ямка локт. отростка (олекранона)" pixMarks="203-23"/>
+    </cell>
+	<cell name="carpus" mainPix="205" nameRu="запястье">
+      <cell nameRu="ладьевидная кость" name="os scaphoideum" pixMarks="205-15, 206-3"/>
+	  <cell nameRu="полулунная кость" name="os lunatum" pixMarks="205-4, 206-18"/>
+	  <cell nameRu="трехгранная кость" name="os triquetrum" pixMarks="205-5, 206-20"/>
+	  <cell nameRu="гороховидная кость" name="os pisiforme" pixMarks="205-1, 206-19"/>
+	  <cell nameRu="кость-трапеция" name="os trapezium" pixMarks="205-16, 206-5"/>
+	  <cell nameRu="трапециевидная кость" name="os trapezoideum" pixMarks="205-17, 206-6"/>
+	  <cell nameRu="головчатая кость" name="os capitatum" pixMarks="205-6, 206-4"/>
+	  <cell nameRu="крючковидная кость" name="os hamatum" pixMarks="205-7, 206-21">
+	    <cell nameRu="крючок крючковидной кости" name="hamulus ossis hamati" pixMarks="206-22"/>
+	  </cell>
+    </cell>
+	<cell name="metacarpus" mainPix="205" nameRu="пясть" pixMarks="205-9, 206-8">
+      <cell nameRu="I пястная кость" name="os metacarpus I" pixMarks="205-18, 206-7"/>
+	  <cell nameRu="II пястная кость" name="os metacarpus II"/>
+	  <cell nameRu="III пястная кость" name="os metacarpus III"/>
+	  <cell nameRu="IV пястная кость" name="os metacarpus IV"/>
+	  <cell nameRu="V пястная кость" name="os metacarpus V"/>
+	  <cell nameRu="основание пястной кости" name="basis ossis metacarpi" pixMarks="205-8"/>
+	  <cell nameRu="головка пястной кости" name="caput ossis metacarpi" pixMarks="205-10"/>
+    </cell>
+	<cell name="phalanges" mainPix="205" nameRu="фаланги">
+      <cell nameRu="проксимальные фаланги" name="phalanges proximales" pixMarks="205-11, 206-12">
+	    <cell nameRu="I прокс. фаланга" name="phalanx proximalis I" pixMarks="205-19, 206-9"/>
+	    <cell nameRu="II прокс. фаланга" name="phalanx proximalis II"/>
+		<cell nameRu="III прокс. фаланга" name="phalanx proximalis III"/>
+		<cell nameRu="IV прокс. фаланга" name="phalanx proximalis IV"/>
+		<cell nameRu="V прокс. фаланга" name="phalanx proximalis V"/>
+		<cell nameRu="основание прокс. фаланги" name="basis phalangis proximalis" pixMarks="206-11"/>
+		<cell nameRu="головка прокс. фаланги" name="caput phalangis proximalis" pixMarks="206-13"/>
+	  </cell>
+	  <cell nameRu="средние фаланги" name="phalanges medii" pixMarks="205-12, 206-14">
+	    <cell nameRu="I средн. фаланга" name="phalanx medius I"/>
+	    <cell nameRu="II средн. фаланга" name="phalanx medius II"/>
+		<cell nameRu="III средн. фаланга" name="phalanx medius III"/>
+		<cell nameRu="IV средн. фаланга" name="phalanx medius IV"/>
+	  </cell>
+	  <cell nameRu="дистальные фаланги" name="phalanges distales" pixMarks="205-13">
+	    <cell nameRu="I дист. фаланга" name="phalanx distalis I" pixMarks="205-20, 206-10"/>
+	    <cell nameRu="II дист. фаланга" name="phalanx distalis II" pixMarks="206-15"/>
+		<cell nameRu="III дист. фаланга" name="phalanx distalis III"/>
+		<cell nameRu="IV дист. фаланга" name="phalanx distalis IV"/>
+		<cell nameRu="V дист. фаланга" name="phalanx distalis V"/>
+		<cell nameRu="бугристость дист. фаланги" name="tuberositas phalangis distalis" pixMarks="205-23, 206-25"/>
+	  </cell>
     </cell>
   </group>
  </group>
