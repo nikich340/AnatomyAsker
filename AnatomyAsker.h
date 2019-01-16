@@ -31,10 +31,10 @@ private:
 
     /* MENU */
     QCheckBox *m_pCheckRus, *m_pCheckLatin;
+    QPushButton *m_pBtnMenu[6];
 
     /* SETTINGS */
     QDialog *m_pDialogSettings;
-    QPushButton *m_pBtnMenu[5];
 
     /* PREASK */
     QPushButton *m_pBtnStart, *m_pBtnMore;
@@ -95,6 +95,7 @@ public:
     AnatomyAsker(QStackedWidget *pswgt = nullptr);
     virtual ~AnatomyAsker();
 public slots:
+    void onAboutProgram();
     void onAns();
     void onFinishAsk();
     void onFinishOsteoAsk();

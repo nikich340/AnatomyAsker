@@ -390,7 +390,7 @@ void AnatomyAsker::setUpObjects() {
     m_pWidgetMore = new QWidget;
 
     /* MENU */
-    upn(i, 0, 4) {
+    upn(i, 0, 5) {
         m_pBtnMenu[i] = new QPushButton;
         m_pBtnMenu[i]->setStyleSheet("text-align: center; font-size: 23px; "
                                     "color: #000000; background-color: rgba(255,255,255,100)");
@@ -398,7 +398,8 @@ void AnatomyAsker::setUpObjects() {
     }
     connect(m_pBtnMenu[0], SIGNAL(clicked(bool)), this, SLOT(onPreStartOsteoAsk()));
     connect(m_pBtnMenu[3], SIGNAL(clicked(bool)), this, SLOT(onSettings()));
-    connect(m_pBtnMenu[4], SIGNAL(clicked(bool)), qApp, SLOT(quit()));
+    connect(m_pBtnMenu[4], SIGNAL(clicked(bool)), this, SLOT(onAboutProgram()));
+    connect(m_pBtnMenu[5], SIGNAL(clicked(bool)), qApp, SLOT(quit()));
 
     /* SETTINGS */
     m_pCheckRus = new QCheckBox;
@@ -652,6 +653,23 @@ void AnatomyAsker::onAns() {
         pBtn->setStyleSheet("color:white; background-color: rgba(255,0,0,100)");
     }
     updateInfoLabel();
+    _dbg_end(__func__);
+}
+void AnatomyAsker::onAboutProgram() {
+    _dbg_start(__func__);
+    QString txt = "<font>";
+    txt += (m_bLangRu ? "Версия: " : "Version: ");
+    txt += "3.2";
+    txt += "<br>";
+    txt += (m_bLangRu ? "Автор: Никита Гребенюк" : "Author: Nikita Grebenyuk");
+    txt += "(nikich340)<br>";
+    txt += (m_bLangRu ? "Оригинальный исходный код: " : "Original source code: ");
+    txt += "https://github.com/nikich340/AnatomyAsker";
+    txt += "</font>";
+    QDialog *pdlg = createDialog(txt, ":/nikich340.jpg", "OK", "-", true);
+    pdlg->exec();
+    pdlg->deleteLater();
+    _dbg_end(__func__);
 }
 void AnatomyAsker::onFinishAsk() {
     _dbg_start(__func__);
@@ -851,7 +869,8 @@ void AnatomyAsker::onUpdateLanguage(int check) {
     m_pBtnMenu[1]->setText(m_bLangRu ? "Артрология" : "Artrologia");
     m_pBtnMenu[2]->setText(m_bLangRu ? "Миология" : "Myologia");
     m_pBtnMenu[3]->setText(m_bLangRu ? "Настройки" : "Settings");
-    m_pBtnMenu[4]->setText(m_bLangRu ? "Выход" : "Quit");
+    m_pBtnMenu[4]->setText(m_bLangRu ? "О программе" : "About program");
+    m_pBtnMenu[5]->setText(m_bLangRu ? "Выход" : "Quit");
     m_pBtnStart->setText(m_bLangRu ? "Начать" : "Start");
     m_pBtnMore->setText(m_bLangRu ? "Подробнее" : "More");
     m_pBtnNext->setText(m_bLangRu ? "Далее" : "Next");

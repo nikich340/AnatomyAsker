@@ -3,18 +3,24 @@
  <group name="columna vertebralis, manubrium et costae" nameRu="позвоночный столб, грудина и рёбра">
   <group name="columna vertebralis" mainPix="101" nameRu="позвоночный столб">
    <cell name="canalis vertebralis" nameRu="позвоночный канал"/>
-   <cell name="os coccygis" nameRu="копчик" pixMarks="102-22, 105-34"/>
-   <cell name="os sacrum" mainPix="105" nameRu="крестец" pixMarks="101-19, 102-12">
+   <cell name="os coccygis" nameRu="копчик" pixMarks="102-22, 105-34, 112-8"/>
+   <cell name="os sacrum" mainPix="112" nameRu="крестец" pixMarks="101-19, 102-12">
+     <cell name="processus articularis superior" nameRu="верхний суставной отросток" pixMarks="112-1"/>
     <cell name="apex ossis sacri" nameRu="вершина крестца" pixMarks="105-32"/>
-    <cell name="basis ossis sacri" nameRu="основание крестца" pixMarks="103-5, 105-5"/>
+    <cell name="basis ossis sacri" nameRu="основание крестца" pixMarks="103-5, 105-5, 112-9"/>
     <cell name="cornu sacralis" nameRu="крестцовый рог" pixMarks="105-33"/>
-    <cell name="crista sacralis intermedia" nameRu="промежуточный крестцовый гребень" pixMarks="103-25, 105-25"/>
-    <cell name="crista sacralis lateralis" nameRu="латеральный крестцовый гребень" pixMarks="103-24, 105-24"/>
-    <cell name="crista sacralis mediana" nameRu="срединный крестцовый гребень" pixMarks="103-26, 105-26"/>
+    <cell name="crista sacralis intermedia" nameRu="промежуточный крестцовый гребень" pixMarks="103-25, 105-25, 112-7"/>
+    <cell name="crista sacralis lateralis" nameRu="латеральный крестцовый гребень" pixMarks="103-24, 105-24, 112-5"/>
+    <cell name="crista sacralis mediana" nameRu="срединный крестцовый гребень" pixMarks="103-26, 105-26, 112-4"/>
     <cell name="facies auricularis" nameRu="ушковидная поверхность" pixMarks="103-22, 105-22"/>
-    <cell name="foramina sacralia pelvina (dorsalia)" nameRu="тазовые (дорсальные) крестцовые отверстия" pixMarks="105-35"/>
+	<cell name="tuberositas sacralis" nameRu="крестцовая бугристость" pixMarks="112-6"/>
+    <cell name="foramina sacralia dorsalia" nameRu="дорсальные крестцовые отверстия" pixMarks="105-35, 112-2"/>
+	<cell name="foramina sacralia pelvina" nameRu="тазовые крестцовые отверстия" pixMarks="112-11"/>
+	<cell name="lineae transversae" nameRu="поперечные линии" pixMarks="112-13"/>
+	<cell name="hiatus sacralis" nameRu="крестцовая щель" pixMarks="112-3"/>
+	<cell name="canalis sacralis" nameRu="крестцовый канал" pixMarks="112-14"/>
     <cell name="partes laterales" nameRu="латеральные части" pixMarks="103-23"/>
-    <cell name="promontorium" nameRu="мыс" pixMarks="101-16, 102-11"/>
+    <cell name="promontorium" nameRu="мыс" pixMarks="101-16, 102-11, 112-10"/>
    </cell>
    <cell name="vertebra" mainPix="103" nameRu="позвонок">
     <cell name="arcus vertebrae" nameRu="дуга позвонка" pixMarks="103-13"/>
@@ -427,7 +433,13 @@
   </group>
  </group>
  <group name="membrum inferius" nameRu="нижняя конечность">
-  <group name="cingulum" nameRu="пояс"/>
+  <group name="cingulum" nameRu="пояс">
+    <cell name="pelvis" mainPix="112" nameRu="таз">
+      <cell name="os coxae" mainPix="112" nameRu="тазовая кость" pixMarks="101-19, 102-12">
+        <cell name="processus articularis superior" nameRu="верхний суставной отросток" pixMarks="112-1"/>
+	  </cell>
+    </cell>
+  </group>
   <group name="liber" nameRu="свободная часть"/>
  </group>
  <group name="membrum superius" nameRu="верхняя конечность">
