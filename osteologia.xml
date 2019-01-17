@@ -1,10 +1,10 @@
 <?xml version='1.0' encoding='utf-8'?>
-<osteologia name="osteologia" nameRu="остеология">
+<osteologia name="osteologia" mainPix="999" nameRu="остеология">
  <group name="columna vertebralis, manubrium et costae" nameRu="позвоночный столб, грудина и рёбра">
-  <group name="columna vertebralis" mainPix="101" nameRu="позвоночный столб">
+ <group name="columna vertebralis" mainPix="101, 102" nameRu="позвоночный столб">
    <cell name="canalis vertebralis" nameRu="позвоночный канал"/>
    <cell name="os coccygis" nameRu="копчик" pixMarks="102-22, 105-34, 112-8"/>
-   <cell name="os sacrum" mainPix="112" nameRu="крестец" pixMarks="101-19, 102-12">
+   <cell name="os sacrum" mainPix="112, 105" nameRu="крестец" pixMarks="101-19, 102-12">
      <cell name="processus articularis superior" nameRu="верхний суставной отросток" pixMarks="112-1"/>
     <cell name="apex ossis sacri" nameRu="вершина крестца" pixMarks="105-32"/>
     <cell name="basis ossis sacri" nameRu="основание крестца" pixMarks="103-5, 105-5, 112-9"/>
@@ -37,7 +37,7 @@
     <cell name="processus spinosus" nameRu="остистый отросток" pixMarks="103-16, 105-16"/>
     <cell name="processus transversus" nameRu="поперечный отросток" pixMarks="103-21, 105-21"/>
    </cell>
-   <cell name="vertebrae C" mainPix="109" nameRu="шейные позвонки">
+   <cell name="vertebrae C" mainPix="108, 109" nameRu="шейные позвонки">
     <cell name="foramina transversaria" nameRu="отверстия поперечного отростка" pixMarks="103-1"/>
     <cell name="tuberculum anterior processus transversus" nameRu="передний бугорок поперечного отростка" pixMarks="103-14"/>
     <cell name="tuberculum posterior processus transversus" nameRu="задний бугорок поперечного отростка" pixMarks="103-15"/>
@@ -82,7 +82,7 @@
     <cell name="vertebra ThXII" nameRu="XII грудной позвонок" pixMarks="102-8"/>
    </cell>
   </group>
-  <group name="costae" mainPix="107" nameRu="рёбра">
+ <group name="costae" mainPix="107" nameRu="рёбра">
    <cell name="costa" nameRu="ребро">
     <cell name="cartilago costae" nameRu="ребёрный хрящ" pixMarks="102-7"/>
     <cell name="os costale" nameRu="кость ребра">
@@ -119,7 +119,7 @@
     <cell name="costa VII" nameRu="VII ребро"/>
    </group>
   </group>
-  <cell name="sternum" mainPix="106" nameRu="грудина">
+ <cell name="sternum" mainPix="106" nameRu="грудина">
    <cell name="angulus sterni" nameRu="угол грудины" pixMarks="106-6"/>
    <cell name="corpus sterni" nameRu="тело грудины" pixMarks="101-8, 102-6, 106-1"/>
    <cell name="incisura clavicularis" nameRu="ключичная вырезка" pixMarks="106-5"/>
@@ -129,7 +129,7 @@
    <cell name="processus xiphoideus" nameRu="мечевидный отросток" pixMarks="102-18, 106-7"/>
   </cell>
  </group>
- <group name="cranium" mainPix="1" nameRu="череп">
+ <group name="cranium" mainPix="1, 2, 3, 4, 5" nameRu="череп">
   <group name="canales ossis temporalis" mainPix="28" nameRu="каналы височной кости">
    <canalis name="canaliculi caroticotympanici" nameRu="сонно-барабанные канальцы">
     <begin>от @canalis caroticus@ возле его наружной апертуры (на верхушке пирамиды)</begin>
@@ -433,17 +433,52 @@
   </group>
  </group>
  <group name="membrum inferius" nameRu="нижняя конечность">
-  <group name="cingulum" nameRu="пояс">
-    <cell name="pelvis" mainPix="112" nameRu="таз">
-      <cell name="os coxae" mainPix="112" nameRu="тазовая кость" pixMarks="101-19, 102-12">
-        <cell name="processus articularis superior" nameRu="верхний суставной отросток" pixMarks="112-1"/>
+  <group name="cingulum membri inferii" nameRu="пояс н. конечности">
+    <cell name="pelvis" mainPix="302, 303, 304" nameRu="таз">
+      <cell name="os coxae" mainPix="301" nameRu="тазовая кость">
+        <cell name="os ilium" nameRu="подвздошная кость" pixMarks="301-A">
+		  <cell name="linea glutea posterior" nameRu="задняя ягодичная линия" pixMarks="301-2"/>
+          <cell name="crista iliaca" nameRu="подвздошный гребень" pixMarks="301-10"/>
+		  <cell name="linea glutea anterior" nameRu="передняя ягодичная линия" pixMarks="301-11"/>
+		  <cell name="labium internum" nameRu="внутренняя губа" pixMarks="301-12"/>
+		  <cell name="labium externum" nameRu="наружная губа" pixMarks="301-13"/>
+		  <cell name="linea glutea inferior" nameRu="нижняя ягодичная линия" pixMarks="301-15"/>
+		  <cell name="fossa iliaca" nameRu="подвздошная ямка" pixMarks="301-23"/>
+		  <cell name="linea arcuata" nameRu="дугообразная линия" pixMarks="301-24"/>
+		  <cell name="facies auricularis ossis ilii" nameRu="ушковидная поверхность подвздошной кости" pixMarks="301-27"/>
+          <cell name="spina iliaca posterior superior" nameRu="задняя верхняя подвздошная ость" pixMarks="301-1"/>
+          <cell name="spina iliaca posterior inferior" nameRu="задняя нижняя подвздошная ость" pixMarks="301-3"/>
+          <cell name="spina iliaca anterior superior" nameRu="передняя верхняя подвздошная ость" pixMarks="301-14"/>
+          <cell name="spina iliaca anterior inferior" nameRu="передняя нижняя подвздошная ость" pixMarks="301-16"/>
+	    </cell>
+		<cell name="os pubis" nameRu="лобковая кость" pixMarks="301-C">
+          <cell name="pecten ossis pubis" nameRu="гребень лобковой кости" pixMarks="301-20"/>
+		  <cell name="facies symphysialis" nameRu="симфизиальная поверхность" pixMarks="301-26"/>
+		  <cell name="tuberculum pubicum" nameRu="лобковый бугорок" pixMarks="301-21"/>
+		  <cell name="corpus ossis pubis" nameRu="тело лобковой кости" pixMarks="301-22"/>
+		  <cell name="sulcus obturatorius" nameRu="запирательная борозда" pixMarks="301-34"/>
+	    </cell>
+		<cell name="os ischii" nameRu="седалищная кость" pixMarks="301-B">
+          <cell name="incisura ischiadica major" nameRu="большая седалищная вырезка" pixMarks="301-4"/>
+		  <cell name="spina ischiadica" nameRu="седалищная ость" pixMarks="301-5"/>
+		  <cell name="incisura ischiadica minor" nameRu="малая седалищная вырезка" pixMarks="301-6"/>
+		  <cell name="corpus ossis ischii" nameRu="тело седалищной кости" pixMarks="301-7"/>
+		  <cell name="tuber ischiadicum" nameRu="седалищный бугор" pixMarks="301-8"/>
+	    </cell>
+		<cell name="acetabulum" mainPix="301" nameRu="вертлужная впадина">
+		  <cell name="facies lunata" nameRu="полулунная поверхность" pixMarks="301-17"/>
+		  <cell name="fossa acetabuli" nameRu="ямка вертлужной впадины" pixMarks="301-18"/>
+		  <cell name="incisura acetabuli" nameRu="вырезка вертлужной впадины" pixMarks="301-19"/>
+		</cell>
+		<cell name="eminentia iliopubica" nameRu="подвздошно-лобковое возвышение" pixMarks="301-25"/>
+		<cell name="foramen obturatorium" nameRu="запирательное отверстие" pixMarks="301-9"/>
 	  </cell>
     </cell>
   </group>
-  <group name="liber" nameRu="свободная часть"/>
+  <group name="liber membri inferii" nameRu="свободная часть н. конечности"/>
  </group>
  <group name="membrum superius" nameRu="верхняя конечность">
-  <group name="cingulum" nameRu="пояс">
+  <group name="cingulum membri inferii" nameRu="пояс в. конечности">
    <cell name="clavicula" mainPix="201" nameRu="ключица">
     <cell name="corpus claviculae" nameRu="тело ключицы" pixMarks="201-2"/>
     <cell name="extremitas acromialis" nameRu="акромиальный конец" pixMarks="201-1"/>
@@ -474,7 +509,7 @@
     <cell name="tuberculum supraglenoidale" nameRu="надсуставной бугорок" pixMarks="202-11"/>
    </cell>
   </group>
-  <group name="liber" nameRu="свободная часть">
+  <group name="liber membri inferii" nameRu="свободная часть в. конечности">
     <cell name="radius" mainPix="204" nameRu="лучевая кость">
       <cell name="caput radii" nameRu="головка луч. кости" pixMarks="204-1"/>
 	  <cell name="circumferentia articularis radii" nameRu="суставная окружность" pixMarks="204-2"/>
@@ -516,7 +551,7 @@
 	  <cell name="sulcus n. radialis" nameRu="борозда луч. нерва" pixMarks="203-22"/>
 	  <cell name="fossa olecrani" nameRu="ямка локт. отростка (олекранона)" pixMarks="203-23"/>
     </cell>
-	<cell name="carpus" mainPix="205" nameRu="запястье">
+	<cell name="carpus" mainPix="205, 206" nameRu="запястье">
       <cell nameRu="ладьевидная кость" name="os scaphoideum" pixMarks="205-15, 206-3"/>
 	  <cell nameRu="полулунная кость" name="os lunatum" pixMarks="205-4, 206-18"/>
 	  <cell nameRu="трехгранная кость" name="os triquetrum" pixMarks="205-5, 206-20"/>
@@ -528,7 +563,7 @@
 	    <cell nameRu="крючок крючковидной кости" name="hamulus ossis hamati" pixMarks="206-22"/>
 	  </cell>
     </cell>
-	<cell name="metacarpus" mainPix="205" nameRu="пясть" pixMarks="205-9, 206-8">
+	<cell name="metacarpus" mainPix="205, 206" nameRu="пясть" pixMarks="205-9, 206-8">
       <cell nameRu="I пястная кость" name="os metacarpus I" pixMarks="205-18, 206-7"/>
 	  <cell nameRu="II пястная кость" name="os metacarpus II"/>
 	  <cell nameRu="III пястная кость" name="os metacarpus III"/>
@@ -537,7 +572,7 @@
 	  <cell nameRu="основание пястной кости" name="basis ossis metacarpi" pixMarks="205-8"/>
 	  <cell nameRu="головка пястной кости" name="caput ossis metacarpi" pixMarks="205-10"/>
     </cell>
-	<cell name="phalanges" mainPix="205" nameRu="фаланги">
+	<cell name="phalanges" mainPix="205, 206" nameRu="фаланги">
       <cell nameRu="проксимальные фаланги" name="phalanges proximales" pixMarks="205-11, 206-12">
 	    <cell nameRu="I прокс. фаланга" name="phalanx proximalis I" pixMarks="205-19, 206-9"/>
 	    <cell nameRu="II прокс. фаланга" name="phalanx proximalis II"/>

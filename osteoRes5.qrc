@@ -1,10 +1,10 @@
 <RCC>
     <qresource prefix="/">
-        <file>osteoPix/osteoPix201.png</file>
-		<file>osteoPix/osteoPix202.png</file>
-		<file>osteoPix/osteoPix203.png</file>
-		<file>osteoPix/osteoPix204.png</file>
-		<file>osteoPix/osteoPix205.png</file>
-		<file>osteoPix/osteoPix206.png</file>
+        <file>osteoPix/osteoPix201.jpg</file>
+		<file>osteoPix/osteoPix202.jpg</file>
+		<file>osteoPix/osteoPix203.jpg</file>
+		<file>osteoPix/osteoPix204.jpg</file>
+		<file>osteoPix/osteoPix205.jpg</file>
+		<file>osteoPix/osteoPix206.jpg</file>
     </qresource>
 </RCC>

@@ -19,7 +19,7 @@
 #define upn(x, init, n) for(int x = init; x <= n; ++x)
 #define to_str(a) QString::number(a)
 #define dbg(a) qDebug() << a
-#define VERSION 3.2
+#define VERSION "3.3"
 
 class AnatomyAsker : public QStackedWidget {
 Q_OBJECT

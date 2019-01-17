@@ -132,7 +132,7 @@ void AnatomyAsker::_dbg_start(QString func) {
     }
     out += func;
     dbg_spacing += 3;
-    qDebug() << out;
+    qDebug() << out << "{";
 }
 void AnatomyAsker::_dbg_end(QString func) {
     QString out = "";
@@ -141,7 +141,7 @@ void AnatomyAsker::_dbg_end(QString func) {
         out.push_back(' ');
     }
     out += func;
-    qDebug() << out;
+    qDebug() << "}" << out;
 }
 void AnatomyAsker::clearLayout(QLayout* layout) {
     while (QLayoutItem* item = layout->takeAt(0)) {
@@ -330,7 +330,7 @@ void AnatomyAsker::genOsteoQuest() {
     m_pLblQuestion->setText(question);
 
     /* set picture */
-    m_pGraphicsView->setPix(QPixmap(":/osteoPix/osteoPix" + to_str(pix) + ".png"));
+    m_pGraphicsView->setPix(QPixmap(":/osteoPix/osteoPix" + to_str(pix) + ".jpg"));
 
     /* set answer buttons */
     int i = 0;
@@ -599,7 +599,7 @@ AnatomyAsker::AnatomyAsker(QStackedWidget *pswgt) : QStackedWidget(pswgt), m_set
 {
     _dbg_start(__func__);
 
-    m_bLangRu = m_settings.value("/settings/m_bLangRu", false).toBool();
+    m_bLangRu = m_settings.value("/settings/m_bLangRu", true).toBool();
     m_bLatin = m_settings.value("/settings/m_bLatin", true).toBool();
 
     readXml(osteoDoc, ":/osteologia.xml");
@@ -657,15 +657,10 @@ void AnatomyAsker::onAns() {
 }
 void AnatomyAsker::onAboutProgram() {
     _dbg_start(__func__);
-    QString txt = "<font>";
-    txt += (m_bLangRu ? "Версия: " : "Version: ");
-    txt += "3.2";
-    txt += "<br>";
-    txt += (m_bLangRu ? "Автор: Никита Гребенюк" : "Author: Nikita Grebenyuk");
-    txt += "(nikich340)<br>";
-    txt += (m_bLangRu ? "Оригинальный исходный код: " : "Original source code: ");
-    txt += "https://github.com/nikich340/AnatomyAsker";
-    txt += "</font>";
+    QString txt = QString("<font>") + (m_bLangRu ? "Версия: " : "Version: ") + VERSION + "<br>" +
+            (m_bLangRu ? "Автор: Никита Гребенюк" : "Author: Nikita Grebenyuk") +
+            " (@nikich340)<br>" + (m_bLangRu ? "Оригинальный исходный код: " : "Original source code: ") +
+            "https://github.com/nikich340/AnatomyAsker</font>";
     QDialog *pdlg = createDialog(txt, ":/nikich340.jpg", "OK", "-", true);
     pdlg->exec();
     pdlg->deleteLater();
@@ -742,10 +737,20 @@ void AnatomyAsker::onMore() {
     morePixVect.clear();
     morePixNum = 0;
     if (curEl.hasAttribute("mainPix")) {
-        morePixVect.push_back({curEl.attribute("mainPix").toInt(), "..."});
+        QString s = curEl.attribute("mainPix");
+        QString tmp;
+        upn(i, 0, s.length() - 1) {
+            if (isDigit(s[i])) {
+                tmp.push_back(s[i]);
+            } else if (tmp.length() > 0) {
+                morePixVect.push_back({tmp.toInt(), "..."});
+                tmp = "";
+            }
+        }
+        morePixVect.push_back({tmp.toInt(), "..."});
     }
     parsePixMarks(morePixVect, curEl.attribute("pixMarks"), false);
-    m_pGraphicsViewMore->setPix(QPixmap(":/osteoPix/osteoPix" + to_str(morePixVect[0].first) + ".png"));
+    m_pGraphicsViewMore->setPix(QPixmap(":/osteoPix/osteoPix" + to_str(morePixVect[0].first) + ".jpg"));
     m_pBtnNextPix->setEnabled(morePixVect.size() > 1);
     moreText = "<h4><span style=\"color: #0000ff;\">" + elName(curEl) +
             "<span style=\"color: #ff00ff;\"> (" + elName(parEl) + ")<br /></span></span>";
@@ -782,7 +787,7 @@ void AnatomyAsker::onMoreNextPix() {
     if (morePixNum > morePixVect.size() - 1) {
         morePixNum = 0;
     }
-    m_pGraphicsViewMore->setPix(QPixmap(":/osteoPix/osteoPix" + to_str(morePixVect[morePixNum].first) + ".png"));
+    m_pGraphicsViewMore->setPix(QPixmap(":/osteoPix/osteoPix" + to_str(morePixVect[morePixNum].first) + ".jpg"));
     if (m_bLangRu) {
         m_pLblMore->setText(moreText + "<br /><strong><span style=\"color: #e60000;\">Номер " + morePixVect[morePixNum].second + " на текущей картинке</span></h4>");
     } else {
@@ -802,13 +807,15 @@ void AnatomyAsker::onNextOsteoAsk() {
 }
 void AnatomyAsker::onPreStartOsteoAsk() {
     _dbg_start(__func__);
-    if (!m_settings.value("/settings/launched" + to_str(VERSION), false).toBool()) {
+
+    if (!m_settings.value("/settings/launched_" VERSION, false).toBool()) {
         QDialog* pdlg = createDialog("Необходимо перезайти в приложение (первый запуск)", "-", "OK", "-", true);
         connect(pdlg, SIGNAL(accepted()), qApp, SLOT(quit()));
-        m_settings.setValue("/settings/launched" + to_str(VERSION), true);
+        m_settings.setValue("/settings/launched_" VERSION, true);
         pdlg->exec();
         pdlg->deleteLater();
     }
+
 
     setCurrentWidget(m_pWidgetPreAsk);
 
