@@ -116,6 +116,9 @@ QString AnatomyAsker::parseLinks(QString text) {
 bool AnatomyAsker::isDigit(QChar c) {
     return (c >= '0' && c <= '9');
 }
+bool AnatomyAsker::isSymbol(QChar c) {
+    return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z');
+}
 bool AnatomyAsker::isUpper(QChar c) {
     return (c >= 'A' && c <= 'Z');
 }
@@ -124,6 +127,79 @@ int AnatomyAsker::rand(int L, int R) {
     if (R < L)
         return -1;
     return L + qrand() % (R - L + 1);
+}
+int AnatomyAsker::levensteinDist(QString source, QString target) {
+    //_dbg_start(__func__);
+    //qDebug() << "source: " << source << " target: " << target;
+    int n = source.length();
+    int m = target.length();
+    upn(i, 0, n) {
+        d[0][i] = i;
+    }
+    upn(i, 1, m) {
+        d[i][0] = i;
+        upn(j, 1, n) {
+            if (source[i - 1] != target[j - 1]) {
+                d[i][j] = qMin(d[i - 1][j - 1], qMin(d[i - 1][j], d[i][j - 1])) + 1;
+            } else {
+                d[i][j] = d[i - 1][j - 1];
+            }
+        }
+    }
+    //qDebug() << "   levenDist = " << d[m][n];
+    //_dbg_end(__func__);
+    return d[m][n];
+}
+int AnatomyAsker::similarity(QString source, QString target) {
+    //_dbg_start(__func__);
+    if (source.length() < target.length())
+        swap(source, target);
+    //qDebug() << "source: " << source << " target: " << target;
+    QVector<QString> sourceWords, targetWords;
+    QString tmp;
+    int ret = 0;
+    upn(i, 0, source.length() - 1) {
+        if (isSymbol(source[i])) {
+            tmp.push_back(source[i]);
+        } else {
+            if (!tmp.isEmpty()) {
+                sourceWords.push_back(tmp);
+            }
+            tmp = "";
+        }
+    }
+    sourceWords.push_back(tmp);
+    tmp = "";
+    upn(j, 0, target.length() - 1) {
+        if (isSymbol(target[j])) {
+            tmp.push_back(target[j]);
+        } else {
+            if (!tmp.isEmpty()) {
+                targetWords.push_back(tmp);
+            }
+            tmp = "";
+        }
+    }
+    targetWords.push_back(tmp);
+
+    upn(i, 0, sourceWords.size() - 1) {
+        int bestIdx = -1;
+        int bestDist = sourceWords[i].length();
+        upn(j, 0, targetWords.size() - 1) {
+            int curLeven = levensteinDist(sourceWords[i], targetWords[j]);
+            if (curLeven < bestDist) {
+                bestDist = curLeven;
+                bestIdx = j;
+            }
+        }
+        ret += bestDist;
+        /*if (bestIdx >= 0) {
+            targetWords.erase(targetWords.begin() + bestIdx);
+        }*/
+    }
+    //qDebug() << "similarity: " << ret;
+    //_dbg_end(__func__);
+    return ret;
 }
 void AnatomyAsker::_dbg_start(QString func) {
     QString out = "";
@@ -200,29 +276,45 @@ void AnatomyAsker::genOsteoQuest() {
     int pixIdx = rand(0, pixMarks.size() - 1);
     int pix = pixMarks[pixIdx].first;
     QString mark = findMark(pixMarks, pix);
-    QDomElement rEl, lEl, parEl = pEl.parentNode().toElement();
-    QDomNodeList nodeList = parEl.childNodes();
-    QVector<int> av;
-    upn(i, 0, nodeList.size() - 1) {
-        av.push_back(i);
+
+    /* find similar elements */
+
+    QDomElement parEl = pEl.parentNode().toElement();
+    QMultiMap<int, QDomElement> avAnswers;
+    upn(i, 0, parEl.childNodes().size() - 1) {
+        QDomElement curEl = parEl.childNodes().at(i).cloneNode().toElement();
+        avAnswers.insert(similarity(pEl.attribute("name"), curEl.attribute("name")) - 10, curEl);
     }
+
+    if (pix) {
+        QVector<QString> pixAssocNames = findNamesByPix[pix];
+        for (auto j: pixAssocNames) {
+            QDomElement curEl = findElementByName[j];
+            avAnswers.insert(similarity(pEl.attribute("name"), curEl.attribute("name")), curEl);
+        }
+    }
+    QVector<QDomElement> sortedAvAnswers;
+    for (auto j: avAnswers) {
+        sortedAvAnswers.push_back(j);
+    }
+
     int prob = rand(1, 100);
 
     if (pEl.tagName() == "canalis") {
         if (prob <= 60) {
             rightAns = elName(pEl);
             ans.insert(rightAns);
-            while (ans.size() < maxAns && !av.empty()) {
-                idx = rand(0, av.size() - 1);
-                QDomElement curEl = nodeList.at(av[idx]).cloneNode().toElement();
-                av.erase(av.begin() + idx);
-                if (prob <= 20 && pEl.childNodes().at(0).toElement().text() == curEl.childNodes().at(0).toElement().text()) {
-                    continue;
-                }
-                if (prob > 20 && prob <= 40 && pEl.childNodes().at(1).toElement().text() == curEl.childNodes().at(1).toElement().text()) {
-                    continue;
-                }
-                ans.insert(elName(curEl));
+            /* CHOOSE SIMILAR ANSWERS */
+            while (ans.size() < similarAns && !sortedAvAnswers.isEmpty()) {
+                idx = rand(0, qMin(similarAns, sortedAvAnswers.size() - 1));
+                ans.insert(elName(sortedAvAnswers[idx]));
+                sortedAvAnswers.erase(sortedAvAnswers.begin() + idx);
+            }
+            /* CHOOSE ANOTHER ANSWERS */
+            while (ans.size() < maxAns && !sortedAvAnswers.isEmpty()) {
+                idx = rand(0, sortedAvAnswers.size() - 1);
+                ans.insert(elName(sortedAvAnswers[idx]));
+                sortedAvAnswers.erase(sortedAvAnswers.begin() + idx);
             }
             if (m_bLangRu) {
                 if (prob <= 20) {                       /* ask about canalis by begin */
@@ -250,15 +342,19 @@ void AnatomyAsker::genOsteoQuest() {
         } else if (prob > 60 && prob <= 80) {   /* ask about begin by canalis */
             rightAns = parseLinks(pEl.childNodes().at(0).toElement().text());
             ans.insert(rightAns);
-            while (ans.size() < maxAns && !av.empty()) {
-                idx = rand(0, av.size() - 1);
-                QDomElement curEl = nodeList.at(av[idx]).cloneNode().toElement();
-                av.erase(av.begin() + idx);
-                QString curBegin = parseLinks(curEl.childNodes().at(0).toElement().text());
-                QString curEnd = parseLinks(curEl.childNodes().at(1).toElement().text());
+            /* CHOOSE SIMILAR ANSWERS */
+            while (ans.size() < similarAns && !sortedAvAnswers.isEmpty()) {
+                idx = rand(0, qMin(similarAns, sortedAvAnswers.size() - 1));
+                QString curBegin = parseLinks(sortedAvAnswers[idx].childNodes().at(0).toElement().text());
                 ans.insert(curBegin);
-                if (ans.size() < maxAns)
-                    ans.insert(curEnd);
+                sortedAvAnswers.erase(sortedAvAnswers.begin() + idx);
+            }
+            /* CHOOSE ANOTHER ANSWERS */
+            while (ans.size() < maxAns && !sortedAvAnswers.isEmpty()) {
+                idx = rand(0, sortedAvAnswers.size() - 1);
+                QString curBegin = parseLinks(sortedAvAnswers[idx].childNodes().at(0).toElement().text());
+                ans.insert(curBegin);
+                sortedAvAnswers.erase(sortedAvAnswers.begin() + idx);
             }
             if (m_bLangRu) {
                 question = "Где начинается " + elName(pEl) + " (номер " + mark + ")?";
@@ -268,15 +364,19 @@ void AnatomyAsker::genOsteoQuest() {
         } else if (prob > 80) {                 /* ask about end by canalis */
             rightAns = parseLinks(pEl.childNodes().at(1).toElement().text());
             ans.insert(rightAns);
-            while (ans.size() < maxAns && !av.empty()) {
-                idx = rand(0, av.size() - 1);
-                QDomElement curEl = nodeList.at(av[idx]).cloneNode().toElement();
-                av.erase(av.begin() + idx);
-                QString curBegin = parseLinks(curEl.childNodes().at(0).toElement().text());
-                QString curEnd = parseLinks(curEl.childNodes().at(1).toElement().text());
-                ans.insert(curBegin);
-                if (ans.size() < maxAns)
-                    ans.insert(curEnd);
+            /* CHOOSE SIMILAR ANSWERS */
+            while (ans.size() < similarAns && !sortedAvAnswers.isEmpty()) {
+                idx = rand(0, qMin(similarAns, sortedAvAnswers.size() - 1));
+                QString curEnd = parseLinks(sortedAvAnswers[idx].childNodes().at(1).toElement().text());
+                ans.insert(curEnd);
+                sortedAvAnswers.erase(sortedAvAnswers.begin() + idx);
+            }
+            /* CHOOSE ANOTHER ANSWERS */
+            while (ans.size() < maxAns && !sortedAvAnswers.isEmpty()) {
+                idx = rand(0, sortedAvAnswers.size() - 1);
+                QString curEnd = parseLinks(sortedAvAnswers[idx].childNodes().at(1).toElement().text());
+                ans.insert(curEnd);
+                sortedAvAnswers.erase(sortedAvAnswers.begin() + idx);
             }
             if (m_bLangRu) {
                 question = "Где заканчивается " + elName(pEl) + " (номер " + mark + ")?";
@@ -288,16 +388,25 @@ void AnatomyAsker::genOsteoQuest() {
         if (prob <= 50) {                       /* ask about mark by struct */
             rightAns = mark;
             ans.insert(rightAns);
-            while (ans.size() < maxAns && !av.empty()) {
-                idx = rand(0, av.size() - 1);
-                QDomElement curEl = nodeList.at(av[idx]).cloneNode().toElement();
-                parsePixMarks(pixMarks, curEl.attribute("pixMarks"), true);
-                QString checkMark = findMark(pixMarks, pix);
-                if (checkMark != "-1")
-                    ans.insert(checkMark);
-
-                av.erase(av.begin() + idx);
+            /* CHOOSE SIMILAR ANSWERS */
+            while (ans.size() < similarAns && !sortedAvAnswers.isEmpty()) {
+                idx = rand(0, qMin(similarAns, sortedAvAnswers.size() - 1));
+                parsePixMarks(pixMarks, sortedAvAnswers[idx].attribute("pixMarks"), true);
+                QString mark = findMark(pixMarks, pix);
+                if (mark != "-1")
+                    ans.insert(mark);
+                sortedAvAnswers.erase(sortedAvAnswers.begin() + idx);
             }
+            /* CHOOSE ANOTHER ANSWERS */
+            while (ans.size() < maxAns && !sortedAvAnswers.isEmpty()) {
+                idx = rand(0, sortedAvAnswers.size() - 1);
+                parsePixMarks(pixMarks, sortedAvAnswers[idx].attribute("pixMarks"), true);
+                QString mark = findMark(pixMarks, pix);
+                if (mark != "-1")
+                    ans.insert(mark);
+                sortedAvAnswers.erase(sortedAvAnswers.begin() + idx);
+            }
+
             if (m_bLangRu) {
                 question = "Каким номером на картинке отмечен(а/о) " + elName(pEl) + " (структура: " + elName(parEl) + ") ?";
             } else {
@@ -306,13 +415,19 @@ void AnatomyAsker::genOsteoQuest() {
         } else if (prob > 50) {                 /* ask about struct by mark */
             rightAns = elName(pEl);
             ans.insert(rightAns);
-            while (ans.size() < maxAns && !av.empty()) {
-                idx = rand(0, av.size() - 1);
-                QDomElement curEl = nodeList.at(av[idx]).cloneNode().toElement();
-                ans.insert(elName(curEl));
-
-                av.erase(av.begin() + idx);
+            /* CHOOSE SIMILAR ANSWERS */
+            while (ans.size() < similarAns && !sortedAvAnswers.isEmpty()) {
+                idx = rand(0, qMin(similarAns, sortedAvAnswers.size() - 1));
+                ans.insert(elName(sortedAvAnswers[idx]));
+                sortedAvAnswers.erase(sortedAvAnswers.begin() + idx);
             }
+            /* CHOOSE ANOTHER ANSWERS */
+            while (ans.size() < maxAns && !sortedAvAnswers.isEmpty()) {
+                idx = rand(0, sortedAvAnswers.size() - 1);
+                ans.insert(elName(sortedAvAnswers[idx]));
+                sortedAvAnswers.erase(sortedAvAnswers.begin() + idx);
+            }
+
             if (m_bLangRu) {
                 question = "Какое образование (структура: " + elName(parEl) + ") помечено на картинке номером " + mark + "?";
             } else {
@@ -321,6 +436,9 @@ void AnatomyAsker::genOsteoQuest() {
         }
     }
 
+    if (ans.size() > maxAns) {
+        crash("ans size (" + to_str(ans.size()) + ") > maxAns (" + to_str(maxAns) + ")");
+    }
     if (ans.size() < 2) {
         qDebug() << "Only one answer generated...";
         genOsteoQuest();

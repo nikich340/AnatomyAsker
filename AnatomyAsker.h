@@ -51,6 +51,7 @@ private:
 
     /* ASK */
     static const int maxAns = 6;
+    static const int similarAns = 4;
     GraphicsView *m_pGraphicsView;
     QLabel *m_pLblQuestion, *m_pLblInfo, *m_pLblAns[maxAns];
     QPushButton *m_pBtnRight, *m_pBtnNext, *m_pBtnFinish, *m_pBtnAns[maxAns];
@@ -59,6 +60,7 @@ private:
     bool m_bLangRu = true, m_bLatin = true;
     int dbg_spacing = 0;
     int q_sum = 0, q_rightAnsCnt = 0, q_cnt = 1, q_ansType = 0;
+    int d[55][55];
 
     QMap<QString, QDomElement> findElementByName;
     QMap<int, QVector<QString>> findNamesByPix;
@@ -72,8 +74,11 @@ private:
     QString parseLinks(QString text);
     QTreeWidget* viewOsteoTree();
     bool isDigit(QChar c);
+    bool isSymbol(QChar c);
     bool isUpper(QChar c);
+    int levensteinDist(QString source, QString target);
     int rand(int L, int R);
+    int similarity(QString source, QString target);
     void _dbg_start(QString func);
     void _dbg_end(QString func);
     void chooseOsteoQuests(QString root);
