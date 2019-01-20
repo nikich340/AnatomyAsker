@@ -19,7 +19,7 @@
 #define upn(x, init, n) for(int x = init; x <= n; ++x)
 #define to_str(a) QString::number(a)
 #define dbg(a) qDebug() << a
-#define VERSION "3.3"
+#define VERSION "3.4"
 
 class AnatomyAsker : public QStackedWidget {
 Q_OBJECT
@@ -51,7 +51,7 @@ private:
 
     /* ASK */
     static const int maxAns = 6;
-    static const int similarAns = 4;
+    int similarAns = 4;
     GraphicsView *m_pGraphicsView;
     QLabel *m_pLblQuestion, *m_pLblInfo, *m_pLblAns[maxAns];
     QPushButton *m_pBtnRight, *m_pBtnNext, *m_pBtnFinish, *m_pBtnAns[maxAns];
