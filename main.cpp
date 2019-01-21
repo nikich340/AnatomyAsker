@@ -19,7 +19,7 @@ int main(int argc, char** argv)
     QBrush brush;
     QPalette pallete = asker.palette();
 
-    brush.setTexture(QPixmap(":/background.jpg"));
+    brush.setTexture(QPixmap(":/common/background.jpg"));
     pallete.setBrush(QPalette::Background, brush);
     asker.setPalette(pallete);
 

@@ -1,0 +1,16 @@
+<RCC>
+    <qresource prefix="/">
+	    <file>osteoPix/osteoPix999.jpg</file>
+		<file>osteoPix/osteoPix0.jpg</file>
+        <file>osteoPix/osteoPix1.jpg</file>
+		<file>osteoPix/osteoPix2.jpg</file>
+		<file>osteoPix/osteoPix3.jpg</file>
+		<file>osteoPix/osteoPix4.jpg</file>
+		<file>osteoPix/osteoPix5.jpg</file>
+		<file>osteoPix/osteoPix6.jpg</file>
+		<file>osteoPix/osteoPix7.jpg</file>
+		<file>osteoPix/osteoPix8.jpg</file>
+		<file>osteoPix/osteoPix9.jpg</file>
+		<file>osteoPix/osteoPix10.jpg</file>
+    </qresource>
+</RCC>

@@ -2,11 +2,12 @@ TEMPLATE     = app
 HEADERS	     = AnatomyAsker.h GraphicsView.h
 SOURCES	     = AnatomyAsker.cpp GraphicsView.cpp main.cpp
 QT          += widgets xml multimedia
-RESOURCES   += commonRes.qrc \
-               osteoRes1.qrc osteoRes2.qrc osteoRes3.qrc osteoRes4.qrc osteoRes5.qrc osteoRes6.qrc
+RESOURCES   += resources/commonRes.qrc \
+               resources/osteoRes1.qrc resources/osteoRes2.qrc resources/osteoRes3.qrc \
+               resources/osteoRes4.qrc resources/osteoRes5.qrc resources/osteoRes6.qrc
 QMAKE_RESOURCE_FLAGS += -no-compress
 windows:TARGET = ../AnatomyAsker
-windows:RC_FILE = icon.rc
+windows:RC_FILE = resources/common/icon.rc
 
 DISTFILES += \
     android/AndroidManifest.xml \

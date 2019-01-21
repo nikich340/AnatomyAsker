@@ -1,0 +1,15 @@
+<RCC>
+    <qresource prefix="/">
+        <file>common/score/2.jpg</file>
+        <file>common/score/3.jpg</file>
+        <file>common/score/4.jpg</file>
+        <file>common/score/5.jpg</file>
+        <file>common/score/2.mp3</file>
+        <file>common/score/3.mp3</file>
+        <file>common/score/4.mp3</file>
+		<file>common/score/5.mp3</file>
+        <file>common/background.jpg</file>
+		<file>common/nikich340.jpg</file>
+        <file>osteologia.xml</file>
+    </qresource>
+</RCC>

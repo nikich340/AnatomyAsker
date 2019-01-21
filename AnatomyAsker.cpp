@@ -286,7 +286,7 @@ void AnatomyAsker::genOsteoQuest() {
         avAnswers.insert(similarity(pEl.attribute("name"), curEl.attribute("name")) - 10, curEl);
     }
 
-    if (pix) {
+    if (pix && pEl.tagName() == "cell") {
         QVector<QString> pixAssocNames = findNamesByPix[pix];
         for (auto j: pixAssocNames) {
             QDomElement curEl = findElementByName[j];
@@ -441,6 +441,8 @@ void AnatomyAsker::genOsteoQuest() {
     }
     if (ans.size() < 2) {
         qDebug() << "Only one answer generated...";
+        --q_cnt;
+        --q_sum;
         genOsteoQuest();
         return;
     }
@@ -453,6 +455,7 @@ void AnatomyAsker::genOsteoQuest() {
     /* set answer buttons */
     int i = 0;
     for (auto &it : ans) {
+        qDebug() << "posAns: " << it;
         m_pLblAns[i]->setText(it);
         if (it == rightAns) {
             m_pBtnRight = m_pBtnAns[i];
@@ -779,7 +782,7 @@ void AnatomyAsker::onAboutProgram() {
             (m_bLangRu ? "Автор: Никита Гребенюк" : "Author: Nikita Grebenyuk") +
             " (@nikich340)<br>" + (m_bLangRu ? "Оригинальный исходный код: " : "Original source code: ") +
             "https://github.com/nikich340/AnatomyAsker</font>";
-    QDialog *pdlg = createDialog(txt, ":/nikich340.jpg", "OK", "-", true);
+    QDialog *pdlg = createDialog(txt, ":/common/nikich340.jpg", "OK", "-", true);
     pdlg->exec();
     pdlg->deleteLater();
     _dbg_end(__func__);
@@ -798,17 +801,17 @@ void AnatomyAsker::onFinishAsk() {
     } else {
         QString pix;
         if (score >= 0.9) {
-            pix = ":/score/5.jpg";
-            pPlayer->setMedia(QUrl("qrc:/score/5.mp3"));
+            pix = ":/common/score/5.jpg";
+            pPlayer->setMedia(QUrl("qrc:/common/score/5.mp3"));
         } else if (score >= 0.7) {
-            pix = ":/score/4.jpg";
-            pPlayer->setMedia(QUrl("qrc:/score/4.mp3"));
+            pix = ":/common/score/4.jpg";
+            pPlayer->setMedia(QUrl("qrc:/common/score/4.mp3"));
         } else if (score >= 0.5) {
-            pix = ":/score/3.jpg";
-            pPlayer->setMedia(QUrl("qrc:/score/3.mp3"));
+            pix = ":/common/score/3.jpg";
+            pPlayer->setMedia(QUrl("qrc:/common/score/3.mp3"));
         } else {
-            pix = ":/score/2.jpg";
-            pPlayer->setMedia(QUrl("qrc:/score/2.mp3"));
+            pix = ":/common/score/2.jpg";
+            pPlayer->setMedia(QUrl("qrc:/common/score/2.mp3"));
         }
         pdlg = createDialog((m_bLangRu ? "Ваш результат: " : "Your result is: ")
                             + to_str(q_rightAnsCnt) + "/" + to_str(q_cnt), pix,
