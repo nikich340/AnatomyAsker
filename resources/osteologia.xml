@@ -521,18 +521,70 @@
 		<cell name="area intercondylaris posterior" nameRu="заднее межмыщелковое поле" pixMarks="306-26"/>
 		<cell name="area intercondylaris anterior" nameRu="переднее межмыщелковое поле" pixMarks="306-27"/>
 		<cell name="tuberculum intercondylare laterale" nameRu="латеральный межмыщелковый бугорок" pixMarks="306-28"/>
+		<cell name="malleolus medialis" nameRu="медиальная лодыжка" pixMarks="309-35, 310-35"/>
 	</cell>
 	<cell name="fibula" nameRu="малоберцовая кость" mainPix="306, 307">
 		<cell name="caput fibulae" nameRu="головка малоберц. кости" pixMarks="306-3"/>
 		<cell name="corpus fibulae" nameRu="тело малоберц. кости" pixMarks="306-5"/>
 		<cell name="margo interosseus fibulae" nameRu="межкостный край малоберц. кости" pixMarks="306-6"/>
-		<cell name="malleolus lateralis" nameRu="латеральная лодыжка" pixMarks="306-9"/>
+		<cell name="malleolus lateralis" nameRu="латеральная лодыжка" pixMarks="306-9, 309-39, 310-39"/>
 		<cell name="facies articularis malleoli lateralis" nameRu="суставная поверхность латеральной лодыжки" pixMarks="306-21"/>
 		<cell name="apex capitis fibulae" nameRu="верхушка головки малоберц. кости" pixMarks="306-22"/>
 	</cell>
-	<cell name="tarsus" nameRu="предплюсна" mainPix="">
+	<cell name="tarsus" nameRu="предплюсна" mainPix="309, 310">
+	  <cell nameRu="таранная кость" name="talus" pixMarks="309-5, 310-5">
+	    <cell nameRu="головка таранной кости" name="caput tali" pixMarks="309-12, 310-12"/>
+	    <cell nameRu="шейка таранной кости" name="collum tali" pixMarks="309-13, 310-13"/>
+	    <cell nameRu="блок таранной кости" name="trochlea tali" pixMarks="309-14, 310-14"/>
+		<cell nameRu="латеральную лодыжковую поверхность" name="facies malleolaris lateralis" pixMarks="309-29"/>
+	    <cell nameRu="медиальную лодыжковую поверхность" name="facies malleolaris medialis"/>
+		<cell nameRu="задний отросток таранной кости" name="processus posterior tali" pixMarks="309-15"/>
+	  </cell>
+	  <cell nameRu="пяточная кость" name="calcaneus" pixMarks="309-27, 310-27">
+	    <cell nameRu="пяточный бугор" name="tuber calcanei" pixMarks="309-32, 310-32"/>
+	    <cell nameRu="опора таранной кости" name="sustentaculum tali" pixMarks="309-33, 310-33"/>
+		<cell nameRu="борозда сухожилия длинной малоберцовой мышцы" name="sulcus tendinis m. peronei longi" pixMarks="309-15"/>
+	  </cell>
+	  <cell nameRu="ладьевидная кость" name="os naviculare" pixMarks="309-10, 310-10"/>
+	  <cell nameRu="медиальная клиновидная кость" name="os cuneiforme mediale" pixMarks="309-7, 310-7"/>
+	  <cell nameRu="промежуточная клиновидная кость" name="os cuneiforme intermedium" pixMarks="309-8, 310-8"/>
+	  <cell nameRu="латеральная клиновидная кость" name="os cuneiforme laterale" pixMarks="309-23, 310-23"/>
+	  <cell nameRu="кубовидная кость" name="os cuboideum" pixMarks="309-25, 310-25"/>
+	  <cell nameRu="канал стопы" name="canalis pedis" pixMarks="309-28, 310-28"/>
 	</cell>
-	<cell name="metatarsus" nameRu="плюсна" mainPix="">
+	<cell name="metatarsus" nameRu="плюсна" mainPix="309, 310" pixMarks="309-21, 310-21">
+	  <cell nameRu="I плюсневая кость" name="os metatarsus I" pixMarks="309-5, 310-5"/>
+	  <cell nameRu="II плюсневая кость" name="os metatarsus II"/>
+	  <cell nameRu="III плюсневая кость" name="os metatarsus III"/>
+	  <cell nameRu="IV плюсневая кость" name="os metatarsus IV"/>
+	  <cell nameRu="V плюсневая кость" name="os metatarsus V">
+	    <cell nameRu="бугристость V плюсневой кости" name="tuberositas ossis metatarsi V" pixMarks="309-24, 310-24"/>
+	  </cell>
+	  <cell nameRu="основание плюсневой кости" name="basis ossis metatarsi" pixMarks="309-6"/>
+	  <cell nameRu="головка плюсневой кости" name="caput ossis metatarsi" pixMarks="309-4"/>
+	</cell>
+	<cell name="phalanges pedis" mainPix="309, 310" nameRu="фаланги стопы">
+    <cell nameRu="проксимальные фаланги стопы" name="phalanges proximales pedis" pixMarks="309-19, 310-19">
+	    <cell nameRu="I прокс. фаланга стопы" name="phalanx proximalis I pedis" pixMarks="309-3, 310-3"/>
+	    <cell nameRu="II прокс. фаланга стопы" name="phalanx proximalis II pedis"/>
+		<cell nameRu="III прокс. фаланга стопы" name="phalanx proximalis III pedis"/>
+		<cell nameRu="IV прокс. фаланга стопы" name="phalanx proximalis IV pedis"/>
+		<cell nameRu="V прокс. фаланга стопы" name="phalanx proximalis V pedis"/>
+	</cell>
+	<cell nameRu="средние фаланги стопы" name="phalanges medii pedis" pixMarks="309-17, 310-17">
+	    <cell nameRu="II средн. фаланга стопы" name="phalanx medius II pedis"/>
+	    <cell nameRu="III средн. фаланга стопы" name="phalanx medius III pedis"/>
+		<cell nameRu="IV средн. фаланга стопы" name="phalanx medius IV pedis"/>
+		<cell nameRu="V средн. фаланга стопы" name="phalanx medius V pedis"/>
+	</cell>
+	<cell nameRu="дистальные фаланги стопы" name="phalanges distales pedis" pixMarks="309-16, 310-16">
+	    <cell nameRu="I дист. фаланга стопы" name="phalanx distalis I pedis" pixMarks="309-2, 310-2"/>
+	    <cell nameRu="II дист. фаланга стопы" name="phalanx distalis II pedis"/>
+		<cell nameRu="III дист. фаланга стопы" name="phalanx distalis III pedis"/>
+		<cell nameRu="IV дист. фаланга стопы" name="phalanx distalis IV pedis"/>
+		<cell nameRu="V дист. фаланга стопы" name="phalanx distalis V pedis"/>
+		<cell nameRu="бугристость дист. фаланги стопы" name="tuberositas phalangis distalis pedis" pixMarks="309-1"/>
+	</cell>
 	</cell>
   </group>
  </group>
@@ -631,29 +683,29 @@
 	  <cell nameRu="основание пястной кости" name="basis ossis metacarpi" pixMarks="205-8"/>
 	  <cell nameRu="головка пястной кости" name="caput ossis metacarpi" pixMarks="205-10"/>
     </cell>
-	<cell name="phalanges" mainPix="205, 206" nameRu="фаланги">
-      <cell nameRu="проксимальные фаланги" name="phalanges proximales" pixMarks="205-11, 206-12">
-	    <cell nameRu="I прокс. фаланга" name="phalanx proximalis I" pixMarks="205-19, 206-9"/>
-	    <cell nameRu="II прокс. фаланга" name="phalanx proximalis II"/>
-		<cell nameRu="III прокс. фаланга" name="phalanx proximalis III"/>
-		<cell nameRu="IV прокс. фаланга" name="phalanx proximalis IV"/>
-		<cell nameRu="V прокс. фаланга" name="phalanx proximalis V"/>
-		<cell nameRu="основание прокс. фаланги" name="basis phalangis proximalis" pixMarks="206-11"/>
-		<cell nameRu="головка прокс. фаланги" name="caput phalangis proximalis" pixMarks="206-13"/>
+	<cell name="phalanges manus" mainPix="205, 206" nameRu="фаланги кисти">
+      <cell nameRu="проксимальные фаланги кисти" name="phalanges proximales manus" pixMarks="205-11, 206-12">
+	    <cell nameRu="I прокс. фаланга кисти" name="phalanx proximalis I manus" pixMarks="205-19, 206-9"/>
+	    <cell nameRu="II прокс. фаланга кисти" name="phalanx proximalis II manus"/>
+		<cell nameRu="III прокс. фаланга кисти" name="phalanx proximalis III manus"/>
+		<cell nameRu="IV прокс. фаланга кисти" name="phalanx proximalis IV manus"/>
+		<cell nameRu="V прокс. фаланга кисти" name="phalanx proximalis V manus"/>
+		<cell nameRu="основание прокс. фаланги кисти" name="basis phalangis proximalis manus" pixMarks="206-11"/>
+		<cell nameRu="головка прокс. фаланги кисти" name="caput phalangis proximalis manus" pixMarks="206-13"/>
 	  </cell>
-	  <cell nameRu="средние фаланги" name="phalanges medii" pixMarks="205-12, 206-14">
-	    <cell nameRu="I средн. фаланга" name="phalanx medius I"/>
-	    <cell nameRu="II средн. фаланга" name="phalanx medius II"/>
-		<cell nameRu="III средн. фаланга" name="phalanx medius III"/>
-		<cell nameRu="IV средн. фаланга" name="phalanx medius IV"/>
+	  <cell nameRu="средние фаланги кисти" name="phalanges medii manus" pixMarks="205-12, 206-14">
+	    <cell nameRu="II средн. фаланга кисти" name="phalanx medius II manus"/>
+	    <cell nameRu="III средн. фаланга кисти" name="phalanx medius III manus"/>
+		<cell nameRu="IV средн. фаланга кисти" name="phalanx medius IV manus"/>
+		<cell nameRu="V средн. фаланга кисти" name="phalanx medius V manus"/>
 	  </cell>
-	  <cell nameRu="дистальные фаланги" name="phalanges distales" pixMarks="205-13">
-	    <cell nameRu="I дист. фаланга" name="phalanx distalis I" pixMarks="205-20, 206-10"/>
-	    <cell nameRu="II дист. фаланга" name="phalanx distalis II" pixMarks="206-15"/>
-		<cell nameRu="III дист. фаланга" name="phalanx distalis III"/>
-		<cell nameRu="IV дист. фаланга" name="phalanx distalis IV"/>
-		<cell nameRu="V дист. фаланга" name="phalanx distalis V"/>
-		<cell nameRu="бугристость дист. фаланги" name="tuberositas phalangis distalis" pixMarks="205-23, 206-25"/>
+	  <cell nameRu="дистальные фаланги кисти" name="phalanges distales manus" pixMarks="205-13">
+	    <cell nameRu="I дист. фаланга кисти" name="phalanx distalis I manus" pixMarks="205-20, 206-10"/>
+	    <cell nameRu="II дист. фаланга кисти" name="phalanx distalis II manus" pixMarks="206-15"/>
+		<cell nameRu="III дист. фаланга кисти" name="phalanx distalis III manus"/>
+		<cell nameRu="IV дист. фаланга кисти" name="phalanx distalis IV manus"/>
+		<cell nameRu="V дист. фаланга кисти" name="phalanx distalis V manus"/>
+		<cell nameRu="бугристость дист. фаланги кисти" name="tuberositas phalangis distalis manus" pixMarks="205-23, 206-25"/>
 	  </cell>
     </cell>
   </group>
