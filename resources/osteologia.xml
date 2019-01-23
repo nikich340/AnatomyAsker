@@ -24,7 +24,10 @@
    </cell>
    <cell name="vertebra" mainPix="103" nameRu="позвонок">
     <cell name="arcus vertebrae" nameRu="дуга позвонка" pixMarks="103-13"/>
-    <cell name="corpus vertebrae" nameRu="тело позвонка" pixMarks="103-3, 104-3, 105-3"/>
+    <cell name="corpus vertebrae" nameRu="тело позвонка" pixMarks="103-3, 104-3, 105-3">
+	  <cell name="facies anterior corpus vertebrae" nameRu="передняя поверхность тела позвонка"/>
+	  <cell name="facies posterior corpus vertebrae" nameRu="задняя поверхность тела позвонка"/>
+	</cell>
     <cell name="facies articularis inferior" nameRu="нижняя суставная поверхность" pixMarks="104-27"/>
     <cell name="facies articularis superior" nameRu="верхняя суставная поверхность" pixMarks="103-11, 104-11"/>
     <cell name="foramen vertebralis" nameRu="позвоночное отверстие" pixMarks="103-2"/>
@@ -46,9 +49,10 @@
      <cell name="processus transversus atlantis" nameRu="поперечный отросток атланта" pixMarks="103-8, 104-8"/>
      <cell name="tuberculum anterior atlantis" nameRu="передний бугорок атланта" pixMarks="103-6, 104-6"/>
      <cell name="tuberculum superior atlantis" nameRu="задний бугорок атланта" pixMarks="103-9, 104-9"/>
+	 <cell name="fovea dentis" nameRu="ямка зуба"/>
     </cell>
     <cell name="vertebra CII (axis)" mainPix="108" nameRu="II шейный позвонок (осевой)" pixMarks="101-2">
-     <cell name="dens" nameRu="зуб" pixMarks="103-10, 104-10"/>
+     <cell name="dens axis" nameRu="зуб осевого позвонка" pixMarks="103-10, 104-10"/>
      <cell name="processus transversus axis" nameRu="поперечный отросток осевого позвонка" pixMarks="103-12, 104-12"/>
     </cell>
     <cell name="vertebra CIII" nameRu="III шейный позвонок"/>

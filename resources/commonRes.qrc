@@ -10,6 +10,7 @@
 		<file>common/score/5.mp3</file>
         <file>common/background.jpg</file>
 		<file>common/nikich340.jpg</file>
+		<file>artrosyndesmologia.xml</file>
         <file>osteologia.xml</file>
     </qresource>
 </RCC>

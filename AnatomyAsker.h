@@ -38,7 +38,7 @@ private:
 
     /* PREASK */
     QPushButton *m_pBtnStart, *m_pBtnMore;
-    QTreeWidget *m_pTreeOsteo;
+    QTreeWidget *m_pTreeOsteo, *m_pTreeArtro;
 
     /* MORE */
     GraphicsView *m_pGraphicsViewMore;
@@ -64,14 +64,15 @@ private:
 
     QMap<QString, QDomElement> findElementByName;
     QMap<int, QVector<QString>> findNamesByPix;
-    QDomDocument osteoDoc;
-    QVector<QDomElement> unusedOsteos;
+    QDomDocument osteoDoc, artroDoc;
+    QVector<QDomElement> unusedOsteos, unusedJuncts;
 
     QDialog* createDialog(QString info, QString pix, QString accept, QString reject, bool mod);
     QPushButton* setUpBtn(QLabel* pLbl);
     QString findMark(QVector<QPair<int, QString>>& pixVect, int pixNum);
     QString elName(QDomElement& element);
     QString parseLinks(QString text);
+    QTreeWidget* viewArtroTree();
     QTreeWidget* viewOsteoTree();
     bool isDigit(QChar c);
     bool isSymbol(QChar c);
@@ -81,11 +82,14 @@ private:
     int similarity(QString source, QString target);
     void _dbg_start(QString func);
     void _dbg_end(QString func);
-    void chooseOsteoQuests(QString root);
+    void chooseQuests(QVector<QDomElement>& vect, QString root);
     void clearLayout(QLayout* layout);
     void crash(QString reason);
+    void genArtroQuest();
     void genOsteoQuest();
     void parsePixMarks(QVector<QPair<int, QString>>& pixVect, QString pixStr, bool clear);
+    void processArtroXml();
+    void processArtroXmlDfs(QDomElement& curEl);
     void processOsteoXml();
     void processOsteoXmlDfs(QDomElement& curEl);
     void setUpObjects();
@@ -94,6 +98,7 @@ private:
     void readXml(QDomDocument& doc, QString path);
     void updateGView(bool crutch);
     void updateInfoLabel();
+    void viewArtroTreeDfs(QDomElement& parEl, QTreeWidgetItem* pTWI);
     void viewOsteoTreeDfs(QDomElement& parEl, QTreeWidgetItem* pTWI);
     void writeXml(QDomDocument& doc, QString path);
 public:
@@ -103,14 +108,18 @@ public slots:
     void onAboutProgram();
     void onAns();
     void onFinishAsk();
+    void onFinishArtroAsk();
     void onFinishOsteoAsk();
     void onMenu();
     void onMore();
     void onMoreNextPix();
+    void onNextArtroAsk();
     void onNextOsteoAsk();
+    void onPreStartArtroAsk();
     void onPreStartOsteoAsk();
     void onSettings();
     void onStartAsk();
+    void onStartArtroAsk();
     void onStartOsteoAsk();
     void onTreeCurrentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous);
     void onUpdateLanguage(int check);

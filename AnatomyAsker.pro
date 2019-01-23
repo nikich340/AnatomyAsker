@@ -4,7 +4,8 @@ SOURCES	     = AnatomyAsker.cpp GraphicsView.cpp main.cpp
 QT          += widgets xml multimedia
 RESOURCES   += resources/commonRes.qrc \
                resources/osteoRes1.qrc resources/osteoRes2.qrc resources/osteoRes3.qrc \
-               resources/osteoRes4.qrc resources/osteoRes5.qrc resources/osteoRes6.qrc
+               resources/osteoRes4.qrc resources/osteoRes5.qrc resources/osteoRes6.qrc \
+               resources/artroRes1.qrc
 QMAKE_RESOURCE_FLAGS += -no-compress
 windows:TARGET = ../AnatomyAsker
 windows:RC_FILE = resources/common/icon.rc

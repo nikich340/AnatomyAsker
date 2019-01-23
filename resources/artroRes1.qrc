@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+	    <file>artroPix/artroPix0.jpg</file>
+        <file>artroPix/artroPix1101.jpg</file>
+        <file>artroPix/artroPix1102.jpg</file>
+		<file>artroPix/artroPix1103.jpg</file>
+		<file>artroPix/artroPix1104.jpg</file>
+    </qresource>
+</RCC>

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<artrosyndesmologia name="artrosyndesmologia" nameRu="артросиндесмология">
+	<group name="juncturae cranii" mainPix="" nameRu="соединения черепа" />
+	<group name="juncturae columna vertabralis" mainPix="1101, 1102, 1103, 1104" nameRu="соединения позвоночного столба">
+		<group name="juncturae corpus vertabrae" mainPix="1101" nameRu="соединения тел позвонков">
+			<junctura name="(synchondrosis) discus intervertebralis" nameRu="(синхондроз) межпозвоночный диск" pixMarks="1101-2a, 1101-2b, 1103-4">
+				<base>между @corpus vertebrae@</base>
+				<function>движения @columna vertebralis@ во всех плоскостях</function>
+				<ligamentum name="lig. longitudinale anterius" nameRu="передняя продольная связка" pixMarks="1101-3, 1102-3, 1103-12">
+					<base>на @facies anterior corpus vertebrae@</base>
+				</ligamentum>
+				<ligamentum name="lig. longitudinale posterius" nameRu="задняя продольная связка" pixMarks="1101-4">
+					<base>на @facies posterior corpus vertebrae@</base>
+				</ligamentum>
+			</junctura>
+			<art name="art. sacrococcygea" nameRu="крестцово-копчиковый сустав">
+				<base>между @apex ossis sacri@ и @os coccygis@</base>
+				<function>движения @os coccygis@ при родах</function>
+				<type>simplex</type>
+				<combination>@art. zygapophysialis@</combination>
+				<complex />
+				<form>planar</form>
+				<ligamentum name="lig. sacrococcygeum laterale" nameRu="латеральная крестцово-копчиковая связка">
+					<base>между @apex ossis sacri@ и @os coccygis@ с латеральной поверхности</base>
+				</ligamentum>
+				<ligamentum name="lig. sacrococcygeum anterius" nameRu="передняя крестцово-копчиковая связка">
+					<base>между @apex ossis sacri@ и @os coccygis@ с передней поверхности</base>
+				</ligamentum>
+				<ligamentum name="lig. sacrococcygeum posterius superficiale" nameRu="задняя поверхностная крестцово-копчиковая связка">
+					<base>между @apex ossis sacri@ и @os coccygis@ с задней поверхности поверхностно</base>
+				</ligamentum>
+				<ligamentum name="lig. sacrococcygeum posterius profundum" nameRu="задняя глубокая связка">
+					<base>между @apex ossis sacri@ и @os coccygis@ с задней поверхности глубоко</base>
+				</ligamentum>
+			</art>
+		</group>
+		<group name="juncturae columnae vertabralis et cranii" mainPix="1102" nameRu="соединения позвоночного столба с черепом">
+			<art name="art. atlantoaxialis mediana" nameRu="срединный атлантоосевой сустав" pixMarks="1105-13">
+				<base>между @dens axis@ и @fovea dentis@</base>
+				<function>вращение @vertebra CI (atlas)@ вокруг вертикальной оси</function>
+				<type>simplex</type>
+				<combination />
+				<complex />
+				<form>trochealis</form>
+				<ligamentum name="lig. transversum atlantis" nameRu="поперечная связка атланта" pixMarks="1105-15">
+					<base>между внутренними поверхностями латеральных масс @vertebra CI (atlas)@</base>
+				</ligamentum>
+				<ligamentum name="lig. cruciforme atlantis" nameRu="крестообразная связка атланта" pixMarks="1105-20, 1105-23">
+					<base>от задней поверхности тела осевого позвонка -&gt; к средней части @lig. transversum atlantis@ &lt;- от переднего края @foramen occipitale magnum@</base>
+				</ligamentum>
+				<ligamentum name="ligamenta alaria" nameRu="крыльные связки">
+					<base>между боковыми поверхностями @dens axis@ и внутренними поверхностями @condylus occipitalis@</base>
+				</ligamentum>
+				<ligamentum name="lig. apicis dentis" nameRu="связка верхушки зуба" pixMarks="1102-8">
+					<base>между @processus spinosus@</base>
+				</ligamentum>
+				<ligamentum name="membrana tectoria" nameRu="покровная мембрана" pixMarks="1102-7">
+					<base>между передним краем @foramen occipitale magnum@ и телом @vertebra CII (axis)@; покрывает сзади связочный аппарат @art. atlantoaxialis mediana@</base>
+				</ligamentum>
+			</art>
+			<art name="art. atlantoaxialis lateralis" nameRu="боковой атлантоосевой сустав" pixMarks="1105-18">
+				<base>между нижними суставными ямками атланта и верхними суставными поверхностями II шейного позвонка</base>
+				<function>слабое скольжение суставных поверхностей атланта во всех направлениях</function>
+				<type>simplex</type>
+				<combination>@artt. atlantoaxiales laterales@</combination>
+				<complex />
+				<form>planar</form>
+			</art>
+		</group>
+		<group name="juncturae arcus vertabrae at processus" mainPix="1102" nameRu="соединения дуг позвонков и отростков">
+			<art name="art. zygapophysialis" nameRu="дугоотростчатый сустав">
+				<base>между @processus articularis superior@ и @processus articularis inferior@</base>
+				<function>движения @columna vertebralis@ во всех плоскостях</function>
+				<type>simplex</type>
+				<combination>@art. zygapophysialis@</combination>
+				<complex />
+				<form>planar</form>
+				<ligamentum name="lig. flavum" nameRu="жёлтая связка" pixMarks="1102-13">
+					<base>между @arcus vertebrae@</base>
+				</ligamentum>
+				<ligamentum name="lig. interspinalis" nameRu="межостистая связка" pixMarks="1102-8">
+					<base>между @processus spinosus@</base>
+				</ligamentum>
+				<ligamentum name="lig. supraspinalis" nameRu="надостистая связка" pixMarks="1102-7">
+					<base>покрывает сзади @processus spinosus@</base>
+				</ligamentum>
+				<ligamentum name="lig. nuchae" nameRu="выйная связка" pixMarks="1104-2">
+					<base>между @vertebra CVII (prominens)@ и @protuberantia occipitalis externa@, @crista occipitalis externa@</base>
+				</ligamentum>
+				<ligamentum name="lig. intertransversaris" nameRu="межпоперечная связка" pixMarks="1103-17">
+					<base>между @processus transversus@</base>
+				</ligamentum>
+			</art>
+			<art name="art. sacrococcygea" nameRu="крестцово-копчиковый сустав">
+				<base>между @apex ossis sacri@ и @os coccygis@</base>
+				<function>движения @os coccygis@ при родах</function>
+				<type>simplex</type>
+				<combination>@art. zygapophysialis@</combination>
+				<complex />
+				<form>planar</form>
+				<ligamentum name="lig. sacrococcygeum laterale" nameRu="латеральная крестцово-копчиковая связка" pixMarks="">
+					<base>между @apex ossis sacri@ и @os coccygis@ с латеральной поверхности</base>
+				</ligamentum>
+				<ligamentum name="lig. sacrococcygeum anterius" nameRu="передняя крестцово-копчиковая связка" pixMarks="">
+					<base>между @apex ossis sacri@ и @os coccygis@ с передней поверхности</base>
+				</ligamentum>
+				<ligamentum name="lig. sacrococcygeum posterius superficiale" nameRu="задняя поверхностная крестцово-копчиковая связка" pixMarks="">
+					<base>между @apex ossis sacri@ и @os coccygis@ с задней поверхности поверхностно</base>
+				</ligamentum>
+				<ligamentum name="lig. sacrococcygeum posterius profundum" nameRu="задняя глубокая крестцово-копчиковая связка" pixMarks="">
+					<base>между @apex ossis sacri@ и @os coccygis@ с задней поверхности глубоко</base>
+				</ligamentum>
+			</art>
+		</group>
+	</group>
+</artrosyndesmologia>
