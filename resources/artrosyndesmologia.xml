@@ -34,7 +34,7 @@
 				</ligamentum>
 			</art>
 		</group>
-		<group name="juncturae columnae vertabralis et cranii" mainPix="1102" nameRu="соединения позвоночного столба с черепом">
+		<group name="juncturae columnae vertabralis et cranii" mainPix="1105" nameRu="соединения позвоночного столба с черепом">
 			<art name="art. atlantoaxialis mediana" nameRu="срединный атлантоосевой сустав" pixMarks="1105-13">
 				<base>между @dens axis@ и @fovea dentis@</base>
 				<function>вращение @vertebra CI (atlas)@ вокруг вертикальной оси</function>
@@ -51,10 +51,10 @@
 				<ligamentum name="ligamenta alaria" nameRu="крыльные связки">
 					<base>между боковыми поверхностями @dens axis@ и внутренними поверхностями @condylus occipitalis@</base>
 				</ligamentum>
-				<ligamentum name="lig. apicis dentis" nameRu="связка верхушки зуба" pixMarks="1102-8">
+				<ligamentum name="lig. apicis dentis" nameRu="связка верхушки зуба">
 					<base>между @processus spinosus@</base>
 				</ligamentum>
-				<ligamentum name="membrana tectoria" nameRu="покровная мембрана" pixMarks="1102-7">
+				<ligamentum name="membrana tectoria" nameRu="покровная мембрана">
 					<base>между передним краем @foramen occipitale magnum@ и телом @vertebra CII (axis)@; покрывает сзади связочный аппарат @art. atlantoaxialis mediana@</base>
 				</ligamentum>
 			</art>
