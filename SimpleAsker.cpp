@@ -197,7 +197,7 @@ void SimpleAsker::setUpObjects() {
     QHBoxLayout *pHboxx = new QHBoxLayout;
     pHboxx->addWidget(m_pLblStartFrom);
     pHboxx->addWidget(m_pLineStartFrom);
-    m_pLineStartFrom->setValidator(new QIntValidator(1, 300));
+    m_pLineStartFrom->setValidator(new QIntValidator(1, 299));
     m_pBtnStart = new QPushButton;
     m_pCheckRandomize = new QCheckBox;
     m_pLayoutPreAsk->addLayout(pHboxx);
@@ -354,7 +354,7 @@ void SimpleAsker::onAboutProgram() {
     QString txt = QString("<font>") + (m_bLangRu ? "Версия: " : "Version: ") + VERSION + "<br>" +
             (m_bLangRu ? "Автор: Никита Гребенюк" : "Author: Nikita Grebenyuk") +
             " (@nikich340)<br>" + (m_bLangRu ? "Оригинальный исходный код: " : "Original source code: ") +
-            "https://github.com/nikich340/SimpleAsker</font>";
+            "https://github.com/nikich340/AnatomyAsker/tree/SimpleAsker</font>";
     QDialog *pdlg = createDialog(txt, ":/common/nikich340.jpg", "OK", "-", true);
     pdlg->exec();
     pdlg->deleteLater();
