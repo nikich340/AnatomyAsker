@@ -300,7 +300,7 @@ SimpleAsker::SimpleAsker(QStackedWidget *pswgt) : QStackedWidget(pswgt), m_setti
 
     m_bLangRu = m_settings.value("/settings/m_bLangRu", true).toBool();
 
-    this->setStyleSheet("QPushButton { alignment: center; text-align: center; min-height: 75px; font-size: 20px; background-color: rgba(255,255,255,150) }"
+    this->setStyleSheet("QPushButton { alignment: center; text-align: center; min-height: 100px; font-size: 20px; background-color: rgba(255,255,255,150) }"
                         "QLabel { alignment: center; text-align: center; font-size: 20px; background-color: rgba(255,255,255,100) }"
                         "QTreeWidget { alignment: center; text-align: center; font-size: 23px; background-color: rgba(255,255,255,200) }"
                         "QCheckBox { alignment: center; text-align: center; min-height: 75px; font-size: 23px; background-color: rgba(255, 255, 255, 150) }"
