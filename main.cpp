@@ -10,12 +10,12 @@
  * GNU General Public License for more details.
  */
 
-#include "AnatomyAsker.h"
+#include "SimpleAsker.h"
 
 int main(int argc, char** argv)
 {
     QApplication app(argc, argv);
-    AnatomyAsker asker;
+    SimpleAsker asker;
     QBrush brush;
     QPalette pallete = asker.palette();
 
