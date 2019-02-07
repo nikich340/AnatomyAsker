@@ -11,7 +11,6 @@
  */
 
 #include "AnatomyAsker.h"
-#include <QMediaPlayer>
 
 /* PRIVATE FUNCTIONS */
 QDialog* AnatomyAsker::createDialog(QString info, QString pix, QString accept, QString reject, bool mod) {
@@ -70,7 +69,7 @@ QTreeWidget* AnatomyAsker::viewOsteoTree() {
    pRoot->setText(0, elName(rootEl));
    pRoot->setText(1, rootEl.attribute("name"));
    pTW->addTopLevelItem(pRoot);
-   viewOsteoTreeDfs(rootEl, pRoot);
+   viewTreeDfs(rootEl, pRoot);
 
    _dbg_end(__func__);
    return pTW;
@@ -86,7 +85,7 @@ QTreeWidget* AnatomyAsker::viewArtroTree() {
    pRoot->setText(0, elName(rootEl));
    pRoot->setText(1, rootEl.attribute("name"));
    pTW->addTopLevelItem(pRoot);
-   viewArtroTreeDfs(rootEl, pRoot);
+   viewTreeDfs(rootEl, pRoot);
 
    _dbg_end(__func__);
    return pTW;
@@ -121,7 +120,7 @@ QString AnatomyAsker::parseLinks(QString text) {
                 name.push_back(text[i]);
                 ++i;
             }
-            ret += elName(findElementByName[name]);
+            ret += elName(elementByName[name]);
         } else {
             ret.push_back(text[i]);
         }
@@ -143,79 +142,6 @@ int AnatomyAsker::rand(int L, int R) {
     if (R < L)
         return -1;
     return L + qrand() % (R - L + 1);
-}
-int AnatomyAsker::levensteinDist(QString source, QString target) {
-    //_dbg_start(__func__);
-    //qDebug() << "source: " << source << " target: " << target;
-    int n = source.length();
-    int m = target.length();
-    upn(i, 0, n) {
-        d[0][i] = i;
-    }
-    upn(i, 1, m) {
-        d[i][0] = i;
-        upn(j, 1, n) {
-            if (source[i - 1] != target[j - 1]) {
-                d[i][j] = qMin(d[i - 1][j - 1], qMin(d[i - 1][j], d[i][j - 1])) + 1;
-            } else {
-                d[i][j] = d[i - 1][j - 1];
-            }
-        }
-    }
-    //qDebug() << "   levenDist = " << d[m][n];
-    //_dbg_end(__func__);
-    return d[m][n];
-}
-int AnatomyAsker::similarity(QString source, QString target) {
-    //_dbg_start(__func__);
-    if (source.length() < target.length())
-        swap(source, target);
-    //qDebug() << "source: " << source << " target: " << target;
-    QVector<QString> sourceWords, targetWords;
-    QString tmp;
-    int ret = 0;
-    upn(i, 0, source.length() - 1) {
-        if (isSymbol(source[i])) {
-            tmp.push_back(source[i]);
-        } else {
-            if (!tmp.isEmpty()) {
-                sourceWords.push_back(tmp);
-            }
-            tmp = "";
-        }
-    }
-    sourceWords.push_back(tmp);
-    tmp = "";
-    upn(j, 0, target.length() - 1) {
-        if (isSymbol(target[j])) {
-            tmp.push_back(target[j]);
-        } else {
-            if (!tmp.isEmpty()) {
-                targetWords.push_back(tmp);
-            }
-            tmp = "";
-        }
-    }
-    targetWords.push_back(tmp);
-
-    upn(i, 0, sourceWords.size() - 1) {
-        int bestIdx = -1;
-        int bestDist = sourceWords[i].length();
-        upn(j, 0, targetWords.size() - 1) {
-            int curLeven = levensteinDist(sourceWords[i], targetWords[j]);
-            if (curLeven < bestDist) {
-                bestDist = curLeven;
-                bestIdx = j;
-            }
-        }
-        ret += bestDist;
-        /*if (bestIdx >= 0) {
-            targetWords.erase(targetWords.begin() + bestIdx);
-        }*/
-    }
-    //qDebug() << "similarity: " << ret;
-    //_dbg_end(__func__);
-    return ret;
 }
 void AnatomyAsker::_dbg_start(QString func) {
     QString out = "";
@@ -249,16 +175,17 @@ void AnatomyAsker::clearLayout(QLayout* layout) {
         }
     }
 }
-void AnatomyAsker::chooseQuests(QVector<QDomElement>& vect, QString rootPattern) {
+void AnatomyAsker::chooseQuests(vector<int>& vect, QString rootPattern) {
     _dbg_start(__func__);
-    QVector<QDomElement> tmpV;
-    for (auto curEl : vect) {
-        QDomElement from = curEl;
+    vector<int> tmpV;
+    qDebug() << "vect size " << vect.size() << " rootPattern: " << rootPattern;
+    for (auto curIndex : vect) {
+        QDomElement curEl = elementByIndex[curIndex];
         while (!curEl.isNull() && elName(curEl) != rootPattern) {
             curEl = curEl.parentNode().toElement();
         }
         if (!curEl.isNull())
-            tmpV.push_back(from);
+            tmpV.push_back(curIndex);
     }
     vect = tmpV;
     _dbg_end(__func__);
@@ -270,323 +197,207 @@ void AnatomyAsker::crash(QString reason) {
     pdlg->exec();
     pdlg->deleteLater();
 }
-void AnatomyAsker::genArtroQuest() {
+void AnatomyAsker::genQuest() {
     _dbg_start(__func__);
     QSet<QString> ans;
     QString rightAns;
     QString question;
-    if (unusedJuncts.empty()) {
+    if (unusedFormations.empty()) {
         qDebug() << "Empty quest array";
-        onFinishOsteoAsk();
+        onFinishAsk();
         dbg_spacing -= 3;
         return;
     }
-    int idx = rand(0, unusedJuncts.size() - 1);
-    qDebug() << "Array size: " << unusedJuncts.size() << " idx: " << idx;
-    QDomElement pEl = unusedJuncts[idx];
-    unusedJuncts.erase(unusedJuncts.begin() + idx);
+    int idx = rand(0, unusedFormations.size() - 1);
+    int elIndex = unusedFormations[idx];
+    QDomElement pEl = elementByIndex[elIndex];
+    QDomElement parEl = pEl.parentNode().toElement();
+    unusedFormations.erase(unusedFormations.begin() + idx);
 
     QVector<QPair<int, QString>> pixMarks;
-    qDebug() << "Main structure: " << elName(pEl);
     parsePixMarks(pixMarks, pEl.attribute("pixMarks"), true);
     int pixIdx = rand(0, pixMarks.size() - 1);
     int pix = pixMarks[pixIdx].first;
     QString mark = findMark(pixMarks, pix);
+    qDebug("Main structure: %s, pix %d, mark %s", elName(pEl).toStdString().c_str(), pix, mark.toStdString().c_str());
 
     /* find similar elements */
 
-    QDomElement parEl = pEl.parentNode().toElement();
-    QMultiMap<int, QDomElement> avAnswers;
-    upn(i, 0, parEl.childNodes().size() - 1) {
-        QDomElement curEl = parEl.childNodes().at(i).cloneNode().toElement();
-        avAnswers.insert(similarity(pEl.attribute("name"), curEl.attribute("name")) - 10, curEl);
-    }
-
-    if (pix) {
-        QVector<QString> pixAssocNames = findNamesByPix[pix];
-        for (auto j: pixAssocNames) {
-            QDomElement curEl = findElementByName[j];
-            avAnswers.insert(similarity(pEl.attribute("name"), curEl.attribute("name")), curEl);
+    vector<int> avAnswers;
+    set<int> pixAnswers;
+    if (pix > 0) {
+        for (auto j: indexesByPix[pix]) {
+            avAnswers.push_back(j);
+            pixAnswers.insert(j);
         }
-    }
-    QVector<QDomElement> sortedAvAnswers;
-    for (auto j: avAnswers) {
-        qDebug() << "add sorted answer: " << elName(j);
-        sortedAvAnswers.push_back(j);
     }
 
     int prob = rand(1, 100);
 
-    if (prob <= 50 && pEl.childNodes().at(1).toElement().tagName() == "function") {
-        rightAns = parseLinks(pEl.childNodes().at(1).toElement().text());
-        ans.insert(rightAns);
-        /* CHOOSE SIMILAR ANSWERS */
-        while (ans.size() < similarAns && !sortedAvAnswers.isEmpty()) {
-            idx = rand(0, qMin(similarAns, sortedAvAnswers.size() - 1));
-            QString curFunc = parseLinks(sortedAvAnswers[idx].childNodes().at(1).toElement().text());
-            if (curFunc.isEmpty()) {
-                qDebug() << "Empty: " << elName(sortedAvAnswers[idx]);
-            }
-            ans.insert(curFunc);
-            sortedAvAnswers.erase(sortedAvAnswers.begin() + idx);
+    switch (m_section) {
+    case (Section::OSTEOLOGIA):
+    {
+        for (auto j : osteoMap[elIndex]) {
+            if (pixAnswers.find(j.second) == pixAnswers.end())
+                avAnswers.push_back(j.second);
         }
-        /* CHOOSE ANOTHER ANSWERS */
-        while (ans.size() < maxAns && !sortedAvAnswers.isEmpty()) {
-            idx = rand(0, sortedAvAnswers.size() - 1);
-            QString curFunc = parseLinks(sortedAvAnswers[idx].childNodes().at(1).toElement().text());
-            if (curFunc.isEmpty()) {
-                qDebug() << "Empty: " << elName(sortedAvAnswers[idx]);
-            }
-            ans.insert(curFunc);
-            sortedAvAnswers.erase(sortedAvAnswers.begin() + idx);
-        }
-        if (m_bLangRu) {
-            question = "Какова функция " + elName(pEl) + " (номер " + mark + ")?";
-        } else {
-            question = "What is the function of " + elName(pEl) + " (number " + mark + ")?";
-        }
-    } else {
-        rightAns = parseLinks(pEl.childNodes().at(0).toElement().text());
-        ans.insert(rightAns);
-        /* CHOOSE SIMILAR ANSWERS */
-        while (ans.size() < similarAns && !sortedAvAnswers.isEmpty()) {
-            idx = rand(0, qMin(similarAns, sortedAvAnswers.size() - 1));
-            QString curPlace = parseLinks(sortedAvAnswers[idx].childNodes().at(0).toElement().text());
-            if (curPlace.isEmpty()) {
-                qDebug() << "Empty: " << elName(sortedAvAnswers[idx]);
-            }
-            ans.insert(curPlace);
-            sortedAvAnswers.erase(sortedAvAnswers.begin() + idx);
-        }
-        /* CHOOSE ANOTHER ANSWERS */
-        while (ans.size() < maxAns && !sortedAvAnswers.isEmpty()) {
-            idx = rand(0, sortedAvAnswers.size() - 1);
-            QString curPlace = parseLinks(sortedAvAnswers[idx].childNodes().at(0).toElement().text());
-            if (curPlace.isEmpty()) {
-                qDebug() << "Empty: " << elName(sortedAvAnswers[idx]);
-            }
-            ans.insert(curPlace);
-            sortedAvAnswers.erase(sortedAvAnswers.begin() + idx);
-        }
-        if (m_bLangRu) {
-            question = "Где находится " + elName(pEl) + " (номер " + mark + ")?";
-        } else {
-            question = "Where is " + elName(pEl) + " located (number " + mark + ")?";
-        }
-    }
-
-    if (ans.size() > maxAns) {
-        crash("ans size (" + to_str(ans.size()) + ") > maxAns (" + to_str(maxAns) + ")");
-    }
-    if (ans.size() < 2) {
-        qDebug() << "Only one answer generated...";
-        --q_cnt;
-        --q_sum;
-        genOsteoQuest();
-        return;
-    }
-    /* set question label */
-    m_pLblQuestion->setText(question);
-
-    /* set picture */
-    m_pGraphicsView->setPix(QPixmap(":/artroPix/artroPix" + to_str(pix) + ".jpg"));
-
-    /* set answer buttons */
-    int i = 0;
-    for (auto &it : ans) {
-        qDebug() << "posAns: " << it;
-        m_pLblAns[i]->setText(it);
-        if (it == rightAns) {
-            m_pBtnRight = m_pBtnAns[i];
-        }
-        m_pBtnAns[i]->show();
-        ++i;
-    }
-    upn(j, i, maxAns - 1) {
-        m_pBtnAns[j]->hide();
-    }
-    _dbg_end(__func__);
-}
-void AnatomyAsker::genOsteoQuest() {
-    _dbg_start(__func__);
-    //std::default_random_engine dre(QDateTime::currentMSecsSinceEpoch());
-    QSet<QString> ans;
-    QString rightAns;
-    QString question;
-    if (unusedOsteos.empty()) {
-        qDebug() << "Empty quest array";
-        onFinishOsteoAsk();
-        dbg_spacing -= 3;
-        return;
-    }
-    int idx = rand(0, unusedOsteos.size() - 1);
-    QDomElement pEl = unusedOsteos[idx];
-    unusedOsteos.erase(unusedOsteos.begin() + idx);
-
-    QVector<QPair<int, QString>> pixMarks;
-    qDebug() << "Main structure: " << elName(pEl);
-    parsePixMarks(pixMarks, pEl.attribute("pixMarks"), true);
-    int pixIdx = rand(0, pixMarks.size() - 1);
-    int pix = pixMarks[pixIdx].first;
-    QString mark = findMark(pixMarks, pix);
-
-    /* find similar elements */
-
-    QDomElement parEl = pEl.parentNode().toElement();
-    QMultiMap<int, QDomElement> avAnswers;
-    upn(i, 0, parEl.childNodes().size() - 1) {
-        QDomElement curEl = parEl.childNodes().at(i).cloneNode().toElement();
-        avAnswers.insert(similarity(pEl.attribute("name"), curEl.attribute("name")) - 10, curEl);
-    }
-
-    if (pix && pEl.tagName() == "cell") {
-        QVector<QString> pixAssocNames = findNamesByPix[pix];
-        for (auto j: pixAssocNames) {
-            QDomElement curEl = findElementByName[j];
-            avAnswers.insert(similarity(pEl.attribute("name"), curEl.attribute("name")), curEl);
-        }
-    }
-    QVector<QDomElement> sortedAvAnswers;
-    for (auto j: avAnswers) {
-        sortedAvAnswers.push_back(j);
-    }
-
-    int prob = rand(1, 100);
-
-    if (pEl.tagName() == "canalis") {
-        if (prob <= 60) {
-            rightAns = elName(pEl);
-            ans.insert(rightAns);
-            /* CHOOSE SIMILAR ANSWERS */
-            while (ans.size() < similarAns && !sortedAvAnswers.isEmpty()) {
-                idx = rand(0, qMin(similarAns, sortedAvAnswers.size() - 1));
-                ans.insert(elName(sortedAvAnswers[idx]));
-                sortedAvAnswers.erase(sortedAvAnswers.begin() + idx);
-            }
-            /* CHOOSE ANOTHER ANSWERS */
-            while (ans.size() < maxAns && !sortedAvAnswers.isEmpty()) {
-                idx = rand(0, sortedAvAnswers.size() - 1);
-                ans.insert(elName(sortedAvAnswers[idx]));
-                sortedAvAnswers.erase(sortedAvAnswers.begin() + idx);
-            }
-            if (m_bLangRu) {
-                if (prob <= 20) {                       /* ask about canalis by begin */
-                    question = "Какой канал начинается " + parseLinks(pEl.childNodes().at(0).toElement().text());
-                } else if (prob > 20 && prob <= 40) {   /* ask about canalis by end */
-                    question = "Какой канал заканчивается " + parseLinks(pEl.childNodes().at(1).toElement().text());
-                } else if (prob > 40 && prob <= 60) {   /* ask about canalis by path */
-                    question = "О каком канале идёт речь: " + parseLinks(pEl.childNodes().at(2).toElement().text());
-                }
-                if (mark != "0") {
-                    question += " (номер " + mark + ")?";
-                }
-            } else {
-                if (prob <= 20) {                       /* ask about canalis by begin */
-                    question = "What canalis begins in " + parseLinks(pEl.childNodes().at(0).toElement().text()) + "?";
-                } else if (prob > 20 && prob <= 40) {   /* ask about canalis by end */
-                    question = "What canalis ends in " + parseLinks(pEl.childNodes().at(1).toElement().text()) + "?";
-                } else if (prob > 40 && prob <= 60) {   /* ask about canalis by path */
-                    question = "What canalis is described: " + parseLinks(pEl.childNodes().at(2).toElement().text()) + "?";
-                }
-                if (mark != "0") {
-                    question += " (number " + mark + ")?";
+        if (pEl.tagName() == "canalis") {
+            /* Remove non-canalis objects */
+            for (int i = avAnswers.size() - 1; i >= 0; --i) {
+                if (elementByIndex[avAnswers[i]].tagName() != "canalis") {
+                    avAnswers.erase(avAnswers.begin() + i);
                 }
             }
-        } else if (prob > 60 && prob <= 80) {   /* ask about begin by canalis */
-            rightAns = parseLinks(pEl.childNodes().at(0).toElement().text());
-            ans.insert(rightAns);
-            /* CHOOSE SIMILAR ANSWERS */
-            while (ans.size() < similarAns && !sortedAvAnswers.isEmpty()) {
-                idx = rand(0, qMin(similarAns, sortedAvAnswers.size() - 1));
-                QString curBegin = parseLinks(sortedAvAnswers[idx].childNodes().at(0).toElement().text());
-                ans.insert(curBegin);
-                sortedAvAnswers.erase(sortedAvAnswers.begin() + idx);
+            if (prob <= 60) {
+                rightAns = elName(pEl);
+                ans.insert(rightAns);
+                /* CHOOSE ANSWERS */
+                while (ans.size() < maxAns && !avAnswers.empty()) {
+                    idx = rand(0, qMin(similarity, (int) avAnswers.size() - 1));
+                    QDomElement el = elementByIndex[avAnswers[idx]];
+                    ans.insert(elName(el));
+                    avAnswers.erase(avAnswers.begin() + idx);
+                }
+                if (m_bLangRu) {
+                    if (prob <= 20) {                       /* ask about canalis by begin */
+                        question = "Какой канал начинается " + parseLinks(pEl.childNodes().at(0).toElement().text());
+                    } else if (prob > 20 && prob <= 40) {   /* ask about canalis by end */
+                        question = "Какой канал заканчивается " + parseLinks(pEl.childNodes().at(1).toElement().text());
+                    } else if (prob > 40 && prob <= 60) {   /* ask about canalis by path */
+                        question = "О каком канале идёт речь: " + parseLinks(pEl.childNodes().at(2).toElement().text());
+                    }
+                    if (mark != "0") {
+                        question += " (номер " + mark + ")?";
+                    }
+                } else {
+                    if (prob <= 20) {                       /* ask about canalis by begin */
+                        question = "What canalis begins in " + parseLinks(pEl.childNodes().at(0).toElement().text()) + "?";
+                    } else if (prob > 20 && prob <= 40) {   /* ask about canalis by end */
+                        question = "What canalis ends in " + parseLinks(pEl.childNodes().at(1).toElement().text()) + "?";
+                    } else if (prob > 40 && prob <= 60) {   /* ask about canalis by path */
+                        question = "What canalis is described: " + parseLinks(pEl.childNodes().at(2).toElement().text()) + "?";
+                    }
+                    if (mark != "0") {
+                        question += " (number " + mark + ")?";
+                    }
+                }
+            } else if (prob > 60 && prob <= 80) {   /* ask about begin by canalis */
+                rightAns = parseLinks(pEl.childNodes().at(0).toElement().text());
+                ans.insert(rightAns);
+                /* CHOOSE ANSWERS */
+                while (ans.size() < maxAns && !avAnswers.empty()) {
+                    idx = rand(0, qMin(similarity, (int) avAnswers.size() - 1));
+                    QDomElement el = elementByIndex[avAnswers[idx]];
+                    QString curBegin = parseLinks(el.childNodes().at(0).toElement().text());
+                    ans.insert(curBegin);
+                    avAnswers.erase(avAnswers.begin() + idx);
+                }
+                if (m_bLangRu) {
+                    question = "Где начинается " + elName(pEl) + " (номер " + mark + ")?";
+                } else {
+                    question = "Where does " + elName(pEl) + " begin (number " + mark + ")?";
+                }
+            } else if (prob > 80) {                 /* ask about end by canalis */
+                rightAns = parseLinks(pEl.childNodes().at(1).toElement().text());
+                ans.insert(rightAns);
+                /* CHOOSE ANSWERS */
+                while (ans.size() < maxAns && !avAnswers.empty()) {
+                    idx = rand(0, qMin(similarity, (int) avAnswers.size() - 1));
+                    QDomElement el = elementByIndex[avAnswers[idx]];
+                    QString curEnd = parseLinks(el.childNodes().at(1).toElement().text());
+                    ans.insert(curEnd);
+                    avAnswers.erase(avAnswers.begin() + idx);
+                }
+                if (m_bLangRu) {
+                    question = "Где заканчивается " + elName(pEl) + " (номер " + mark + ")?";
+                } else {
+                    question = "Where does " + elName(pEl) + "end (number " + mark + ")?";
+                }
             }
-            /* CHOOSE ANOTHER ANSWERS */
-            while (ans.size() < maxAns && !sortedAvAnswers.isEmpty()) {
-                idx = rand(0, sortedAvAnswers.size() - 1);
-                QString curBegin = parseLinks(sortedAvAnswers[idx].childNodes().at(0).toElement().text());
-                ans.insert(curBegin);
-                sortedAvAnswers.erase(sortedAvAnswers.begin() + idx);
+        } else if (pEl.tagName() == "cell") {
+            if (prob <= 50) {                       /* ask about mark by struct */
+                rightAns = mark;
+                ans.insert(rightAns);
+                /* CHOOSE ANSWERS */
+                while (ans.size() < maxAns && !avAnswers.empty()) {
+                    idx = rand(0, qMin(similarity, (int) avAnswers.size() - 1));
+                    QDomElement el = elementByIndex[avAnswers[idx]];
+                    parsePixMarks(pixMarks, el.attribute("pixMarks"), true);
+                    QString mark = findMark(pixMarks, pix);
+                    if (mark != "-1")
+                        ans.insert(mark);
+                    avAnswers.erase(avAnswers.begin() + idx);
+                }
+
+                if (m_bLangRu) {
+                    question = "Каким номером на картинке отмечен(а/о) " + elName(pEl) + " (структура: " + elName(parEl) + ") ?";
+                } else {
+                    question = "What number is " + elName(pEl) + " (structure: " + elName(parEl) + ") marked with ?";
+                }
+            } else if (prob > 50) {                 /* ask about struct by mark */
+                rightAns = elName(pEl);
+                ans.insert(rightAns);
+                while (ans.size() < maxAns && !avAnswers.empty()) {
+                    idx = rand(0, qMin(similarity, (int) avAnswers.size() - 1));
+                    QDomElement el = elementByIndex[avAnswers[idx]];
+                    ans.insert(elName(el));
+                    avAnswers.erase(avAnswers.begin() + idx);
+                }
+
+                if (m_bLangRu) {
+                    question = "Какое образование (структура: " + elName(parEl) + ") помечено на картинке номером " + mark + "?";
+                } else {
+                    question = "What formation (structure: " + elName(parEl) + ") is marked on picture with number " + mark + "?";
+                }
             }
-            if (m_bLangRu) {
-                question = "Где начинается " + elName(pEl) + " (номер " + mark + ")?";
-            } else {
-                question = "Where does " + elName(pEl) + " begin (number " + mark + ")?";
-            }
-        } else if (prob > 80) {                 /* ask about end by canalis */
+        }
+
+        /* set picture */
+        m_pGraphicsView->setPix(QPixmap(":/osteoPix/osteoPix" + to_str(pix) + ".jpg"));
+        break;
+    };
+    case (Section::ARTROSYNDESMOLOGIA):
+    {
+        if (prob <= 50 && pEl.childNodes().at(1).toElement().tagName() == "function") {
             rightAns = parseLinks(pEl.childNodes().at(1).toElement().text());
             ans.insert(rightAns);
-            /* CHOOSE SIMILAR ANSWERS */
-            while (ans.size() < similarAns && !sortedAvAnswers.isEmpty()) {
-                idx = rand(0, qMin(similarAns, sortedAvAnswers.size() - 1));
-                QString curEnd = parseLinks(sortedAvAnswers[idx].childNodes().at(1).toElement().text());
-                ans.insert(curEnd);
-                sortedAvAnswers.erase(sortedAvAnswers.begin() + idx);
-            }
-            /* CHOOSE ANOTHER ANSWERS */
-            while (ans.size() < maxAns && !sortedAvAnswers.isEmpty()) {
-                idx = rand(0, sortedAvAnswers.size() - 1);
-                QString curEnd = parseLinks(sortedAvAnswers[idx].childNodes().at(1).toElement().text());
-                ans.insert(curEnd);
-                sortedAvAnswers.erase(sortedAvAnswers.begin() + idx);
+            /* CHOOSE ANSWERS */
+            while (ans.size() < maxAns && !avAnswers.empty()) {
+                idx = rand(0, qMin(similarity, (int) avAnswers.size() - 1));
+                QDomElement el = elementByIndex[avAnswers[idx]];
+                QString curFunc = parseLinks(el.childNodes().at(1).toElement().text());
+                ans.insert(curFunc);
+                avAnswers.erase(avAnswers.begin() + idx);
             }
             if (m_bLangRu) {
-                question = "Где заканчивается " + elName(pEl) + " (номер " + mark + ")?";
+                question = "Какова функция " + elName(pEl) + " (номер " + mark + ")?";
             } else {
-                question = "Where does " + elName(pEl) + "end (number " + mark + ")?";
+                question = "What is the function of " + elName(pEl) + " (number " + mark + ")?";
+            }
+        } else {
+            rightAns = parseLinks(pEl.childNodes().at(0).toElement().text());
+            ans.insert(rightAns);
+            /* CHOOSE ANSWERS */
+            while (ans.size() < maxAns && !avAnswers.empty()) {
+                idx = rand(0, qMin(similarity, (int) avAnswers.size() - 1));
+                QDomElement el = elementByIndex[avAnswers[idx]];
+                QString curFunc = parseLinks(el.childNodes().at(0).toElement().text());
+                ans.insert(curFunc);
+                avAnswers.erase(avAnswers.begin() + idx);
+            }
+            if (m_bLangRu) {
+                question = "Где находится " + elName(pEl) + " (номер " + mark + ")?";
+            } else {
+                question = "Where is " + elName(pEl) + " located (number " + mark + ")?";
             }
         }
-    } else if (pEl.tagName() == "cell") {
-        if (prob <= 50) {                       /* ask about mark by struct */
-            rightAns = mark;
-            ans.insert(rightAns);
-            /* CHOOSE SIMILAR ANSWERS */
-            while (ans.size() < similarAns && !sortedAvAnswers.isEmpty()) {
-                idx = rand(0, qMin(similarAns, sortedAvAnswers.size() - 1));
-                parsePixMarks(pixMarks, sortedAvAnswers[idx].attribute("pixMarks"), true);
-                QString mark = findMark(pixMarks, pix);
-                if (mark != "-1")
-                    ans.insert(mark);
-                sortedAvAnswers.erase(sortedAvAnswers.begin() + idx);
-            }
-            /* CHOOSE ANOTHER ANSWERS */
-            while (ans.size() < maxAns && !sortedAvAnswers.isEmpty()) {
-                idx = rand(0, sortedAvAnswers.size() - 1);
-                parsePixMarks(pixMarks, sortedAvAnswers[idx].attribute("pixMarks"), true);
-                QString mark = findMark(pixMarks, pix);
-                if (mark != "-1")
-                    ans.insert(mark);
-                sortedAvAnswers.erase(sortedAvAnswers.begin() + idx);
-            }
 
-            if (m_bLangRu) {
-                question = "Каким номером на картинке отмечен(а/о) " + elName(pEl) + " (структура: " + elName(parEl) + ") ?";
-            } else {
-                question = "What number is " + elName(pEl) + " (structure: " + elName(parEl) + ") marked with ?";
-            }
-        } else if (prob > 50) {                 /* ask about struct by mark */
-            rightAns = elName(pEl);
-            ans.insert(rightAns);
-            /* CHOOSE SIMILAR ANSWERS */
-            while (ans.size() < similarAns && !sortedAvAnswers.isEmpty()) {
-                idx = rand(0, qMin(similarAns, sortedAvAnswers.size() - 1));
-                ans.insert(elName(sortedAvAnswers[idx]));
-                sortedAvAnswers.erase(sortedAvAnswers.begin() + idx);
-            }
-            /* CHOOSE ANOTHER ANSWERS */
-            while (ans.size() < maxAns && !sortedAvAnswers.isEmpty()) {
-                idx = rand(0, sortedAvAnswers.size() - 1);
-                ans.insert(elName(sortedAvAnswers[idx]));
-                sortedAvAnswers.erase(sortedAvAnswers.begin() + idx);
-            }
-
-            if (m_bLangRu) {
-                question = "Какое образование (структура: " + elName(parEl) + ") помечено на картинке номером " + mark + "?";
-            } else {
-                question = "What formation (structure: " + elName(parEl) + ") is marked on picture with number " + mark + "?";
-            }
-        }
+        /* set picture */
+        m_pGraphicsView->setPix(QPixmap(":/artroPix/artroPix" + to_str(pix) + ".jpg"));
+        break;
+    };
+    default:
+        break;
     }
 
     if (ans.size() > maxAns) {
@@ -594,21 +405,15 @@ void AnatomyAsker::genOsteoQuest() {
     }
     if (ans.size() < 2) {
         qDebug() << "Only one answer generated...";
-        --q_cnt;
-        --q_sum;
-        genOsteoQuest();
+        genQuest();
         return;
     }
     /* set question label */
     m_pLblQuestion->setText(question);
 
-    /* set picture */
-    m_pGraphicsView->setPix(QPixmap(":/osteoPix/osteoPix" + to_str(pix) + ".jpg"));
-
     /* set answer buttons */
     int i = 0;
     for (auto &it : ans) {
-        qDebug() << "posAns: " << it;
         m_pLblAns[i]->setText(it);
         if (it == rightAns) {
             m_pBtnRight = m_pBtnAns[i];
@@ -653,6 +458,7 @@ void AnatomyAsker::parsePixMarks(QVector<QPair<int, QString>>& pixVect, QString 
 }
 void AnatomyAsker::setUpObjects() {
     /* GENERAL */
+    m_pMediaPlayer = new QMediaPlayer;
     m_pLayoutMain = new QVBoxLayout;
     m_pLayoutMenu = new QVBoxLayout;
     m_pLayoutPreAsk = new QVBoxLayout;
@@ -670,8 +476,8 @@ void AnatomyAsker::setUpObjects() {
                                     "color: #000000; background-color: rgba(255,255,255,100)");
         m_pLayoutMenu->addWidget(m_pBtnMenu[i]);
     }
-    connect(m_pBtnMenu[0], SIGNAL(clicked(bool)), this, SLOT(onPreStartOsteoAsk()));
-    connect(m_pBtnMenu[1], SIGNAL(clicked(bool)), this, SLOT(onPreStartArtroAsk()));
+    connect(m_pBtnMenu[0], SIGNAL(clicked(bool)), this, SLOT(onChooseOsteologia()));
+    connect(m_pBtnMenu[1], SIGNAL(clicked(bool)), this, SLOT(onChooseArtrosyndesmologia()));
     connect(m_pBtnMenu[3], SIGNAL(clicked(bool)), this, SLOT(onSettings()));
     connect(m_pBtnMenu[4], SIGNAL(clicked(bool)), this, SLOT(onAboutProgram()));
     connect(m_pBtnMenu[5], SIGNAL(clicked(bool)), qApp, SLOT(quit()));
@@ -702,7 +508,7 @@ void AnatomyAsker::setUpObjects() {
     connect(m_pTreeOsteo, SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)), this, SLOT(onTreeCurrentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)));
 
     m_pTreeArtro = viewArtroTree();
-    m_pTreeOsteo->hide();
+    m_pTreeArtro->hide();
     m_pTreeArtro->setCurrentItem(m_pTreeArtro->topLevelItem(0));
     m_pTreeArtro->expandItem(m_pTreeArtro->currentItem());
     connect(m_pTreeArtro, SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)), this, SLOT(onTreeCurrentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)));
@@ -716,6 +522,7 @@ void AnatomyAsker::setUpObjects() {
     m_pLayoutPreAsk->addWidget(m_pTreeArtro);
     m_pLayoutPreAsk->addWidget(m_pTreeOsteo);
     m_pLayoutPreAsk->addLayout(pHbox);
+    connect(m_pBtnMore, SIGNAL(clicked(bool)), this, SLOT(onMore()));
     connect(m_pBtnMore, SIGNAL(clicked(bool)), this, SLOT(onMore()));
 
     /* MORE */
@@ -735,7 +542,7 @@ void AnatomyAsker::setUpObjects() {
     m_pLayoutMore->addLayout(pHbox2);
 
     connect(m_pBtnNextPix, SIGNAL(clicked(bool)), this, SLOT(onMoreNextPix()));
-    connect(m_pBtnBack, SIGNAL(clicked(bool)), this, SLOT(onPreStartOsteoAsk()));
+    connect(m_pBtnStart, SIGNAL(clicked(bool)), this, SLOT(onStartAsk()));
 
     /* ASK */
     m_pGraphicsView = new GraphicsView;
@@ -775,6 +582,9 @@ void AnatomyAsker::setUpObjects() {
     m_pLayoutAsk->addLayout(pHLayout);
     m_pLayoutAsk->addWidget(m_pGraphicsView);
     m_pLayoutAsk->addLayout(pGridLayout);
+
+    connect(m_pBtnFinish, SIGNAL(clicked(bool)), this, SLOT(onFinishAsk()));
+    connect(m_pBtnNext, SIGNAL(clicked(bool)), this, SLOT(onNextAsk()));
 }
 void AnatomyAsker::sortOsteoXml() {
     _dbg_start(__func__);
@@ -797,74 +607,192 @@ void AnatomyAsker::sortOsteoXmlDfs(QDomElement& parEl) {
             sortOsteoXmlDfs(curEl);
     }
 }
-void AnatomyAsker::processArtroXml() {
+void AnatomyAsker::initXml(Section curSection) {
     _dbg_start(__func__);
-    QDomElement rootEl = artroDoc.documentElement();
-    processArtroXmlDfs(rootEl);
+    QDomElement rootEl;
+
+    switch (curSection) {
+    case (Section::OSTEOLOGIA):
+    {
+        rootEl = osteoDoc.documentElement();
+        break;
+    };
+    case (Section::ARTROSYNDESMOLOGIA):
+    {
+        rootEl = artroDoc.documentElement();
+        break;
+    };
+    default:
+        break;
+    }
+    map<int, vector<int>> G;
+    initXmlDfs(rootEl, G, -1);
+
+    queue<pair<int, int>> bfs;
+    map<int, vector<pair<int, int>>> tmpMap;
+    set<int> used;
+    for (auto it = formationIndexes.begin(); it != formationIndexes.end(); ++it) {
+        int orIdx = *it;
+        bfs.push({0, orIdx});
+        used.insert(orIdx);
+        while (!bfs.empty()) {
+            pair<int, int> cur = bfs.front();
+            bfs.pop();
+            if (formationIndexes.find(cur.second) != formationIndexes.end()) {
+                tmpMap[orIdx].push_back(cur);
+                //qDebug("[%s][%s] = %d\n", nameByIndex[orIdx].toStdString().c_str(), nameByIndex[cur.second].toStdString().c_str(), cur.first);
+            }
+            for (auto jt : G[cur.second]) {
+                if (used.find(jt) == used.end()) {
+                    used.insert(jt);
+                    bfs.push({cur.first + 1, jt});
+                }
+            }
+        }
+        used.clear();
+    }
+
+    qDebug() << "bfs OK";
+
+    switch (curSection) {
+    case (Section::OSTEOLOGIA):
+    {
+        osteoMap = tmpMap;
+    };
+    case (Section::ARTROSYNDESMOLOGIA):
+    {
+        artroMap = tmpMap;
+    };
+    default:
+        break;
+    }
+
     _dbg_end(__func__);
 }
-void AnatomyAsker::processArtroXmlDfs(QDomElement& parEl) {
-    findElementByName[parEl.attribute("name")] = parEl;
+void AnatomyAsker::initXmlDfs(QDomElement& parEl, map<int, vector<int>>& G, int parentVertex) {
+    QString name = parEl.attribute("name");
+    nameByIndex.push_back(name);
+    int index = nameByIndex.size() - 1;
+    indexByName[name] = index;
+    elementByName[name] = parEl;
+    elementByIndex.push_back(parEl);
+    //qDebug() << "name: " << name << " index: " << index << " parentVertex: " << parentVertex;
+
     if (parEl.hasAttribute("pixMarks")) {
         QVector<QPair<int, QString>> pixMarks;
         parsePixMarks(pixMarks, parEl.attribute("pixMarks"), true);
         upn(i, 0, pixMarks.size() - 1) {
             int pixN = pixMarks[i].first;
-            if (findNamesByPix.contains(pixN)) {
-                findNamesByPix[pixN].push_back(parEl.attribute("name"));
+            if (indexesByPix.count(pixN)) {
+                indexesByPix[pixN].push_back(index);
             } else {
-                QVector<QString> tmp;
-                tmp.push_back(parEl.attribute("name"));
-                findNamesByPix[pixN] = tmp;
+                vector<int> tmp;
+                tmp.push_back(index);
+                indexesByPix[pixN] = tmp;
             }
         }
     }
-    if (parEl.tagName() == "art" || parEl.tagName() == "ligamentum" || parEl.tagName() == "junctura") {
-        unusedJuncts.push_back(parEl);
+
+    bool isVertex = false;
+    switch (m_section) {
+    case (Section::OSTEOLOGIA):
+    {
+        if (parEl.tagName() == "cell") {
+            if (parEl.hasAttribute("name") && parEl.hasAttribute("pixMarks")) {
+                isVertex = true;
+                unusedFormations.push_back(index);
+            }
+        } else if (parEl.tagName() == "canalis") {
+            isVertex = true;
+            unusedFormations.push_back(index);
+        }
+        break;
+    };
+    case (Section::ARTROSYNDESMOLOGIA):
+    {
+        if (parEl.tagName() == "art" || parEl.tagName() == "ligamentum" || parEl.tagName() == "junctura") {
+            isVertex = true;
+            unusedFormations.push_back(index);
+        }
+        break;
+    };
+    default:
+        break;
     }
 
-    QDomNode curN = parEl.firstChild();
-    while (!curN.isNull()) {
-        QDomElement curEl = curN.toElement();
-        processArtroXmlDfs(curEl);
-        curN = curN.nextSibling();
+    vector<int> tmp;
+    G[index] = tmp;
+    if (parentVertex != -1) {
+        G[parentVertex].push_back(index);
+        G[index].push_back(parentVertex);
+    }
+    if (isVertex) {
+        formationIndexes.insert(index);
+    }
+    QDomElement curEl = parEl.firstChild().toElement();
+    while (!curEl.isNull()) {
+        initXmlDfs(curEl, G, index);
+        curEl = curEl.nextSiblingElement();
     }
 }
-void AnatomyAsker::processOsteoXml() {
+void AnatomyAsker::processXml(Section curSection) {
     _dbg_start(__func__);
-    QDomElement rootEl = osteoDoc.documentElement();
-    processOsteoXmlDfs(rootEl);
+    QDomElement rootEl;
+
+    switch (curSection) {
+    case (Section::OSTEOLOGIA):
+    {
+        rootEl = osteoDoc.documentElement();
+        break;
+    };
+    case (Section::ARTROSYNDESMOLOGIA):
+    {
+        rootEl = artroDoc.documentElement();
+        break;
+    };
+    default:
+        break;
+    }
+
+    processXmlDfs(rootEl);
+
     _dbg_end(__func__);
 }
-void AnatomyAsker::processOsteoXmlDfs(QDomElement& parEl) {
-    findElementByName[parEl.attribute("name")] = parEl;
-    if (parEl.hasAttribute("pixMarks")) {
-        QVector<QPair<int, QString>> pixMarks;
-        parsePixMarks(pixMarks, parEl.attribute("pixMarks"), true);
-        upn(i, 0, pixMarks.size() - 1) {
-            int pixN = pixMarks[i].first;
-            if (findNamesByPix.contains(pixN)) {
-                findNamesByPix[pixN].push_back(parEl.attribute("name"));
-            } else {
-                QVector<QString> tmp;
-                tmp.push_back(parEl.attribute("name"));
-                findNamesByPix[pixN] = tmp;
+void AnatomyAsker::processXmlDfs(QDomElement& parEl) {
+    QString name = parEl.attribute("name");
+    int index = indexByName[name];
+
+    bool isVertex = false;
+    switch (m_section) {
+    case (Section::OSTEOLOGIA):
+    {
+        if (parEl.tagName() == "cell") {
+            if (parEl.hasAttribute("name") && parEl.hasAttribute("pixMarks")) {
+                isVertex = true;
+                unusedFormations.push_back(index);
             }
+        } else if (parEl.tagName() == "canalis") {
+            isVertex = true;
+            unusedFormations.push_back(index);
         }
-    }
-    if (parEl.tagName() == "cell") {
-        if (parEl.hasAttribute("name") && parEl.hasAttribute("pixMarks")) {
-            unusedOsteos.push_back(parEl);
+        break;
+    };
+    case (Section::ARTROSYNDESMOLOGIA):
+    {
+        if (parEl.tagName() == "art" || parEl.tagName() == "ligamentum" || parEl.tagName() == "junctura") {
+            isVertex = true;
+            unusedFormations.push_back(index);
         }
-    } else if (parEl.tagName() == "canalis") {
-        unusedOsteos.push_back(parEl);
+        break;
+    };
+    default:
+        break;
     }
 
-    QDomNode curN = parEl.firstChild();
-    while (!curN.isNull()) {
-        QDomElement curEl = curN.toElement();
-        processOsteoXmlDfs(curEl);
-        curN = curN.nextSibling();
+    QDomElement curEl = parEl.firstChild().toElement();
+    while (!curEl.isNull()) {
+        processXmlDfs(curEl);
+        curEl = curEl.nextSiblingElement();
     }
 }
 void AnatomyAsker::readXml(QDomDocument& doc, QString path) {
@@ -881,11 +809,11 @@ void AnatomyAsker::readXml(QDomDocument& doc, QString path) {
     file.close();
     _dbg_end(__func__);
 }
-void AnatomyAsker::viewArtroTreeDfs(QDomElement& parEl, QTreeWidgetItem* pTWIPar) {
+void AnatomyAsker::viewTreeDfs(QDomElement& parEl, QTreeWidgetItem* pTWIPar) {
     QDomElement curEl = parEl.firstChildElement();
     while (!curEl.isNull()) {
         if (curEl.tagName() != "group" && curEl.tagName() != "art" && curEl.tagName() != "junctura"
-                && curEl.tagName() != "ligamentum") {
+                && curEl.tagName() != "ligamentum" && curEl.tagName() != "cell" && curEl.tagName() != "canalis") {
             curEl = curEl.nextSiblingElement();
             continue;
         }
@@ -893,22 +821,7 @@ void AnatomyAsker::viewArtroTreeDfs(QDomElement& parEl, QTreeWidgetItem* pTWIPar
         pTWI->setText(0, elName(curEl));
         pTWI->setText(1, curEl.attribute("name"));
         pTWIPar->addChild(pTWI);
-        viewArtroTreeDfs(curEl, pTWI);
-        curEl = curEl.nextSiblingElement();
-    }
-}
-void AnatomyAsker::viewOsteoTreeDfs(QDomElement& parEl, QTreeWidgetItem* pTWIPar) {
-    QDomElement curEl = parEl.firstChildElement();
-    while (!curEl.isNull()) {
-        if (curEl.tagName() != "group" && curEl.tagName() != "cell" && curEl.tagName() != "canalis") {
-            curEl = curEl.nextSiblingElement();
-            continue;
-        }
-        QTreeWidgetItem* pTWI = new QTreeWidgetItem;
-        pTWI->setText(0, elName(curEl));
-        pTWI->setText(1, curEl.attribute("name"));
-        pTWIPar->addChild(pTWI);
-        viewOsteoTreeDfs(curEl, pTWI);
+        viewTreeDfs(curEl, pTWI);
         curEl = curEl.nextSiblingElement();
     }
 }
@@ -938,9 +851,9 @@ AnatomyAsker::AnatomyAsker(QStackedWidget *pswgt) : QStackedWidget(pswgt), m_set
     m_bLatin = m_settings.value("/settings/m_bLatin", true).toBool();
 
     readXml(osteoDoc, ":/osteologia.xml");
-    processOsteoXml();
+    initXml(Section::OSTEOLOGIA);
     readXml(artroDoc, ":/artrosyndesmologia.xml");
-    processArtroXml();
+    initXml(Section::ARTROSYNDESMOLOGIA);
 
     this->setStyleSheet("QPushButton { alignment: center; text-align: center; min-height: 75px; font-size: 20px; background-color: rgba(255,255,255,150) }"
                         "QLabel { alignment: center; text-align: center; font-size: 20px; background-color: rgba(255,255,255,100) }"
@@ -970,6 +883,7 @@ AnatomyAsker::~AnatomyAsker() {
     _dbg_start(__func__);
     m_settings.setValue("/settings/m_bLangRu", m_bLangRu);
     m_settings.setValue("/settings/m_bLatin", m_bLatin);
+    m_settings.setValue("/settings/launchCount", m_settings.value("/settings/launchCount", 0).toInt() + 1);
     _dbg_end(__func__);
 }
 
@@ -1003,68 +917,60 @@ void AnatomyAsker::onAboutProgram() {
     pdlg->deleteLater();
     _dbg_end(__func__);
 }
+void AnatomyAsker::onChooseOsteologia() {
+    m_section = Section::OSTEOLOGIA;
+    onPreStartAsk();
+}
+void AnatomyAsker::onChooseArtrosyndesmologia() {
+    m_section = Section::ARTROSYNDESMOLOGIA;
+    onPreStartAsk();
+}
 void AnatomyAsker::onFinishAsk() {
     _dbg_start(__func__);
     qreal score = (qreal) q_rightAnsCnt / (qreal) q_cnt;
     QDialog* pdlg;
-    QMediaPlayer* pPlayer = new QMediaPlayer;
     if (q_cnt < 5) {
         pdlg = createDialog((m_bLangRu ? "Ваш результат: " : "Your result is: ")
-                            + to_str(q_rightAnsCnt) + "/" + to_str(q_cnt)
-                            + (m_bLangRu ? "\nОтветьте на 5 и более вопросов и получите оценку! :)" :
+                            + to_str(q_rightAnsCnt) + "/" + to_str(q_cnt) + " = "
+                            + to_str(score) + (m_bLangRu ? "\nОтветьте на 5 и более вопросов и получите оценку! :)" :
                                            "\nAnswer on 5 and more questions and get score! :)"), "-",
                             m_bLangRu ? "Меню" : "Menu", m_bLangRu ? "Выход" : "Quit", true);
     } else {
         QString pix;
         if (score >= 0.9) {
             pix = ":/common/score/5.jpg";
-            pPlayer->setMedia(QUrl("qrc:/common/score/5.mp3"));
+            m_pMediaPlayer->setMedia(QUrl("qrc:/common/score/5.mp3"));
         } else if (score >= 0.7) {
             pix = ":/common/score/4.jpg";
-            pPlayer->setMedia(QUrl("qrc:/common/score/4.mp3"));
+            m_pMediaPlayer->setMedia(QUrl("qrc:/common/score/4.mp3"));
         } else if (score >= 0.5) {
             pix = ":/common/score/3.jpg";
-            pPlayer->setMedia(QUrl("qrc:/common/score/3.mp3"));
+            m_pMediaPlayer->setMedia(QUrl("qrc:/common/score/3.mp3"));
         } else {
             pix = ":/common/score/2.jpg";
-            pPlayer->setMedia(QUrl("qrc:/common/score/2.mp3"));
+            m_pMediaPlayer->setMedia(QUrl("qrc:/common/score/2.mp3"));
         }
         pdlg = createDialog((m_bLangRu ? "Ваш результат: " : "Your result is: ")
-                            + to_str(q_rightAnsCnt) + "/" + to_str(q_cnt), pix,
+                            + to_str(q_rightAnsCnt) + "/" + to_str(q_cnt) + " = "
+                            + to_str(score), pix,
                             m_bLangRu ? "Меню" : "Menu", m_bLangRu ? "Выход" : "Quit", true);
     }
 
     connect(pdlg, SIGNAL(accepted()), this, SLOT(onMenu()));
     connect(pdlg, SIGNAL(rejected()), qApp, SLOT(quit()));
-    if (!pPlayer->media().isNull()) {
-        pPlayer->play();
+    if (!m_pMediaPlayer->media().isNull()) {
+        m_pMediaPlayer->play();
     }
+
     pdlg->exec();
     pdlg->deleteLater();
-    pPlayer->stop();
-    pPlayer->deleteLater();
+    m_pMediaPlayer->stop();
 
     upn(i, 0, maxAns - 1) {
         m_pBtnAns[i]->setStyleSheet("background-color: rgba(255,255,255,70)");
     }
     q_sum = q_rightAnsCnt = q_ansType = 0;
     q_cnt = 1;
-    _dbg_end(__func__);
-}
-void AnatomyAsker::onFinishArtroAsk() {
-    _dbg_start(__func__);
-    disconnect(m_pBtnStart, SIGNAL(clicked(bool)), this, SLOT(onStartArtroAsk()));
-    disconnect(m_pBtnFinish, SIGNAL(clicked(bool)), this, SLOT(onFinishArtroAsk()));
-    disconnect(m_pBtnNext, SIGNAL(clicked(bool)), this, SLOT(onNextArtroAsk()));
-    onFinishAsk();
-    _dbg_end(__func__);
-}
-void AnatomyAsker::onFinishOsteoAsk() {
-    _dbg_start(__func__);
-    disconnect(m_pBtnStart, SIGNAL(clicked(bool)), this, SLOT(onStartOsteoAsk()));
-    disconnect(m_pBtnFinish, SIGNAL(clicked(bool)), this, SLOT(onFinishOsteoAsk()));
-    disconnect(m_pBtnNext, SIGNAL(clicked(bool)), this, SLOT(onNextOsteoAsk()));
-    onFinishAsk();
     _dbg_end(__func__);
 }
 void AnatomyAsker::onMenu() {
@@ -1076,7 +982,7 @@ void AnatomyAsker::onMenu() {
 }
 void AnatomyAsker::onMore() {
     _dbg_start(__func__);
-    QDomElement curEl = findElementByName[m_pTreeOsteo->currentItem()->text(1)];
+    QDomElement curEl = elementByName[m_pTreeOsteo->currentItem()->text(1)];
     QDomElement parEl = curEl.parentNode().toElement();
 
     morePixVect.clear();
@@ -1139,72 +1045,39 @@ void AnatomyAsker::onMoreNextPix() {
         m_pLblMore->setText(moreText + "<br /><strong><span style=\"color: #e60000;\">Mark " + morePixVect[morePixNum].second + " on current picture</span></h4>");
     }
 }
-void AnatomyAsker::onNextArtroAsk() {
+void AnatomyAsker::onNextAsk() {
     _dbg_start(__func__);
     q_ansType = 0;
     upn(i, 0, maxAns - 1) {
         m_pBtnAns[i]->setStyleSheet("background-color: rgba(255,255,255,70)");
     }
-    genArtroQuest();
+    genQuest();
     ++q_cnt;
     updateInfoLabel();
     _dbg_end(__func__);
 }
-void AnatomyAsker::onNextOsteoAsk() {
-    _dbg_start(__func__);
-    q_ansType = 0;
-    upn(i, 0, maxAns - 1) {
-        m_pBtnAns[i]->setStyleSheet("background-color: rgba(255,255,255,70)");
-    }
-    genOsteoQuest();
-    ++q_cnt;
-    updateInfoLabel();
-    _dbg_end(__func__);
-}
-void AnatomyAsker::onPreStartArtroAsk() {
+void AnatomyAsker::onPreStartAsk() {
     _dbg_start(__func__);
 
-    if (!m_settings.value("/settings/launched_" VERSION, false).toBool()) {
-        QDialog* pdlg = createDialog("Необходимо перезайти в приложение (первый запуск)", "-", "OK", "-", true);
-        connect(pdlg, SIGNAL(accepted()), qApp, SLOT(quit()));
-        m_settings.setValue("/settings/launched_" VERSION, true);
-        pdlg->exec();
-        pdlg->deleteLater();
+    unusedFormations.clear();
+    processXml(m_section);
+
+    switch (m_section) {
+    case (Section::OSTEOLOGIA):
+    {
+        m_pTreeOsteo->show();
+        break;
+    };
+    case (Section::ARTROSYNDESMOLOGIA):
+    {
+        m_pTreeArtro->show();
+        break;
+    };
+    default:
+        break;
     }
-
-
     setCurrentWidget(m_pWidgetPreAsk);
 
-    unusedJuncts.clear();
-    processArtroXml();
-    m_pTreeArtro->show();
-    //sortOsteoXml();
-    //writeXml(osteoDoc, "osteosort.xml");
-
-    connect(m_pBtnStart, SIGNAL(clicked(bool)), this, SLOT(onStartArtroAsk()));
-    _dbg_end(__func__);
-}
-void AnatomyAsker::onPreStartOsteoAsk() {
-    _dbg_start(__func__);
-
-    if (!m_settings.value("/settings/launched_" VERSION, false).toBool()) {
-        QDialog* pdlg = createDialog("Необходимо перезайти в приложение (первый запуск)", "-", "OK", "-", true);
-        connect(pdlg, SIGNAL(accepted()), qApp, SLOT(quit()));
-        m_settings.setValue("/settings/launched_" VERSION, true);
-        pdlg->exec();
-        pdlg->deleteLater();
-    }
-
-
-    setCurrentWidget(m_pWidgetPreAsk);
-
-    unusedOsteos.clear();
-    processOsteoXml();
-    m_pTreeOsteo->show();
-    //sortOsteoXml();
-    //writeXml(osteoDoc, "osteosort.xml");
-
-    connect(m_pBtnStart, SIGNAL(clicked(bool)), this, SLOT(onStartOsteoAsk()));
     _dbg_end(__func__);
 }
 void AnatomyAsker::onSettings() {
@@ -1218,39 +1091,31 @@ void AnatomyAsker::onSettings() {
 void AnatomyAsker::onStartAsk() {
     _dbg_start(__func__);
 
-    updateInfoLabel();
+    switch (m_section) {
+    case (Section::OSTEOLOGIA):
+    {
+        chooseQuests(unusedFormations, m_pTreeOsteo->currentItem()->text(0));
+        m_pTreeOsteo->hide();
+        break;
+    };
+    case (Section::ARTROSYNDESMOLOGIA):
+    {
+        chooseQuests(unusedFormations, m_pTreeArtro->currentItem()->text(0));
+        m_pTreeArtro->hide();
+        break;
+    };
+    default:
+        break;
+    }
+    q_sum = unusedFormations.size();
+    genQuest();
     setCurrentWidget(m_pWidgetAsk);
+    updateInfoLabel();
 
     _dbg_end(__func__);
-}
-void AnatomyAsker::onStartArtroAsk() {
-    _dbg_start(__func__);
-
-    m_pTreeArtro->hide();
-    chooseQuests(unusedJuncts, m_pTreeArtro->currentItem()->text(0));
-    q_sum = unusedJuncts.size();
-    genArtroQuest();
-
-    connect(m_pBtnFinish, SIGNAL(clicked(bool)), this, SLOT(onFinishArtroAsk()));
-    connect(m_pBtnNext, SIGNAL(clicked(bool)), this, SLOT(onNextArtroAsk()));
-    _dbg_end(__func__);
-    onStartAsk();
-}
-void AnatomyAsker::onStartOsteoAsk() {
-    _dbg_start(__func__);
-
-    m_pTreeOsteo->hide();
-    chooseQuests(unusedOsteos, m_pTreeOsteo->currentItem()->text(0));
-    q_sum = unusedOsteos.size();
-    genOsteoQuest();
-
-    connect(m_pBtnFinish, SIGNAL(clicked(bool)), this, SLOT(onFinishOsteoAsk()));
-    connect(m_pBtnNext, SIGNAL(clicked(bool)), this, SLOT(onNextOsteoAsk()));
-    _dbg_end(__func__);
-    onStartAsk();
 }
 void AnatomyAsker::onTreeCurrentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous) {
-    QDomElement curEl = findElementByName[current->text(1)];
+    QDomElement curEl = elementByName[current->text(1)];
     if (curEl.tagName() == "canalis" || (curEl.hasAttribute("pixMarks") || curEl.hasAttribute("mainPix"))) {
         m_pBtnMore->setEnabled(true);
     } else {
