@@ -147,7 +147,7 @@
 				<pathRu>начинается от @canalis n. facialis@ немного выше @foramen stylomastoideum@, 
 	  проходит через @cavitas tympani@ и заканчивается в пределах @fissura petrotympanica@</pathRu>
 			</canalis>
-			<canalis name="canaliculus mastoideus" nameRu="сосцевидный каналец" pixMarks="28-30">
+			<canalis name="canaliculus mastoideus" nameRu="сосцевидный каналец" pixMarks="22-32, 28-30">
 				<begin>в @fossa jugularis@</begin>
 				<end>в @fissura tympanomastoidea@</end>
 				<pathRu>начинается в @fossa jugularis@, перекрещивает @canalis n. facialis@ и
@@ -159,7 +159,7 @@
 				<pathRu>начинается в @fossula petrosa@, проходит через @cavitas tympani@ 
 	  и заканчивается на передней поверхности пирамиды в @hiatus canalis n. petrosi minoris@</pathRu>
 			</canalis>
-			<canalis name="canalis caroticus" nameRu="сонный канал" pixMarks="28-13">
+			<canalis name="canalis caroticus" nameRu="сонный канал" pixMarks="5-13, 9-C, 11-4, 21-19, 22-19, 28-13">
 				<begin>на нижней поверхность пирамиды</begin>
 				<end>на верхушке пирамиды</end>
 				<pathRu>начинается на нижней поверхности пирамиды, поднимается кверху и
@@ -297,9 +297,6 @@
 			<cell name="os temporale" mainPix="23" nameRu="височная кость" pixMarks="1-5, 2-7, 9-37">
 				<cell name="aqueductus vestibuli" nameRu="водопровод преддверия" pixMarks="23-41" />
 				<cell name="canaliculus cochlea" nameRu="каналец улитки" pixMarks="23-40" />
-				<cell name="canaliculus mastoideus" nameRu="сосцевидный каналец" pixMarks="22-32" />
-				<cell name="canalis caroticus" nameRu="сонный канал" pixMarks="5-13, 9-C, 11-4, 21-19, 22-19" />
-				<cell name="canalis musculotubarius" nameRu="мышечно-трубный канал" pixMarks="22-28" />
 				<cell name="cavitas tympani" nameRu="барабанная полость" />
 				<cell name="eminentia arcuata" nameRu="дугообразное возвышение" pixMarks="21-21, 23-21" />
 				<cell name="fissura petrotympanica" nameRu="каменисто-барабанная щель" pixMarks="22-27, 23-27" />

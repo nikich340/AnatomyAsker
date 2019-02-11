@@ -59,7 +59,7 @@ private:
 
     /* ASK */
     static const int maxAns = 6;
-    static const int similarity = 10;
+    const int similarity = 10;
     GraphicsView *m_pGraphicsView;
     QLabel *m_pLblQuestion, *m_pLblInfo, *m_pLblAns[maxAns];
     QPushButton *m_pBtnRight, *m_pBtnNext, *m_pBtnFinish, *m_pBtnAns[maxAns];
@@ -93,12 +93,12 @@ private:
     int rand(int L, int R);
     void _dbg_start(QString func);
     void _dbg_end(QString func);
-    void chooseQuests(vector<int>& vect, QString root);
+    void chooseQuests(QString root);
     void clearLayout(QLayout* layout);
     void crash(QString reason);
     void genQuest();
     void initXml(Section curSection);
-    void initXmlDfs(QDomElement& curEl, map<int, vector<int>>& G, int parentVertex);
+    void initXmlDfs(QDomElement& curEl, map<int, vector<int>>& G, set<int>& newFormations, int parentVertex);
     void parsePixMarks(QVector<QPair<int, QString>>& pixVect, QString pixStr, bool clear);
     void processXml(Section curSection);
     void processXmlDfs(QDomElement& curEl);
@@ -127,5 +127,5 @@ public slots:
     void onSettings();
     void onStartAsk();
     void onTreeCurrentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous);
-    void onUpdateLanguage(int check);
+    void onUpdateLanguage();
 };

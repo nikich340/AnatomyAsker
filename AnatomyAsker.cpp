@@ -101,7 +101,7 @@ QString AnatomyAsker::findMark(QVector<QPair<int, QString>>& pixVect, int pixNum
 QString AnatomyAsker::elName(QDomElement& element) {
     if (m_bLangRu) {
         if (m_bLatin) {
-            return element.attribute("nameRu") + " [" + element.attribute("name") + "]";
+            return element.attribute("name") + " [" + element.attribute("nameRu") + "]";
         } else {
             return element.attribute("nameRu");
         }
@@ -175,19 +175,20 @@ void AnatomyAsker::clearLayout(QLayout* layout) {
         }
     }
 }
-void AnatomyAsker::chooseQuests(vector<int>& vect, QString rootPattern) {
+void AnatomyAsker::chooseQuests(QString rootPattern) {
     _dbg_start(__func__);
     vector<int> tmpV;
-    qDebug() << "vect size " << vect.size() << " rootPattern: " << rootPattern;
-    for (auto curIndex : vect) {
+    //qDebug() << "size " << unusedFormations.size() << " pattern " << rootPattern;
+    for (int curIndex : unusedFormations) {
         QDomElement curEl = elementByIndex[curIndex];
-        while (!curEl.isNull() && elName(curEl) != rootPattern) {
+        while (!curEl.isNull() && curEl.attribute("name") != rootPattern) {
             curEl = curEl.parentNode().toElement();
         }
-        if (!curEl.isNull())
+        if (!curEl.isNull()) {
             tmpV.push_back(curIndex);
+        }
     }
-    vect = tmpV;
+    unusedFormations = tmpV;
     _dbg_end(__func__);
 }
 void AnatomyAsker::crash(QString reason) {
@@ -238,16 +239,18 @@ void AnatomyAsker::genQuest() {
     case (Section::OSTEOLOGIA):
     {
         for (auto j : osteoMap[elIndex]) {
-            if (pixAnswers.find(j.second) == pixAnswers.end())
+            if (pixAnswers.find(j.second) == pixAnswers.end()) {
                 avAnswers.push_back(j.second);
+            }
         }
         if (pEl.tagName() == "canalis") {
             /* Remove non-canalis objects */
-            for (int i = avAnswers.size() - 1; i >= 0; --i) {
-                if (elementByIndex[avAnswers[i]].tagName() != "canalis") {
-                    avAnswers.erase(avAnswers.begin() + i);
-                }
+            vector<int> tmp;
+            for (auto i: avAnswers) {
+                if (elementByIndex[i].tagName() == "canalis")
+                    tmp.push_back(i);
             }
+            avAnswers = tmp;
             if (prob <= 60) {
                 rightAns = elName(pEl);
                 ans.insert(rightAns);
@@ -267,7 +270,7 @@ void AnatomyAsker::genQuest() {
                         question = "О каком канале идёт речь: " + parseLinks(pEl.childNodes().at(2).toElement().text());
                     }
                     if (mark != "0") {
-                        question += " (номер " + mark + ")?";
+                        question += " (номер " + mark + ") ";
                     }
                 } else {
                     if (prob <= 20) {                       /* ask about canalis by begin */
@@ -278,7 +281,7 @@ void AnatomyAsker::genQuest() {
                         question = "What canalis is described: " + parseLinks(pEl.childNodes().at(2).toElement().text()) + "?";
                     }
                     if (mark != "0") {
-                        question += " (number " + mark + ")?";
+                        question += " (number " + mark + ") ";
                     }
                 }
             } else if (prob > 60 && prob <= 80) {   /* ask about begin by canalis */
@@ -293,9 +296,15 @@ void AnatomyAsker::genQuest() {
                     avAnswers.erase(avAnswers.begin() + idx);
                 }
                 if (m_bLangRu) {
-                    question = "Где начинается " + elName(pEl) + " (номер " + mark + ")?";
+                    question = "Где начинается " + elName(pEl);
+                    if (mark != "0") {
+                        question += " (номер " + mark + ") ";
+                    }
                 } else {
-                    question = "Where does " + elName(pEl) + " begin (number " + mark + ")?";
+                    question = "Where does " + elName(pEl) + " begin";
+                    if (mark != "0") {
+                        question += " (number " + mark + ") ";
+                    }
                 }
             } else if (prob > 80) {                 /* ask about end by canalis */
                 rightAns = parseLinks(pEl.childNodes().at(1).toElement().text());
@@ -309,9 +318,15 @@ void AnatomyAsker::genQuest() {
                     avAnswers.erase(avAnswers.begin() + idx);
                 }
                 if (m_bLangRu) {
-                    question = "Где заканчивается " + elName(pEl) + " (номер " + mark + ")?";
+                    question = "Где заканчивается " + elName(pEl);
+                    if (mark != "0") {
+                        question += " (номер " + mark + ") ";
+                    }
                 } else {
-                    question = "Where does " + elName(pEl) + "end (number " + mark + ")?";
+                    question = "Where does " + elName(pEl) + "end";
+                    if (mark != "0") {
+                        question += " (number " + mark + ") ";
+                    }
                 }
             }
         } else if (pEl.tagName() == "cell") {
@@ -330,9 +345,9 @@ void AnatomyAsker::genQuest() {
                 }
 
                 if (m_bLangRu) {
-                    question = "Каким номером на картинке отмечен(а/о) " + elName(pEl) + " (структура: " + elName(parEl) + ") ?";
+                    question = "Каким номером на картинке отмечен(а/о) " + elName(pEl) + " (структура: " + elName(parEl) + ") ";
                 } else {
-                    question = "What number is " + elName(pEl) + " (structure: " + elName(parEl) + ") marked with ?";
+                    question = "What number is " + elName(pEl) + " (structure: " + elName(parEl) + ") marked with ";
                 }
             } else if (prob > 50) {                 /* ask about struct by mark */
                 rightAns = elName(pEl);
@@ -345,20 +360,35 @@ void AnatomyAsker::genQuest() {
                 }
 
                 if (m_bLangRu) {
-                    question = "Какое образование (структура: " + elName(parEl) + ") помечено на картинке номером " + mark + "?";
+                    question = "Какое образование (структура: " + elName(parEl) + ") помечено на картинке номером " + mark;
                 } else {
-                    question = "What formation (structure: " + elName(parEl) + ") is marked on picture with number " + mark + "?";
+                    question = "What formation (structure: " + elName(parEl) + ") is marked on picture with number " + mark;
                 }
             }
         }
 
         /* set picture */
-        m_pGraphicsView->setPix(QPixmap(":/osteoPix/osteoPix" + to_str(pix) + ".jpg"));
+        if (!pix) {
+            m_pGraphicsView->hide();
+        } else {
+            m_pGraphicsView->setPix(QPixmap(":/osteoPix/osteoPix" + to_str(pix) + ".jpg"));
+            m_pGraphicsView->show();
+        }
         break;
     };
     case (Section::ARTROSYNDESMOLOGIA):
     {
+        for (auto j : artroMap[elIndex]) {
+            if (pixAnswers.find(j.second) == pixAnswers.end())
+                avAnswers.push_back(j.second);
+        }
         if (prob <= 50 && pEl.childNodes().at(1).toElement().tagName() == "function") {
+            for (int i = avAnswers.size() - 1; i >= 0; --i) {
+                if (elementByIndex[avAnswers[i]].childNodes().size() < 2 ||
+                        elementByIndex[avAnswers[i]].childNodes().at(1).toElement().tagName() != "function") {
+                    avAnswers.erase(avAnswers.begin() + i);
+                }
+            }
             rightAns = parseLinks(pEl.childNodes().at(1).toElement().text());
             ans.insert(rightAns);
             /* CHOOSE ANSWERS */
@@ -370,11 +400,22 @@ void AnatomyAsker::genQuest() {
                 avAnswers.erase(avAnswers.begin() + idx);
             }
             if (m_bLangRu) {
-                question = "Какова функция " + elName(pEl) + " (номер " + mark + ")?";
+                question = "Какова функция " + elName(pEl);
+                if (mark != "0") {
+                    question += " (номер " + mark + ") ";
+                }
             } else {
-                question = "What is the function of " + elName(pEl) + " (number " + mark + ")?";
+                question = "What is the function of " + elName(pEl);
+                if (mark != "0") {
+                    question += " (number " + mark + ") ";
+                }
             }
         } else {
+            for (int i = avAnswers.size() - 1; i >= 0; --i) {
+                if (elementByIndex[avAnswers[i]].childNodes().size() < 1) {
+                    avAnswers.erase(avAnswers.begin() + i);
+                }
+            }
             rightAns = parseLinks(pEl.childNodes().at(0).toElement().text());
             ans.insert(rightAns);
             /* CHOOSE ANSWERS */
@@ -386,14 +427,25 @@ void AnatomyAsker::genQuest() {
                 avAnswers.erase(avAnswers.begin() + idx);
             }
             if (m_bLangRu) {
-                question = "Где находится " + elName(pEl) + " (номер " + mark + ")?";
+                question = "Где находится " + elName(pEl);
+                if (mark != "0") {
+                    question += " (номер " + mark + ") ";
+                }
             } else {
-                question = "Where is " + elName(pEl) + " located (number " + mark + ")?";
+                question = "Where is " + elName(pEl) + " located";
+                if (mark != "0") {
+                    question += " (number " + mark + ") ";
+                }
             }
         }
 
         /* set picture */
-        m_pGraphicsView->setPix(QPixmap(":/artroPix/artroPix" + to_str(pix) + ".jpg"));
+        if (!pix) {
+            m_pGraphicsView->hide();
+        } else {
+            m_pGraphicsView->setPix(QPixmap(":/artroPix/artroPix" + to_str(pix) + ".jpg"));
+            m_pGraphicsView->show();
+        }
         break;
     };
     default:
@@ -409,6 +461,7 @@ void AnatomyAsker::genQuest() {
         return;
     }
     /* set question label */
+    question += "?";
     m_pLblQuestion->setText(question);
 
     /* set answer buttons */
@@ -493,7 +546,11 @@ void AnatomyAsker::setUpObjects() {
     m_pDialogSettings->setMinimumWidth(QGuiApplication::primaryScreen()->geometry().width() * 0.75);
     m_pCheckRus->setTristate(false);
     m_pCheckLatin->setTristate(false);
+    m_pCheckRus->setCheckState(m_bLangRu ? Qt::Checked : Qt::Unchecked);
+    m_pCheckLatin->setCheckState(m_bLatin ? Qt::Checked : Qt::Unchecked);
     connect(pBtnOk, SIGNAL(clicked(bool)), m_pDialogSettings, SLOT(accept()));
+    connect(m_pCheckRus, SIGNAL(stateChanged(int)), this, SLOT(onUpdateLanguage()));
+    connect(pBtnOk, SIGNAL(clicked(bool)), this, SLOT(onUpdateLanguage()));
     pvbox->addWidget(m_pCheckRus);
     pvbox->addWidget(m_pCheckLatin);
     pvbox->addWidget(pBtnOk);
@@ -610,8 +667,9 @@ void AnatomyAsker::sortOsteoXmlDfs(QDomElement& parEl) {
 void AnatomyAsker::initXml(Section curSection) {
     _dbg_start(__func__);
     QDomElement rootEl;
+    m_section = curSection;
 
-    switch (curSection) {
+    switch (m_section) {
     case (Section::OSTEOLOGIA):
     {
         rootEl = osteoDoc.documentElement();
@@ -626,19 +684,20 @@ void AnatomyAsker::initXml(Section curSection) {
         break;
     }
     map<int, vector<int>> G;
-    initXmlDfs(rootEl, G, -1);
+    set<int> newFormations;
+    initXmlDfs(rootEl, G, newFormations, -1);
 
     queue<pair<int, int>> bfs;
     map<int, vector<pair<int, int>>> tmpMap;
     set<int> used;
-    for (auto it = formationIndexes.begin(); it != formationIndexes.end(); ++it) {
+    for (auto it = newFormations.begin(); it != newFormations.end(); ++it) {
         int orIdx = *it;
         bfs.push({0, orIdx});
         used.insert(orIdx);
         while (!bfs.empty()) {
             pair<int, int> cur = bfs.front();
             bfs.pop();
-            if (formationIndexes.find(cur.second) != formationIndexes.end()) {
+            if (newFormations.find(cur.second) != newFormations.end()) {
                 tmpMap[orIdx].push_back(cur);
                 //qDebug("[%s][%s] = %d\n", nameByIndex[orIdx].toStdString().c_str(), nameByIndex[cur.second].toStdString().c_str(), cur.first);
             }
@@ -651,17 +710,20 @@ void AnatomyAsker::initXml(Section curSection) {
         }
         used.clear();
     }
+    formationIndexes.insert(newFormations.begin(), newFormations.end());
 
-    qDebug() << "bfs OK";
+    //qDebug() << "bfs OK";
 
     switch (curSection) {
     case (Section::OSTEOLOGIA):
     {
         osteoMap = tmpMap;
+        break;
     };
     case (Section::ARTROSYNDESMOLOGIA):
     {
         artroMap = tmpMap;
+        break;
     };
     default:
         break;
@@ -669,7 +731,7 @@ void AnatomyAsker::initXml(Section curSection) {
 
     _dbg_end(__func__);
 }
-void AnatomyAsker::initXmlDfs(QDomElement& parEl, map<int, vector<int>>& G, int parentVertex) {
+void AnatomyAsker::initXmlDfs(QDomElement& parEl, map<int, vector<int>>& G, set<int>& newFormations, int parentVertex) {
     QString name = parEl.attribute("name");
     nameByIndex.push_back(name);
     int index = nameByIndex.size() - 1;
@@ -700,11 +762,9 @@ void AnatomyAsker::initXmlDfs(QDomElement& parEl, map<int, vector<int>>& G, int 
         if (parEl.tagName() == "cell") {
             if (parEl.hasAttribute("name") && parEl.hasAttribute("pixMarks")) {
                 isVertex = true;
-                unusedFormations.push_back(index);
             }
         } else if (parEl.tagName() == "canalis") {
             isVertex = true;
-            unusedFormations.push_back(index);
         }
         break;
     };
@@ -712,7 +772,6 @@ void AnatomyAsker::initXmlDfs(QDomElement& parEl, map<int, vector<int>>& G, int 
     {
         if (parEl.tagName() == "art" || parEl.tagName() == "ligamentum" || parEl.tagName() == "junctura") {
             isVertex = true;
-            unusedFormations.push_back(index);
         }
         break;
     };
@@ -727,11 +786,12 @@ void AnatomyAsker::initXmlDfs(QDomElement& parEl, map<int, vector<int>>& G, int 
         G[index].push_back(parentVertex);
     }
     if (isVertex) {
-        formationIndexes.insert(index);
+        newFormations.insert(index);
+        unusedFormations.push_back(index);
     }
     QDomElement curEl = parEl.firstChild().toElement();
     while (!curEl.isNull()) {
-        initXmlDfs(curEl, G, index);
+        initXmlDfs(curEl, G, newFormations, index);
         curEl = curEl.nextSiblingElement();
     }
 }
@@ -769,11 +829,9 @@ void AnatomyAsker::processXmlDfs(QDomElement& parEl) {
         if (parEl.tagName() == "cell") {
             if (parEl.hasAttribute("name") && parEl.hasAttribute("pixMarks")) {
                 isVertex = true;
-                unusedFormations.push_back(index);
             }
         } else if (parEl.tagName() == "canalis") {
             isVertex = true;
-            unusedFormations.push_back(index);
         }
         break;
     };
@@ -781,12 +839,15 @@ void AnatomyAsker::processXmlDfs(QDomElement& parEl) {
     {
         if (parEl.tagName() == "art" || parEl.tagName() == "ligamentum" || parEl.tagName() == "junctura") {
             isVertex = true;
-            unusedFormations.push_back(index);
         }
         break;
     };
     default:
         break;
+    }
+
+    if (isVertex) {
+        unusedFormations.push_back(index);
     }
 
     QDomElement curEl = parEl.firstChild().toElement();
@@ -874,7 +935,7 @@ AnatomyAsker::AnatomyAsker(QStackedWidget *pswgt) : QStackedWidget(pswgt), m_set
     this->addWidget(m_pWidgetMore);
     this->layout()->setSizeConstraint(QLayout::SetMaximumSize);
 
-    onUpdateLanguage(m_bLangRu ? Qt::Checked : Qt::Unchecked);
+    onUpdateLanguage();
     updateInfoLabel();
     onMenu();
     _dbg_end(__func__);
@@ -1094,13 +1155,13 @@ void AnatomyAsker::onStartAsk() {
     switch (m_section) {
     case (Section::OSTEOLOGIA):
     {
-        chooseQuests(unusedFormations, m_pTreeOsteo->currentItem()->text(0));
+        chooseQuests(m_pTreeOsteo->currentItem()->text(1));
         m_pTreeOsteo->hide();
         break;
     };
     case (Section::ARTROSYNDESMOLOGIA):
     {
-        chooseQuests(unusedFormations, m_pTreeArtro->currentItem()->text(0));
+        chooseQuests(m_pTreeArtro->currentItem()->text(1));
         m_pTreeArtro->hide();
         break;
     };
@@ -1122,12 +1183,17 @@ void AnatomyAsker::onTreeCurrentItemChanged(QTreeWidgetItem *current, QTreeWidge
         m_pBtnMore->setEnabled(false);
     }
 }
-void AnatomyAsker::onUpdateLanguage(int check) {
+void AnatomyAsker::onUpdateLanguage() {
     _dbg_start(__func__);
-    if (check == Qt::Checked) {
+    if (m_pCheckRus->checkState() == Qt::Checked) {
         m_bLangRu = true;
     } else {
         m_bLangRu = false;
+    }
+    if (m_pCheckLatin->checkState() == Qt::Checked) {
+        m_bLatin = true;
+    } else {
+        m_bLatin = false;
     }
     m_pCheckLatin->setCheckable(m_bLangRu);
     m_pBtnBack->setText(m_bLangRu ? "Назад" : "Back");
