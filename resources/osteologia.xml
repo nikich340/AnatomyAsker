@@ -352,7 +352,7 @@
 				<cell name="spinae mentalis" nameRu="подбородочные ости" pixMarks="3-12" />
 				<cell name="sulcus mylohyoideus" nameRu="челюстно-подъязычная борозда" pixMarks="3-24, 18-28" />
 			</cell>
-			<cell name="maxilla" mainPix="6" nameRu="верхняя челюсть" pixMarks="1-19, 2-20, 9-32">
+			<cell name="maxilla" mainPix="6, 7" nameRu="верхняя челюсть" pixMarks="1-19, 2-20, 9-32">
 				<cell name="canalis incisivus" nameRu="резцовый канал" pixMarks="5-1, 7-30, 15-32" />
 				<cell name="corpus maxillae" nameRu="тело верхней челюсти" pixMarks="1-19, 2-20" />
 				<cell name="crista lacrimalis anterior" nameRu="передний слёзный гребень" pixMarks="6-19" />
